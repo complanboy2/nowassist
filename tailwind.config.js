@@ -17,7 +17,7 @@ export default {
         muted: '#f9fafb',
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
         mono: ['SF Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
       },
     },
