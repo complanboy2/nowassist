@@ -577,13 +577,13 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
   const isTableMode = viewMode === 'table' && parsedPayload && title === 'Decoded Payload';
 
   return (
-    <div className="border border-gray-300 rounded-lg bg-white flex flex-col overflow-hidden">
-      <div className="flex items-center justify-between bg-gray-50 px-4 py-2 flex-shrink-0 border-b border-gray-200">
-        <div className="flex items-center gap-2.5">
-          <div className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: dotColor }} />
+    <div className="border-2 border-gray-200 rounded-xl bg-white flex flex-col overflow-hidden shadow-sm">
+      <div className="flex items-center justify-between bg-gray-50 px-6 py-3.5 flex-shrink-0 border-b-2 border-gray-200">
+        <div className="flex items-center gap-3">
+          <div className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: dotColor }} />
           <div className="min-w-0">
-            <h3 className="text-xs font-medium text-gray-700 uppercase tracking-wide">{title}</h3>
-            {description && <p className="text-xs text-gray-500 leading-tight mt-0.5">{description}</p>}
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">{title}</h3>
+            {description && <p className="text-xs text-gray-600 leading-tight mt-1">{description}</p>}
           </div>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -633,10 +633,10 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
               }, 150);
             }}
             className={clsx(
-              'inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium transition-colors focus:outline-none border rounded-md focus:ring-2 focus:ring-blue-500',
+              'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-2 rounded-lg focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 shadow-sm',
               copied 
-                ? 'bg-green-50 border-green-300 text-green-700' 
-                : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300'
+                ? 'bg-green-50 border-green-400 text-green-700' 
+                : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
             )}
             tabIndex={0}
           >
@@ -647,26 +647,26 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
       </div>
       <div className={clsx('bg-white', isHeader || isTableMode ? 'overflow-visible' : 'overflow-auto')} style={isHeader || isTableMode ? {} : { height: contentHeight, maxHeight: contentHeight }}>
         {viewMode === 'table' && parsedPayload ? (
-          <div className="p-4 w-full">
+              <div className="p-6 w-full">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="px-4 py-2.5 text-left font-medium text-gray-700">Claim</th>
-                  <th className="px-4 py-2.5 text-left font-medium text-gray-700">Value</th>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="px-5 py-3 text-left font-semibold text-gray-900">Claim</th>
+                  <th className="px-5 py-3 text-left font-semibold text-gray-900">Value</th>
                 </tr>
               </thead>
               <tbody>
                 {Object.entries(parsedPayload).map(([key, value]) => (
                   <tr key={key} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-2.5 font-mono text-gray-700 text-sm">{key}</td>
-                    <td className="px-4 py-2.5 text-gray-900 text-sm">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</td>
+                    <td className="px-5 py-3 font-mono text-gray-700 text-sm">{key}</td>
+                    <td className="px-5 py-3 text-gray-900 text-sm">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : title === 'Signature' ? (
-          <div className="p-4">
+          <div className="p-6">
             <pre className="text-sm leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">
               <code className="font-mono text-gray-800">
                 {content || '—'}
@@ -676,7 +676,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
         ) : (
           <div className="flex bg-white" style={{ flex: '1 1 auto', minHeight: '100%' }}>
             {/* Line Numbers Banner - Left Side */}
-            <div className="flex-shrink-0 bg-gray-50 border-r border-gray-200 text-right pr-3 pl-3 py-4 flex flex-col" style={{ width: '50px', fontFamily: 'monospace', minHeight: '100%' }}>
+            <div className="flex-shrink-0 bg-gray-50 border-r-2 border-gray-200 text-right pr-4 pl-4 py-5 flex flex-col" style={{ width: '55px', fontFamily: 'monospace', minHeight: '100%' }}>
               {lines.map((line, index) => (
                 <div key={index} className="text-gray-400 text-xs leading-relaxed select-none flex-shrink-0" style={{ minHeight: '20px' }}>
                   {index + 1}
@@ -685,7 +685,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
             </div>
             
             {/* Content - Right Side */}
-            <div className="flex-1 py-4 pl-4 pr-4 text-sm leading-relaxed overflow-x-auto bg-white">
+            <div className="flex-1 py-5 pl-6 pr-6 text-sm leading-relaxed overflow-x-auto bg-white">
               <div className="font-mono text-gray-800">
                 {lines.map((line, index) => {
                   // For Key Claims, check if this line contains a claim key
@@ -1084,63 +1084,70 @@ const JWTDecoder = () => {
       <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
 
       {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-y-auto bg-white" style={{ width: '100%', minWidth: 0 }} >
-        <div className="mx-auto max-w-4xl w-full px-6 py-8">
-          <div className="space-y-8">
-          {/* Clean Header - Minimal, No Border */}
-          <header className="space-y-2">
-            <h1 className="text-3xl font-semibold text-gray-900">JWT Debugger</h1>
-            <p className="text-base text-gray-600">
-              Decode, verify, and inspect JSON Web Tokens
-            </p>
-            <div className="relative" ref={companyMenuRef}>
-              <button
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1"
-                onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setCompanyMenuOpen(!companyMenuOpen);
-                  }
-                }}
-                tabIndex={0}
-                aria-label="Select company"
-                aria-expanded={companyMenuOpen}
-              >
-                <span className="whitespace-nowrap">{theme.name}</span>
-                <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200', companyMenuOpen && 'rotate-180')} />
-              </button>
-              {companyMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-50 overflow-hidden">
-                  <button
-                    onClick={() => {
-                      setSelectedCompany('servicenow');
-                      setCompanyMenuOpen(false);
-                    }}
-                    className={clsx('w-full px-3 py-2 text-left text-sm transition-colors focus:outline-none', currentCompany === 'servicenow' ? 'bg-sky-50 text-sky-700 font-medium' : 'text-gray-700 hover:bg-gray-50')}
-                    tabIndex={0}
-                  >
-                    ServiceNow
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedCompany('salesforce');
-                      setCompanyMenuOpen(false);
-                    }}
-                    className={clsx('w-full px-3 py-2 text-left text-sm transition-colors focus:outline-none', currentCompany === 'salesforce' ? 'bg-sky-50 text-sky-700 font-medium' : 'text-gray-700 hover:bg-gray-50')}
-                    tabIndex={0}
-                  >
-                    Salesforce
-                  </button>
-                </div>
-              )}
+      <div className="flex-1 overflow-y-auto bg-gray-50" style={{ width: '100%', minWidth: 0 }} >
+        <div className="mx-auto max-w-7xl w-full px-8 py-10">
+          <div className="space-y-6">
+          {/* Professional Header with Border */}
+          <header className="bg-white border border-gray-200 rounded-xl shadow-sm px-8 py-6 mb-6">
+            <div className="flex items-start justify-between">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold text-gray-900">JWT Debugger</h1>
+                <p className="text-base text-gray-600">
+                  Decode, verify, and inspect JSON Web Tokens
+                </p>
+              </div>
+              <div className="relative" ref={companyMenuRef}>
+                <button
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all border-2 border-gray-300 rounded-lg hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                  onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setCompanyMenuOpen(!companyMenuOpen);
+                    }
+                  }}
+                  tabIndex={0}
+                  aria-label="Select company"
+                  aria-expanded={companyMenuOpen}
+                >
+                  <span className="whitespace-nowrap">{theme.name}</span>
+                  <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200', companyMenuOpen && 'rotate-180')} />
+                </button>
+                {companyMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setCompanyMenuOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-40 bg-white border-2 border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
+                      <button
+                        onClick={() => {
+                          setSelectedCompany('servicenow');
+                          setCompanyMenuOpen(false);
+                        }}
+                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 last:border-b-0 focus:outline-none', currentCompany === 'servicenow' ? 'bg-sky-50 text-sky-700 font-semibold' : 'text-gray-700 hover:bg-gray-50')}
+                        tabIndex={0}
+                      >
+                        ServiceNow
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedCompany('salesforce');
+                          setCompanyMenuOpen(false);
+                        }}
+                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 last:border-b-0 focus:outline-none', currentCompany === 'salesforce' ? 'bg-sky-50 text-sky-700 font-semibold' : 'text-gray-700 hover:bg-gray-50')}
+                        tabIndex={0}
+                      >
+                        Salesforce
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </header>
 
-          {/* Token Input Section - Clean, Minimal */}
-          <div className="space-y-3">
+          {/* Token Input Section - No Box Around Header */}
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <label htmlFor="token-input" className="text-sm font-medium text-gray-700">
+              <label htmlFor="token-input" className="text-base font-semibold text-gray-900">
                 JSON Web Token (JWT)
               </label>
               <div className="flex items-center gap-2">
@@ -1153,7 +1160,7 @@ const JWTDecoder = () => {
                           setShowExampleMenu(!showExampleMenu);
                         }
                       }}
-                      className="px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors focus:outline-none inline-flex items-center gap-1.5"
+                      className="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow inline-flex items-center gap-2"
                       tabIndex={0}
                     >
                       <RefreshCw className="h-3.5 w-3.5" />
@@ -1206,28 +1213,10 @@ const JWTDecoder = () => {
                         copyText(token);
                       }
                     }}
-                    onMouseDown={(e) => {
-                      e.currentTarget.style.transform = 'scale(0.95)';
-                      e.currentTarget.style.backgroundColor = '#e2e8f0';
-                    }}
-                    onMouseUp={(e) => {
-                      e.currentTarget.style.transform = '';
-                      e.currentTarget.style.backgroundColor = '';
-                    }}
-                    onTouchStart={(e) => {
-                      e.currentTarget.style.transform = 'scale(0.95)';
-                      e.currentTarget.style.backgroundColor = '#e2e8f0';
-                    }}
-                    onTouchEnd={(e) => {
-                      setTimeout(() => {
-                        e.currentTarget.style.transform = '';
-                        e.currentTarget.style.backgroundColor = '';
-                      }, 150);
-                    }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors focus:outline-none"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
                     tabIndex={0}
                   >
-                    <Copy className="h-3.5 w-3.5" />
+                    <Copy className="h-4 w-4" />
                     Copy
                   </button>
                   <button
@@ -1238,14 +1227,16 @@ const JWTDecoder = () => {
                         setToken('');
                       }
                     }}
-                    className="px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors focus:outline-none"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
                     tabIndex={0}
                   >
+                    <X className="h-3.5 w-3.5" />
                     Clear
                   </button>
                 </div>
               </div>
             </div>
+            {/* Token Value Box - Border on textarea only */}
             <div className="relative">
               <textarea
                 ref={textareaRef}
@@ -1258,12 +1249,12 @@ const JWTDecoder = () => {
                   e.target.style.height = `${newHeight}px`;
                 }}
                 placeholder="Paste a JWT token here..."
-                className="min-h-[120px] max-h-[400px] w-full resize-none border border-gray-200 rounded-lg bg-white px-4 py-3 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors overflow-y-auto"
+                className="min-h-[120px] max-h-[400px] w-full resize-none border-2 border-gray-300 rounded-xl bg-white px-5 py-4 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all overflow-y-auto shadow-sm"
                 style={{ color: 'transparent', caretColor: '#111827', height: 'auto' }}
                 tabIndex={0}
               />
               {token && (
-                <div className="absolute inset-0 pointer-events-none px-4 py-3 font-mono text-sm leading-relaxed overflow-hidden rounded-lg bg-white" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                <div className="absolute inset-0 pointer-events-none px-5 py-4 font-mono text-sm leading-relaxed overflow-hidden rounded-xl" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                   <pre className="whitespace-pre-wrap break-all">
                     {(() => {
                       const parts = token.split('.');
@@ -1283,13 +1274,13 @@ const JWTDecoder = () => {
               )}
             </div>
             {error && (
-              <div className="mt-3 flex items-center gap-2 text-sm text-red-600 bg-red-50 px-4 py-2 rounded-lg">
-                <AlertCircle className="h-4 w-4 flex-shrink-0" />
-                <span>{error}</span>
+              <div className="mt-4 flex items-center gap-3 text-sm text-red-700 bg-red-50 border-2 border-red-200 px-5 py-3 rounded-lg">
+                <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                <span className="font-medium">{error}</span>
               </div>
             )}
             {!error && payload && (
-              <div className="mt-3 flex items-center gap-6 text-sm flex-wrap bg-green-50 px-4 py-2 rounded-lg">
+              <div className="mt-4 flex items-center gap-6 text-sm flex-wrap bg-green-50 border-2 border-green-200 px-5 py-3 rounded-lg">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-600" />
                   <span className="font-medium text-gray-900">Valid JWT</span>
@@ -1317,9 +1308,9 @@ const JWTDecoder = () => {
             <>
               {/* Security Validation Panel */}
               {securityValidation && securityValidation.issues.length > 0 && (
-                <div className="mb-6 border border-gray-300 rounded-lg bg-white overflow-hidden">
+                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between bg-gray-50 px-4 py-3 border-b border-gray-300 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between bg-gray-50 px-6 py-4 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowSecurityPanel(!showSecurityPanel)}
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -1349,7 +1340,7 @@ const JWTDecoder = () => {
                     </button>
                   </div>
                   {showSecurityPanel && (
-                  <div className="p-4 space-y-3 bg-white">
+                  <div className="p-6 space-y-4 bg-white">
                     {securityValidation.issues.map((issue, index) => {
                       const severityColors = {
                         [SECURITY_SEVERITY.CRITICAL]: { text: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200', icon: X },
@@ -1390,7 +1381,7 @@ const JWTDecoder = () => {
               )}
               
               {/* Row 1: Decoded Header | Key Claims */}
-              <div className="grid gap-4 lg:grid-cols-2 mb-4">
+              <div className="grid gap-6 lg:grid-cols-2 mb-6">
                 <CodeSection
                   title="Decoded Header"
                   content={pretty(headerRaw)}
@@ -1437,7 +1428,7 @@ const JWTDecoder = () => {
               </div>
 
               {/* Row 2: Payload | Signature + Verification - Equal sizes */}
-              <div className="grid gap-4 lg:grid-cols-2 mb-4">
+              <div className="grid gap-6 lg:grid-cols-2 mb-6">
                 {/* Left: Decoded Payload */}
                 <CodeSection
                   title="Decoded Payload"
@@ -1465,11 +1456,11 @@ const JWTDecoder = () => {
                       isHeader={true}
                     />
                     
-                    {/* Signature Verification - Simplified, no nested boxes */}
-                    <div className="mt-4 flex-1 flex flex-col">
-                      <div className="flex items-center justify-between px-2 py-2">
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Verify Signature</span>
+                    {/* Signature Verification - Professional Box */}
+                    <div className="mt-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                      <div className="flex items-center justify-between bg-gray-50 px-6 py-3.5 border-b-2 border-gray-200">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <span className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Verify Signature</span>
                           {!isHMAC && (
                             <Tooltip
                               content={
@@ -1502,9 +1493,9 @@ const JWTDecoder = () => {
                         </button>
                       </div>
                       {showVerification && (
-                        <div className="space-y-3">
+                        <div className="p-6 space-y-4">
                           <div>
-                            <label className="block text-xs font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                               {isHMAC ? 'Secret' : 'Public Key'}
                             </label>
                             <textarea
@@ -1518,15 +1509,15 @@ const JWTDecoder = () => {
                                 setVerificationResult(null);
                               }}
                               placeholder={isHMAC ? 'Enter the secret used to sign the JWT' : keyFormat === 'PEM' ? '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END PUBLIC KEY-----' : '{\n  "kty": "RSA",\n  "n": "...",\n  "e": "AQAB"\n}'}
-                              className="w-full h-28 resize-none border border-gray-300 rounded bg-white px-3 py-2 font-mono text-xs leading-relaxed text-gray-900 placeholder:text-gray-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
+                              className="w-full h-32 resize-none border-2 border-gray-300 rounded-lg bg-gray-50 px-4 py-3 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
                               tabIndex={0}
                             />
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <button
                               onClick={handleVerify}
                               disabled={!token || (!isHMAC && !publicKey) || (isHMAC && !secret) || isVerifying}
-                              className="px-4 py-2 text-sm font-medium text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1"
+                              className="px-5 py-2.5 text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 shadow-sm hover:shadow"
                               tabIndex={0}
                             >
                               {isVerifying ? 'Verifying...' : 'Verify Signature'}
@@ -1534,25 +1525,25 @@ const JWTDecoder = () => {
                             <div className="flex items-center gap-2 ml-auto">
                               {!isHMAC && (
                                 <>
-                                  <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 cursor-pointer transition-colors focus-within:outline-none">
-                                    <Upload className="h-3.5 w-3.5" />
+                                  <label className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 cursor-pointer transition-all focus-within:outline-none focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-1 shadow-sm hover:shadow">
+                                    <Upload className="h-4 w-4" />
                                     Upload
                                     <input type="file" accept=".pem,.key,.crt,.pub,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
                                   </label>
-                                  <div className="relative" ref={keyFormatMenuRef}>
+                                  <div className="relative z-50" ref={keyFormatMenuRef}>
                                     <button
                                       type="button"
                                       onClick={() => setKeyFormatMenuOpen(!keyFormatMenuOpen)}
-                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-colors"
+                                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
                                       tabIndex={0}
                                     >
                                       <span>{keyFormat}</span>
-                                      <ChevronDown className={clsx('h-4 w-4 text-gray-400 transition-transform duration-200', keyFormatMenuOpen && 'rotate-180')} />
+                                      <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200', keyFormatMenuOpen && 'rotate-180')} />
                                     </button>
                                     {keyFormatMenuOpen && (
                                       <>
-                                        <div className="fixed inset-0 z-40" onClick={() => setKeyFormatMenuOpen(false)} />
-                                        <div className="absolute right-0 top-full mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-50 overflow-hidden">
+                                        <div className="fixed inset-0 z-[45]" onClick={() => setKeyFormatMenuOpen(false)} />
+                                        <div className="absolute right-0 top-full mt-2 w-36 bg-white border-2 border-gray-200 rounded-lg shadow-xl z-[60] overflow-hidden">
                                           <button
                                             onClick={() => {
                                               setKeyFormat('PEM');
@@ -1590,19 +1581,19 @@ const JWTDecoder = () => {
                                     setSecret('');
                                     setVerificationResult(null);
                                   }}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors focus:outline-none"
+                                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
                                   tabIndex={0}
                                 >
-                                  <X className="h-3.5 w-3.5" />
+                                  <X className="h-4 w-4" />
                                   Clear
                                 </button>
                               )}
                             </div>
                           </div>
                           {verificationResult && !verificationResult.verified && (
-                            <div className="bg-red-50 px-3 py-2 rounded">
-                              <div className="flex items-center gap-2 text-sm text-red-700">
-                                <X className="h-4 w-4 flex-shrink-0" />
+                            <div className="bg-red-50 border border-red-200 px-5 py-3 rounded-lg">
+                              <div className="flex items-center gap-3 text-sm text-red-700 font-medium">
+                                <X className="h-5 w-5 flex-shrink-0" />
                                 <span>{verificationResult.error || 'Signature verification failed'}</span>
                               </div>
                             </div>
@@ -1614,11 +1605,79 @@ const JWTDecoder = () => {
                 )}
               </div>
 
+              {/* JWKS Panel */}
+              {!isHMAC && (
+                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm px-6 py-6">
+                  <div className="flex items-center gap-3 mb-4 pb-3 border-b-2 border-gray-200">
+                    <Key className="h-5 w-5 text-gray-600" />
+                    <span className="text-base font-semibold text-gray-900">JWKS (JSON Web Key Set)</span>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="url"
+                        value={jwksUrl}
+                        onChange={(e) => setJwksUrl(e.target.value)}
+                        placeholder="https://example.com/.well-known/jwks.json"
+                          className="flex-1 border-2 border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleFetchJWKS();
+                          }
+                        }}
+                      />
+                      <button
+                        onClick={handleFetchJWKS}
+                        disabled={jwksLoading || !jwksUrl.trim()}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 shadow-sm hover:shadow"
+                      >
+                        {jwksLoading ? (
+                          <>
+                            <div className="h-4 w-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                            Loading...
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="h-4 w-4" />
+                            Fetch
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    {jwksError && (
+                      <div className="bg-red-50 border border-red-200 px-4 py-3 rounded-lg text-sm text-red-700 font-medium">
+                        {jwksError}
+                      </div>
+                    )}
+                    {jwks && jwks.keys && jwks.keys.length > 0 && (
+                      <div className="space-y-3">
+                        <label className="block text-sm font-semibold text-gray-700">Select Key:</label>
+                        <select
+                          value={selectedKeyId}
+                          onChange={(e) => setSelectedKeyId(e.target.value)}
+                          className="w-full border-2 border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all cursor-pointer hover:bg-gray-50"
+                        >
+                          <option value="">-- Select a key --</option>
+                          {jwks.keys.map((key, index) => (
+                            <option key={index} value={key.kid || index}>
+                              {key.kid || `Key ${index + 1}`} ({key.alg || 'N/A'})
+                            </option>
+                          ))}
+                        </select>
+                        <p className="text-xs text-gray-500">
+                          Found {jwks.keys.length} key(s). {selectedKeyId ? 'Key selected for verification.' : 'Select a key to use for verification.'}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* Time Simulation Panel */}
               {showTimeSimulation && (
-                <div className="mb-6 border border-gray-300 rounded-lg bg-white overflow-hidden">
+                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b border-gray-300 bg-gray-50 px-4 py-3 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b-2 border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowTimePanelExpanded(!showTimePanelExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -1645,7 +1704,7 @@ const JWTDecoder = () => {
                     </div>
                   </div>
                   {showTimePanelExpanded && (
-                  <div className="p-4 space-y-3">
+                  <div className="p-6 space-y-4">
                     <div className="flex items-center gap-4 flex-wrap">
                       <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Current Time:</label>
                       <input
@@ -1688,79 +1747,11 @@ const JWTDecoder = () => {
                 </div>
               )}
 
-              {/* JWKS Panel */}
-              {!isHMAC && (
-                <div className="mb-4 border-t border-gray-200 pt-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Key className="h-4 w-4 text-gray-600" />
-                    <span className="text-sm font-medium text-gray-900">JWKS (JSON Web Key Set)</span>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="url"
-                        value={jwksUrl}
-                        onChange={(e) => setJwksUrl(e.target.value)}
-                        placeholder="https://example.com/.well-known/jwks.json"
-                          className="flex-1 border border-gray-300 rounded bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            handleFetchJWKS();
-                          }
-                        }}
-                      />
-                      <button
-                        onClick={handleFetchJWKS}
-                        disabled={jwksLoading || !jwksUrl.trim()}
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                      >
-                        {jwksLoading ? (
-                          <>
-                            <div className="h-4 w-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-                            Loading...
-                          </>
-                        ) : (
-                          <>
-                            <RefreshCw className="h-4 w-4" />
-                            Fetch
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    {jwksError && (
-                      <div className="bg-red-50 px-3 py-2 rounded text-sm text-red-700">
-                        {jwksError}
-                      </div>
-                    )}
-                    {jwks && jwks.keys && jwks.keys.length > 0 && (
-                      <div className="space-y-2">
-                        <label className="block text-sm font-medium text-gray-700">Select Key:</label>
-                        <select
-                          value={selectedKeyId}
-                          onChange={(e) => setSelectedKeyId(e.target.value)}
-                          className="w-full border border-gray-300 rounded bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors cursor-pointer hover:bg-gray-50"
-                        >
-                          <option value="">-- Select a key --</option>
-                          {jwks.keys.map((key, index) => (
-                            <option key={index} value={key.kid || index}>
-                              {key.kid || `Key ${index + 1}`} ({key.alg || 'N/A'})
-                            </option>
-                          ))}
-                        </select>
-                        <p className="text-xs text-gray-500">
-                          Found {jwks.keys.length} key(s). {selectedKeyId ? 'Key selected for verification.' : 'Select a key to use for verification.'}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
               {/* Redaction Panel */}
               {showRedaction && payload && (
-                <div className="mb-6 border border-gray-300 rounded-lg bg-white overflow-hidden">
+                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b border-gray-300 bg-gray-50 px-4 py-3 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b-2 border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowRedactionExpanded(!showRedactionExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -1786,7 +1777,7 @@ const JWTDecoder = () => {
                     </div>
                   </div>
                   {showRedactionExpanded && (
-                  <div className="p-4 space-y-4">
+                  <div className="p-6 space-y-5">
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-slate-700">Select claims to redact:</label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto">
@@ -1830,9 +1821,9 @@ const JWTDecoder = () => {
 
               {/* Comparison Panel */}
               {showComparison && (
-                <div className="mb-6 border border-gray-300 rounded-lg bg-white overflow-hidden">
+                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b border-gray-300 bg-gray-50 px-4 py-3 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b-2 border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowComparisonExpanded(!showComparisonExpanded)}
                   >
                     <div className="flex items-center gap-2 flex-1">
@@ -1858,7 +1849,7 @@ const JWTDecoder = () => {
                     </button>
                   </div>
                   {showComparisonExpanded && (
-                  <div className="p-4 space-y-3">
+                  <div className="p-6 space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">Second Token:</label>
                       <textarea
