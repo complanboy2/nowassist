@@ -489,8 +489,16 @@ const verifySignature = async (token, key, algorithm, keyFormat) => {
     const paddedSignature = signatureBase64 + '='.repeat(padLength);
     const signatureBytes = Uint8Array.from(atob(paddedSignature), (c) => c.charCodeAt(0));
 
+    // For ECDSA, we need to pass the algorithm object with hash
+    const verifyAlgorithm = alg.startsWith('RS') 
+      ? 'RSASSA-PKCS1-v1_5'
+      : {
+          name: 'ECDSA',
+          hash: alg === 'ES256' ? 'SHA-256' : alg === 'ES384' ? 'SHA-384' : 'SHA-512',
+        };
+
     const verified = await crypto.subtle.verify(
-      alg.startsWith('RS') ? 'RSASSA-PKCS1-v1_5' : 'ECDSA',
+      verifyAlgorithm,
       cryptoKey,
       signatureBytes,
       new TextEncoder().encode(message)
@@ -547,7 +555,7 @@ const useDecoded = (token) =>
 const CodeSection = ({ title, content, description, onCopy, viewMode, onViewModeChange, theme, statusColor, isHeader = false, payload, targetClaims, getClaimInfo, companyClaimSet, currentCompany, currentTime, calculateTTL }) => {
   const [copied, setCopied] = useState(false);
   const lines = content ? content.split('\n') : ['—'];
-  const parsedPayload = viewMode === 'table' && title === 'Decoded Payload' ? (() => {
+  const parsedPayload = viewMode === 'table' && title?.startsWith('Payload:') ? (() => {
     try {
       return JSON.parse(content);
     } catch {
@@ -573,12 +581,12 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
   };
 
   // Fixed height to prevent dynamic changes - Equal heights for Payload and Signature sections
-  const contentHeight = title === 'Decoded Payload' || title === 'Signature' ? '400px' : isHeader ? 'auto' : '280px';
-  const isTableMode = viewMode === 'table' && parsedPayload && title === 'Decoded Payload';
+  const contentHeight = title?.startsWith('Payload:') || title?.startsWith('Signature:') ? '400px' : isHeader ? 'auto' : '280px';
+  const isTableMode = viewMode === 'table' && parsedPayload && title?.startsWith('Payload:');
 
   return (
-    <div className="border-2 border-gray-200 rounded-xl bg-white flex flex-col overflow-hidden shadow-sm">
-      <div className="flex items-center justify-between bg-gray-50 px-6 py-3.5 flex-shrink-0 border-b-2 border-gray-200">
+    <div className="border border-gray-200 rounded-xl bg-white flex flex-col overflow-hidden shadow-sm">
+      <div className="flex items-center justify-between bg-gray-50 px-6 py-3.5 flex-shrink-0 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <div className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: dotColor }} />
           <div className="min-w-0">
@@ -587,7 +595,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
           </div>
         </div>
         <div className="flex items-center gap-1.5 flex-shrink-0">
-          {title === 'Decoded Payload' && (
+          {title?.startsWith('Payload:') && (
             <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
               <button
                 onClick={() => onViewModeChange('json')}
@@ -665,7 +673,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
               </tbody>
             </table>
           </div>
-        ) : title === 'Signature' ? (
+        ) : title?.startsWith('Signature:') ? (
           <div className="p-6">
             <pre className="text-sm leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">
               <code className="font-mono text-gray-800">
@@ -691,7 +699,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
                   // For Key Claims, check if this line contains a claim key
                   let claimInfo = null;
                   let hasCompanyBadge = false;
-                  if (title === 'Key Claims' && targetClaims && getClaimInfo && payload) {
+                  if (title?.startsWith('Key Claims:') && targetClaims && getClaimInfo && payload) {
                     // Try to extract claim name from line (e.g., "  \"sub\": ...")
                     const claimMatch = line.match(/^\s*"([^"]+)":\s*(.+)/);
                     if (claimMatch && targetClaims.includes(claimMatch[1])) {
@@ -702,7 +710,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
                   }
                   
                   // For Key Claims with info, split line and show icon after value
-                  if (title === 'Key Claims' && claimInfo) {
+                  if (title?.startsWith('Key Claims:') && claimInfo) {
                     const colonIndex = line.indexOf(':');
                     if (colonIndex !== -1) {
                       const keyPart = line.substring(0, colonIndex + 1);
@@ -1088,7 +1096,7 @@ const JWTDecoder = () => {
         <div className="mx-auto max-w-7xl w-full px-8 py-10">
           <div className="space-y-6">
           {/* Professional Header with Border */}
-          <header className="bg-white border border-gray-200 rounded-xl shadow-sm px-8 py-6 mb-6">
+          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-8 py-6 mb-6">
             <div className="flex items-start justify-between">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold text-gray-900">JWT Debugger</h1>
@@ -1098,7 +1106,7 @@ const JWTDecoder = () => {
               </div>
               <div className="relative" ref={companyMenuRef}>
                 <button
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all border-2 border-gray-300 rounded-lg hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all border border-gray-300 rounded-lg hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
                   onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -1116,7 +1124,7 @@ const JWTDecoder = () => {
                 {companyMenuOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setCompanyMenuOpen(false)} />
-                    <div className="absolute right-0 top-full mt-2 w-40 bg-white border-2 border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
+                    <div className="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
                       <button
                         onClick={() => {
                           setSelectedCompany('servicenow');
@@ -1213,7 +1221,7 @@ const JWTDecoder = () => {
                         copyText(token);
                       }
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
                     tabIndex={0}
                   >
                     <Copy className="h-4 w-4" />
@@ -1249,7 +1257,7 @@ const JWTDecoder = () => {
                   e.target.style.height = `${newHeight}px`;
                 }}
                 placeholder="Paste a JWT token here..."
-                className="min-h-[120px] max-h-[400px] w-full resize-none border-2 border-gray-300 rounded-xl bg-white px-5 py-4 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all overflow-y-auto shadow-sm"
+                className="min-h-[120px] max-h-[400px] w-full resize-none border border-gray-300 rounded-xl bg-white px-5 py-4 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all overflow-y-auto shadow-sm"
                 style={{ color: 'transparent', caretColor: '#111827', height: 'auto' }}
                 tabIndex={0}
               />
@@ -1274,13 +1282,13 @@ const JWTDecoder = () => {
               )}
             </div>
             {error && (
-              <div className="mt-4 flex items-center gap-3 text-sm text-red-700 bg-red-50 border-2 border-red-200 px-5 py-3 rounded-lg">
+              <div className="mt-4 flex items-center gap-3 text-sm text-red-700 bg-red-50 border border-red-200 px-5 py-3 rounded-lg">
                 <AlertCircle className="h-5 w-5 flex-shrink-0" />
                 <span className="font-medium">{error}</span>
               </div>
             )}
             {!error && payload && (
-              <div className="mt-4 flex items-center gap-6 text-sm flex-wrap bg-green-50 border-2 border-green-200 px-5 py-3 rounded-lg">
+              <div className="mt-4 flex items-center gap-6 text-sm flex-wrap bg-green-50 border border-green-200 px-5 py-3 rounded-lg">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-600" />
                   <span className="font-medium text-gray-900">Valid JWT</span>
@@ -1308,9 +1316,9 @@ const JWTDecoder = () => {
             <>
               {/* Security Validation Panel */}
               {securityValidation && securityValidation.issues.length > 0 && (
-                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between bg-gray-50 px-6 py-4 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between bg-gray-50 px-6 py-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowSecurityPanel(!showSecurityPanel)}
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -1380,12 +1388,12 @@ const JWTDecoder = () => {
                 </div>
               )}
               
-              {/* Row 1: Decoded Header | Key Claims */}
+              {/* Row 1: Header | Key Claims */}
               <div className="grid gap-6 lg:grid-cols-2 mb-6">
                 <CodeSection
-                  title="Decoded Header"
+                  title="Header: Signing Algorithms & Token Type"
                   content={pretty(headerRaw)}
-                  description="Signing algorithm and token type"
+                  description=""
                   onCopy={copyText}
                   viewMode="json"
                   theme={theme}
@@ -1393,7 +1401,7 @@ const JWTDecoder = () => {
                   isHeader={true}
                 />
                 <CodeSection
-                  title="Key Claims"
+                  title="Key Claims: Important JWT Claims"
                   content={(() => {
                     const claimsObj = {};
                     targetClaims.forEach(claim => {
@@ -1411,7 +1419,7 @@ const JWTDecoder = () => {
                     });
                     return JSON.stringify(claimsObj, null, 2);
                   })()}
-                  description="Important JWT claims"
+                  description=""
                   onCopy={copyText}
                   viewMode="json"
                   theme={theme}
@@ -1429,11 +1437,11 @@ const JWTDecoder = () => {
 
               {/* Row 2: Payload | Signature + Verification - Equal sizes */}
               <div className="grid gap-6 lg:grid-cols-2 mb-6">
-                {/* Left: Decoded Payload */}
+                {/* Left: Payload */}
                 <CodeSection
-                  title="Decoded Payload"
+                  title="Payload: Claims and User Data"
                   content={pretty(payloadRaw)}
-                  description="Claims and user data"
+                  description=""
                   onCopy={copyText}
                   viewMode={payloadViewMode}
                   onViewModeChange={setPayloadViewMode}
@@ -1446,9 +1454,9 @@ const JWTDecoder = () => {
                   <div className="flex flex-col h-full">
                     {/* Signature - Compact */}
                     <CodeSection
-                      title="Signature"
+                      title="Signature: Cryptographic Signature"
                       content={signature}
-                      description="Cryptographic signature"
+                      description=""
                       onCopy={copyText}
                       viewMode="json"
                       theme={theme}
@@ -1457,8 +1465,8 @@ const JWTDecoder = () => {
                     />
                     
                     {/* Signature Verification - Professional Box */}
-                    <div className="mt-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                      <div className="flex items-center justify-between bg-gray-50 px-6 py-3.5 border-b-2 border-gray-200">
+                    <div className="mt-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+                      <div className="flex items-center justify-between bg-gray-50 px-6 py-3.5 border-b border-gray-200">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
                           <span className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Verify Signature</span>
                           {!isHMAC && (
@@ -1495,9 +1503,6 @@ const JWTDecoder = () => {
                       {showVerification && (
                         <div className="p-6 space-y-4">
                           <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
-                              {isHMAC ? 'Secret' : 'Public Key'}
-                            </label>
                             <textarea
                               value={isHMAC ? secret : publicKey}
                               onChange={(e) => {
@@ -1509,7 +1514,7 @@ const JWTDecoder = () => {
                                 setVerificationResult(null);
                               }}
                               placeholder={isHMAC ? 'Enter the secret used to sign the JWT' : keyFormat === 'PEM' ? '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END PUBLIC KEY-----' : '{\n  "kty": "RSA",\n  "n": "...",\n  "e": "AQAB"\n}'}
-                              className="w-full h-32 resize-none border-2 border-gray-300 rounded-lg bg-gray-50 px-4 py-3 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
+                              className="w-full h-32 resize-none border border-gray-300 rounded-lg bg-gray-50 px-4 py-3 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
                               tabIndex={0}
                             />
                           </div>
@@ -1525,16 +1530,16 @@ const JWTDecoder = () => {
                             <div className="flex items-center gap-2 ml-auto">
                               {!isHMAC && (
                                 <>
-                                  <label className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 cursor-pointer transition-all focus-within:outline-none focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-1 shadow-sm hover:shadow">
+                                  <label className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 cursor-pointer transition-all focus-within:outline-none focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-1 shadow-sm hover:shadow">
                                     <Upload className="h-4 w-4" />
                                     Upload
                                     <input type="file" accept=".pem,.key,.crt,.pub,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
                                   </label>
-                                  <div className="relative z-50" ref={keyFormatMenuRef}>
+                                  <div className="relative" ref={keyFormatMenuRef}>
                                     <button
                                       type="button"
                                       onClick={() => setKeyFormatMenuOpen(!keyFormatMenuOpen)}
-                                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
+                                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
                                       tabIndex={0}
                                     >
                                       <span>{keyFormat}</span>
@@ -1542,8 +1547,8 @@ const JWTDecoder = () => {
                                     </button>
                                     {keyFormatMenuOpen && (
                                       <>
-                                        <div className="fixed inset-0 z-[45]" onClick={() => setKeyFormatMenuOpen(false)} />
-                                        <div className="absolute right-0 top-full mt-2 w-36 bg-white border-2 border-gray-200 rounded-lg shadow-xl z-[60] overflow-hidden">
+                                        <div className="fixed inset-0 z-[49]" onClick={() => setKeyFormatMenuOpen(false)} />
+                                        <div className="absolute right-0 top-full mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-xl z-[100] overflow-hidden">
                                           <button
                                             onClick={() => {
                                               setKeyFormat('PEM');
@@ -1581,7 +1586,7 @@ const JWTDecoder = () => {
                                     setSecret('');
                                     setVerificationResult(null);
                                   }}
-                                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
+                                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
                                   tabIndex={0}
                                 >
                                   <X className="h-4 w-4" />
@@ -1607,8 +1612,8 @@ const JWTDecoder = () => {
 
               {/* JWKS Panel */}
               {!isHMAC && (
-                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm px-6 py-6">
-                  <div className="flex items-center gap-3 mb-4 pb-3 border-b-2 border-gray-200">
+                <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm px-6 py-6">
+                  <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200">
                     <Key className="h-5 w-5 text-gray-600" />
                     <span className="text-base font-semibold text-gray-900">JWKS (JSON Web Key Set)</span>
                   </div>
@@ -1619,7 +1624,7 @@ const JWTDecoder = () => {
                         value={jwksUrl}
                         onChange={(e) => setJwksUrl(e.target.value)}
                         placeholder="https://example.com/.well-known/jwks.json"
-                          className="flex-1 border-2 border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
+                          className="flex-1 border border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             handleFetchJWKS();
@@ -1655,7 +1660,7 @@ const JWTDecoder = () => {
                         <select
                           value={selectedKeyId}
                           onChange={(e) => setSelectedKeyId(e.target.value)}
-                          className="w-full border-2 border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all cursor-pointer hover:bg-gray-50"
+                          className="w-full border border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all cursor-pointer hover:bg-gray-50"
                         >
                           <option value="">-- Select a key --</option>
                           {jwks.keys.map((key, index) => (
@@ -1675,9 +1680,9 @@ const JWTDecoder = () => {
 
               {/* Time Simulation Panel */}
               {showTimeSimulation && (
-                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b-2 border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowTimePanelExpanded(!showTimePanelExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -1749,9 +1754,9 @@ const JWTDecoder = () => {
 
               {/* Redaction Panel */}
               {showRedaction && payload && (
-                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b-2 border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowRedactionExpanded(!showRedactionExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -1821,9 +1826,9 @@ const JWTDecoder = () => {
 
               {/* Comparison Panel */}
               {showComparison && (
-                <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b-2 border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors"
                     onClick={() => setShowComparisonExpanded(!showComparisonExpanded)}
                   >
                     <div className="flex items-center gap-2 flex-1">
