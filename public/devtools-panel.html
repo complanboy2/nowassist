@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px;
+      background: #fff;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .title {
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .status {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .status.inactive {
+      background: #ffebee;
+      color: #c62828;
+    }
+    .button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .button:hover {
+      background: #1565c0;
+    }
+    .button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .info {
+      margin-top: 12px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">NowAssist Logs</div>
+    <div class="status" id="status">Active</div>
+  </div>
+  <div>
+    <button class="button" id="openInTab">Open in New Tab</button>
+  </div>
+  <div class="info">
+    <strong>Log Capture:</strong> Active for this tab's console logs, errors, and network requests.
+  </div>
+  <script>
+    // DevTools panel script (runs in panel context)
+    let currentTabId = null;
+    let isInjected = false;
+
+    // Get the inspected window's tab ID
+    function getCurrentTabId() {
+      // Use chrome.devtools.inspectedWindow.tabId (available in MV3)
+      if (chrome.devtools && chrome.devtools.inspectedWindow) {
+        // Try to get tabId from inspectedWindow
+        chrome.tabs.query({}, (tabs) => {
+          // Get the inspected window URL
+          chrome.devtools.inspectedWindow.eval('window.location.href', (result, isException) => {
+            if (!isException && result) {
+              const inspectedUrl = result;
+              const matchingTab = tabs.find(tab => 
+                tab.url === inspectedUrl || 
+                (tab.url && inspectedUrl && tab.url.split('?')[0] === inspectedUrl.split('?')[0])
+              );
+              
+              if (matchingTab && matchingTab.id) {
+                currentTabId = matchingTab.id;
+                initializePanel();
+              } else {
+                // Fallback: try active tab
+                chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                  if (tabs.length > 0) {
+                    currentTabId = tabs[0].id;
+                    initializePanel();
+                  }
+                });
+              }
+            }
+          });
+        });
+      }
+    }
+
+    function initializePanel() {
+      // Inject content script when panel opens
+      if (!isInjected && currentTabId) {
+        injectContentScript();
+      }
+      
+      // Setup button click handler
+      const openBtn = document.getElementById('openInTab');
+      if (openBtn) {
+        openBtn.addEventListener('click', () => {
+          if (currentTabId) {
+            openLogsInNewTab(currentTabId);
+          } else {
+            // Fallback: try to get current tab
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+              if (tabs.length > 0) {
+                openLogsInNewTab(tabs[0].id);
+              }
+            });
+          }
+        });
+      }
+      
+      // Update status
+      updateStatus();
+    }
+
+    function injectContentScript() {
+      if (!currentTabId) {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs.length > 0) {
+            currentTabId = tabs[0].id;
+            doInject();
+          }
+        });
+      } else {
+        doInject();
+      }
+    }
+
+    function doInject() {
+      if (currentTabId && chrome.scripting) {
+        chrome.scripting.executeScript({
+          target: { tabId: currentTabId },
+          files: ['content-script.js'],
+        }).then(() => {
+          isInjected = true;
+          updateStatus();
+          // Auto-activate logging when DevTools panel opens
+          activateLogging();
+        }).catch((err) => {
+          console.error('Failed to inject content script:', err);
+          isInjected = false;
+          updateStatus();
+        });
+      }
+    }
+
+    function activateLogging() {
+      if (currentTabId && chrome.runtime) {
+        chrome.runtime.sendMessage({
+          action: 'activate_logging',
+          tabIds: [currentTabId]
+        }).catch(() => {
+          // Ignore errors if background script is not ready
+        });
+      }
+    }
+
+    function updateStatus() {
+      const statusEl = document.getElementById('status');
+      if (statusEl) {
+        if (isInjected) {
+          statusEl.textContent = 'Active';
+          statusEl.className = 'status';
+        } else {
+          statusEl.textContent = 'Inactive';
+          statusEl.className = 'status inactive';
+        }
+      }
+    }
+
+    function openLogsInNewTab(tabId) {
+      const targetTabId = tabId || currentTabId;
+      if (targetTabId && chrome.runtime) {
+        const logsUrl = chrome.runtime.getURL(`logs.html?tabId=${targetTabId}`);
+        chrome.tabs.create({ url: logsUrl });
+      }
+    }
+
+    // Initialize on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        getCurrentTabId();
+      });
+    } else {
+      getCurrentTabId();
+    }
+
+    // Listen for navigation
+    if (chrome.devtools && chrome.devtools.network) {
+      chrome.devtools.network.onNavigated.addListener(() => {
+        isInjected = false;
+        getCurrentTabId();
+      });
+    }
+  </script>
+</body>
+</html>
+
