@@ -622,7 +622,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
                       ];
                       const highlighted = getHighlightedJson(originalJsonA, 'removed/changed', allDiffItems);
                       return (
-                        <div className="w-full h-full overflow-auto bg-gray-950 text-gray-100 font-mono text-sm p-4" style={{ whiteSpace: 'pre' }} dangerouslySetInnerHTML={{ __html: highlighted.highlightedHtml || highlighted.json }} />
+                        <div className="w-full h-full overflow-auto bg-gray-50 text-gray-900 font-mono text-sm p-4" style={{ whiteSpace: 'pre' }} dangerouslySetInnerHTML={{ __html: highlighted.highlightedHtml || highlighted.json }} />
                       );
                     })()}
                   </div>
@@ -642,7 +642,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
                       ];
                       const highlighted = getHighlightedJson(originalJsonB, 'added/changed', allDiffItems);
                       return (
-                        <div className="w-full h-full overflow-auto bg-gray-950 text-gray-100 font-mono text-sm p-4" style={{ whiteSpace: 'pre' }} dangerouslySetInnerHTML={{ __html: highlighted.highlightedHtml || highlighted.json }} />
+                        <div className="w-full h-full overflow-auto bg-gray-50 text-gray-900 font-mono text-sm p-4" style={{ whiteSpace: 'pre' }} dangerouslySetInnerHTML={{ __html: highlighted.highlightedHtml || highlighted.json }} />
                       );
                     })()}
                   </div>
