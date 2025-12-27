@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   ChevronLeft,
@@ -145,6 +145,11 @@ const EncoderDecoder = () => {
   const [error, setError] = useState('');
   const [copied, setCopied] = useState({ input: false, output: false });
 
+  // Auto encode/decode on input or mode change
+  useEffect(() => {
+    handleEncodeDecode();
+  }, [inputText, selectedType, mode]);
+
   const handleEncodeDecode = () => {
     setError('');
     if (!inputText.trim()) {
@@ -237,6 +242,12 @@ const EncoderDecoder = () => {
       setOutputText('');
     }
   };
+
+  // Auto encode/decode on input or mode change
+  useEffect(() => {
+    handleEncodeDecode();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputText, selectedType, mode]);
 
   const handleCopy = async (text, type) => {
     await copyText(text);
@@ -348,14 +359,6 @@ const EncoderDecoder = () => {
                   </div>
                 </div>
 
-                {/* Action Button */}
-                <button
-                  onClick={handleEncodeDecode}
-                  className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-white bg-sky-500 hover:bg-sky-600 hover:border-gray-400 hover:shadow"
-                >
-                  <Code className="h-3.5 w-3.5" />
-                  {mode === 'encode' ? 'Encode' : 'Decode'}
-                </button>
               </div>
             </div>
 
