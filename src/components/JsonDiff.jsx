@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { Copy, GitMerge, AlertCircle, CheckCircle2, ArrowRight, X, ArrowLeft, Eye } from 'lucide-react';
+import { Copy, GitMerge, AlertCircle, CheckCircle2, ArrowRight, X, ArrowLeft, Eye, Download } from 'lucide-react';
 import clsx from 'clsx';
 import { diffJson } from '../utils/jsonUtils';
 import { parseJsonError } from '../utils/jsonErrorParser';
 import SimpleJsonEditor from './SimpleJsonEditor';
 import EnhancedJsonEditor from './EnhancedJsonEditor';
+import { highlight, languages } from 'prismjs';
+import 'prismjs/components/prism-json';
 
 const JsonDiff = ({ onOutputUpdate }) => {
   const [jsonA, setJsonA] = useState('');
@@ -239,10 +241,10 @@ const JsonDiff = ({ onOutputUpdate }) => {
     return Array.from(errorLines).sort((a, b) => a - b);
   };
 
-  // Generate highlighted JSON with accurate line detection for differences
+  // Generate highlighted JSON with inline highlighting for differences
   const getHighlightedJson = (jsonString, diffType, diffItems) => {
     if (!highlightDiff || !diffItems || diffItems.length === 0) {
-      return { json: jsonString, errorLines: [], errorMessage: null };
+      return { json: jsonString, errorLines: [], errorMessage: null, highlightedJson: jsonString };
     }
 
     try {
@@ -253,6 +255,38 @@ const JsonDiff = ({ onOutputUpdate }) => {
       // Find all error lines
       const errorLinesArray = findLinesForDiffItems(formattedJson, diffItems);
       
+      // Create inline highlighted version
+      let highlightedJson = formattedJson;
+      const lines = formattedJson.split('\n');
+      
+      // Color mapping based on diff type
+      const getHighlightColor = (type) => {
+        if (diffType.includes('added') || diffType.includes('added/changed')) return 'rgba(34, 197, 94, 0.3)'; // green
+        if (diffType.includes('removed') || diffType.includes('removed/changed')) return 'rgba(239, 68, 68, 0.3)'; // red
+        return 'rgba(251, 191, 36, 0.3)'; // yellow for changed
+      };
+      
+      const highlightColor = getHighlightColor(diffType);
+      
+      // For each diff item, find and highlight the value in the JSON
+      diffItems.forEach(item => {
+        const valueToHighlight = item.value !== undefined ? item.value : (item.oldValue !== undefined ? item.oldValue : item.newValue);
+        if (valueToHighlight === undefined || valueToHighlight === null) return;
+        
+        let valueStr = typeof valueToHighlight === 'object' 
+          ? JSON.stringify(valueToHighlight, null, 2)
+          : String(valueToHighlight);
+        
+        // Escape special regex characters
+        valueStr = valueStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        
+        // Find and wrap the value with highlight
+        const regex = new RegExp(`(${valueStr})`, 'g');
+        highlightedJson = highlightedJson.replace(regex, (match) => {
+          return `<span style="background-color: ${highlightColor}; padding: 2px 4px; border-radius: 2px;">${match}</span>`;
+        });
+      });
+      
       const diffCount = diffItems.length;
       const message = errorLinesArray.length > 0 
         ? `${diffCount} ${diffType} difference${diffCount > 1 ? 's' : ''} detected (lines: ${errorLinesArray.join(', ')})`
@@ -262,7 +296,8 @@ const JsonDiff = ({ onOutputUpdate }) => {
         json: formattedJson, 
         errorLines: errorLinesArray,
         errorLine: errorLinesArray.length > 0 ? errorLinesArray : null,
-        errorMessage: message 
+        errorMessage: message,
+        highlightedJson: highlightedJson
       };
     } catch (e) {
       // Fallback to simple key matching
@@ -297,9 +332,91 @@ const JsonDiff = ({ onOutputUpdate }) => {
         errorLine: errorLinesArray.length > 0 ? errorLinesArray : null,
         errorMessage: errorLinesArray.length > 0 
           ? `${diffItems.length} differences detected (lines: ${errorLinesArray.join(', ')})`
-          : `${diffItems.length} differences detected`
+          : `${diffItems.length} differences detected`,
+        highlightedJson: jsonString
       };
     }
+  };
+
+  // Download diff results
+  const downloadDiff = () => {
+    if (!diffResult) return;
+
+    const report = {
+      summary: {
+        added: diffResult.added.length,
+        removed: diffResult.removed.length,
+        changed: diffResult.changed.length,
+        unchanged: diffResult.unchanged.length,
+        total: diffResult.added.length + diffResult.removed.length + diffResult.changed.length
+      },
+      timestamp: new Date().toISOString(),
+      differences: {
+        added: diffResult.added.map(item => ({
+          path: item.path,
+          value: item.value
+        })),
+        removed: diffResult.removed.map(item => ({
+          path: item.path,
+          value: item.value
+        })),
+        changed: diffResult.changed.map(item => ({
+          path: item.path,
+          oldValue: item.oldValue,
+          newValue: item.newValue
+        }))
+      }
+    };
+
+    // Format as readable text
+    let textReport = 'JSON Diff Report\n';
+    textReport += '='.repeat(50) + '\n\n';
+    textReport += `Generated: ${new Date().toLocaleString()}\n\n`;
+    textReport += 'Summary:\n';
+    textReport += `  Added: ${report.summary.added}\n`;
+    textReport += `  Removed: ${report.summary.removed}\n`;
+    textReport += `  Changed: ${report.summary.changed}\n`;
+    textReport += `  Unchanged: ${report.summary.unchanged}\n`;
+    textReport += `  Total Differences: ${report.summary.total}\n\n`;
+
+    if (diffResult.added.length > 0) {
+      textReport += 'ADDED:\n';
+      textReport += '-'.repeat(50) + '\n';
+      diffResult.added.forEach((item, idx) => {
+        textReport += `${idx + 1}. Path: ${item.path}\n`;
+        textReport += `   Value: ${typeof item.value === 'object' ? JSON.stringify(item.value, null, 2) : item.value}\n\n`;
+      });
+    }
+
+    if (diffResult.removed.length > 0) {
+      textReport += 'REMOVED:\n';
+      textReport += '-'.repeat(50) + '\n';
+      diffResult.removed.forEach((item, idx) => {
+        textReport += `${idx + 1}. Path: ${item.path}\n`;
+        textReport += `   Value: ${typeof item.value === 'object' ? JSON.stringify(item.value, null, 2) : item.value}\n\n`;
+      });
+    }
+
+    if (diffResult.changed.length > 0) {
+      textReport += 'CHANGED:\n';
+      textReport += '-'.repeat(50) + '\n';
+      diffResult.changed.forEach((item, idx) => {
+        textReport += `${idx + 1}. Path: ${item.path}\n`;
+        textReport += `   Old Value: ${typeof item.oldValue === 'object' ? JSON.stringify(item.oldValue, null, 2) : item.oldValue}\n`;
+        textReport += `   New Value: ${typeof item.newValue === 'object' ? JSON.stringify(item.newValue, null, 2) : item.newValue}\n\n`;
+      });
+    }
+
+    // Create and download file
+    const blob = new Blob([textReport], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `json-diff-${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -492,14 +609,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
                       ];
                       const highlighted = getHighlightedJson(originalJsonA, 'removed/changed', allDiffItems);
                       return (
-                        <EnhancedJsonEditor
-                          value={highlighted.json}
-                          onChange={() => {}}
-                          readOnly={true}
-                          placeholder=""
-                          errorLine={highlighted.errorLines.length > 0 ? highlighted.errorLines : null}
-                          errorMessage={highlighted.errorMessage}
-                        />
+                        <div className="w-full h-full overflow-auto bg-gray-950 text-gray-100 font-mono text-sm p-4" style={{ whiteSpace: 'pre' }} dangerouslySetInnerHTML={{ __html: highlighted.highlightedHtml || highlighted.json }} />
                       );
                     })()}
                   </div>
@@ -519,14 +629,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
                       ];
                       const highlighted = getHighlightedJson(originalJsonB, 'added/changed', allDiffItems);
                       return (
-                        <EnhancedJsonEditor
-                          value={highlighted.json}
-                          onChange={() => {}}
-                          readOnly={true}
-                          placeholder=""
-                          errorLine={highlighted.errorLines.length > 0 ? highlighted.errorLines : null}
-                          errorMessage={highlighted.errorMessage}
-                        />
+                        <div className="w-full h-full overflow-auto bg-gray-950 text-gray-100 font-mono text-sm p-4" style={{ whiteSpace: 'pre' }} dangerouslySetInnerHTML={{ __html: highlighted.highlightedHtml || highlighted.json }} />
                       );
                     })()}
                   </div>
