@@ -23,6 +23,7 @@ export default defineConfig({
         logs: resolve(__dirname, 'logs.html'),
         'har-analyzer': resolve(__dirname, 'har-analyzer.html'),
         'json-utility': resolve(__dirname, 'json-utility.html'),
+        'encoder-decoder': resolve(__dirname, 'public/encoder-decoder.html'),
       },
     },
     copyPublicDir: true,
