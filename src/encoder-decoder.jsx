@@ -302,15 +302,7 @@ const EncoderDecoder = () => {
                       setOutputText('');
                       setError('');
                     }}
-                    className="w-full px-3 sm:px-4 py-2 text-xs sm:text-sm border-[0.5px] border-gray-300 rounded-lg focus:outline-none focus:border-sky-400/60 bg-white text-gray-900"
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                      backgroundPosition: 'right 0.5rem center',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundSize: '1.5em 1.5em',
-                      paddingRight: '2.5rem',
-                      appearance: 'none',
-                    }}
+                    className="w-full px-3 sm:px-4 py-2 text-xs sm:text-sm border-[0.5px] border-gray-300 rounded-lg focus:outline-none focus:border-sky-400/60 bg-white text-gray-900 custom-select"
                   >
                     {ENCODING_TYPES.map(type => (
                       <option key={type.id} value={type.id}>
