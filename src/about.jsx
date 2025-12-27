@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import './styles.css';
 
 const FEATURES = [
@@ -249,43 +250,6 @@ const About = () => {
               </div>
             </div>
 
-            {/* Footer */}
-            <footer className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mt-4">
-              <div className="p-6 sm:p-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 pb-6 border-b border-gray-200">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-3">NowAssist</h3>
-                    <p className="text-sm text-gray-600">
-                      Professional developer utilities for authentication, API testing, and debugging. 
-                      Everything happens in your browser.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-3">Privacy & Security</h3>
-                    <p className="text-sm text-gray-600">
-                      Your data never leaves your browser. All processing is done locally with no external 
-                      server communication. We value your privacy and security.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-3">Open Source</h3>
-                    <p className="text-sm text-gray-600">
-                      Built with open-source technologies. Contributions and feedback are always welcome.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-sm text-gray-600">
-                    © {new Date().getFullYear()} NowAssist. All rights reserved.
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm text-gray-600">Version 0.1.0</span>
-                    <div className="h-4 w-px bg-gray-300"></div>
-                    <span className="text-sm text-gray-600">Made with ❤️ for developers</span>
-                  </div>
-                </div>
-              </div>
-            </footer>
           </div>
         </div>
       </div>

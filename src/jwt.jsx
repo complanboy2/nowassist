@@ -31,6 +31,7 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import clsx from 'clsx';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import './styles.css';
 import { 
   validateJWT, 

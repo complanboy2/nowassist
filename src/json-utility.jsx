@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import './styles.css';
 
 const FEATURES = [
@@ -536,6 +537,7 @@ const JsonUtility = () => {
             )}
           </div>
           </div>
+          <Footer />
         </div>
       </div>
     </div>
