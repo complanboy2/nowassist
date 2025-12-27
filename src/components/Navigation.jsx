@@ -65,7 +65,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
         {sidebarOpen && (
           <div className="flex flex-col h-full overflow-hidden">
             <div className="p-3 lg:p-4 border-b-2 border-slate-200 flex items-center justify-between">
-              <h2 className="text-base lg:text-lg font-bold text-slate-900">Tools</h2>
+              <h2 className="text-base lg:text-lg font-bold text-slate-900">NowAssist Tools</h2>
               <button
                 onClick={() => setSidebarOpen(false)}
                 className="p-1.5 hover:bg-slate-100 rounded-lg transition"
