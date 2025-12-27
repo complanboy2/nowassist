@@ -1770,6 +1770,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           </div>
         </div>
       )}
+        <Footer />
       </div>
     </div>
   );

@@ -249,8 +249,8 @@ const About = () => {
                 </p>
               </div>
             </div>
-
           </div>
+          <Footer />
         </div>
       </div>
     </div>

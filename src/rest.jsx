@@ -952,6 +952,7 @@ ${goHeaders}
               </div>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );
