@@ -18,7 +18,7 @@
     "react",
     "tailwindcss"
   ],
-  "author": "Veera",
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

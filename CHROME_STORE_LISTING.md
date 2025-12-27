@@ -65,6 +65,5 @@ Regular updates with new features, bug fixes, and improvements based on develope
 
 **Version**: 0.1.0  
 **Last Updated**: December 2024  
-**Developer**: Veera  
 **License**: MIT
 
