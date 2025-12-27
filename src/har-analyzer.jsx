@@ -1113,6 +1113,7 @@ const HarAnalyzer = () => {
             </>
           )}
           </div>
+          </div>
         </div>
       </div>
     </div>
