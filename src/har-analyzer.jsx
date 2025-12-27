@@ -1112,12 +1112,6 @@ const HarAnalyzer = () => {
               </div>
             </>
           )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // HAR Entry Row Component
 const HarEntryRow = ({ entry, index, isSelected, onSelect, getStatusColor, formatBytes, formatTime, searchQuery = '' }) => {
