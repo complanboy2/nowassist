@@ -1771,7 +1771,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           </div>
         </div>
       )}
-            </div>
+          </div>
           </div>
         </div>
         <Footer />
