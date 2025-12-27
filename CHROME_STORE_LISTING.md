@@ -64,6 +64,8 @@ Regular updates with new features, bug fixes, and improvements based on develope
 ---
 
 **Version**: 0.1.0  
-**Last Updated**: December 2024  
-**License**: MIT
+**Last Updated**: January 2025  
+**Copyright**: © 2025 NowAssist. All Rights Reserved.  
+**License**: Proprietary License - All Rights Reserved  
+**Privacy Policy**: https://complanboy2.github.io/nowassist/privacy_policy.html
 

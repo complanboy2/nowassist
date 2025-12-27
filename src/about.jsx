@@ -250,6 +250,34 @@ const About = () => {
                 </p>
               </div>
             </div>
+
+            {/* Legal Information Section */}
+            <div className="border border-gray-200 rounded-xl bg-white shadow-sm p-6 sm:p-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Legal Information</h2>
+              <div className="space-y-4 text-sm text-gray-700">
+                <div>
+                  <p className="font-semibold text-gray-900 mb-2">Copyright</p>
+                  <p>© 2025 NowAssist. All Rights Reserved.</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 mb-2">License</p>
+                  <p>This software is proprietary and protected by copyright. Unauthorized copying, modification, distribution, or use is strictly prohibited.</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 mb-2">Privacy Policy</p>
+                  <p>
+                    <a 
+                      href="https://complanboy2.github.io/nowassist/privacy_policy.html" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sky-600 hover:text-sky-700 underline"
+                    >
+                      View Privacy Policy
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
             </div>
           </div>
         </div>
