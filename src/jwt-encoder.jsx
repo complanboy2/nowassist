@@ -1074,6 +1074,7 @@ const JWTEncoder = () => {
           </div>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );
