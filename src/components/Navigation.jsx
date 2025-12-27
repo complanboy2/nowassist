@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info } from 'lucide-react';
 import clsx from 'clsx';
 
 const FEATURES = [
@@ -130,6 +130,28 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                   </div>
                 );
               })}
+              
+              {/* About Link */}
+              <div className="border-t border-gray-200 my-4 lg:my-6"></div>
+              <div>
+                <a
+                  href={chrome.runtime?.getURL ? chrome.runtime.getURL('about.html') : 'about.html'}
+                  onClick={() => {
+                    if (window.innerWidth < 1024) {
+                      setSidebarOpen(false);
+                    }
+                  }}
+                  className={clsx(
+                    'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                    currentPageId === 'about'
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-slate-700 hover:bg-slate-100'
+                  )}
+                >
+                  <Info className="h-4 w-4 flex-shrink-0" />
+                  <span>About</span>
+                </a>
+              </div>
             </div>
           </div>
         )}

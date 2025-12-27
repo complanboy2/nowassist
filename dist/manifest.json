@@ -41,6 +41,7 @@
         "json-utility.html",
         "har-analyzer.html",
         "encoder-decoder.html",
+        "about.html",
         "devtools.html",
         "devtools-panel.html",
         "devtools-panel.js",

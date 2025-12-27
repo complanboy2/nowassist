@@ -24,6 +24,7 @@ export default defineConfig({
         'har-analyzer': resolve(__dirname, 'har-analyzer.html'),
         'json-utility': resolve(__dirname, 'json-utility.html'),
         'encoder-decoder': resolve(__dirname, 'encoder-decoder.html'),
+        about: resolve(__dirname, 'about.html'),
       },
     },
     copyPublicDir: true,
