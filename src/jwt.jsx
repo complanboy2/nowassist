@@ -552,7 +552,7 @@ const useDecoded = (token) =>
     }
   }, [token]);
 
-const CodeSection = ({ title, content, description, onCopy, viewMode, onViewModeChange, theme, statusColor, isHeader = false, payload, targetClaims, getClaimInfo, companyClaimSet, currentCompany, currentTime, calculateTTL }) => {
+const CodeSection = ({ title, content, description, onCopy, viewMode, onViewModeChange, theme, statusColor, isHeader = false, payload, targetClaims, getClaimInfo, companyClaimSet, currentCompany, currentTime, calculateTTL, editable, onContentChange, placeholder }) => {
   const [copied, setCopied] = useState(false);
   const lines = content ? content.split('\n') : ['—'];
   const parsedPayload = viewMode === 'table' && title?.startsWith('Payload:') ? (() => {
@@ -581,7 +581,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
   };
 
   // Fixed height to prevent dynamic changes - Equal heights for Payload and Signature sections
-  const contentHeight = title?.startsWith('Payload:') || title?.startsWith('Signature:') ? '400px' : isHeader ? 'auto' : '280px';
+  const contentHeight = title?.startsWith('Payload:') || title?.startsWith('Signature:') ? 'auto' : isHeader ? 'auto' : '280px';
   const isTableMode = viewMode === 'table' && parsedPayload && title?.startsWith('Payload:');
 
   return (
@@ -641,7 +641,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
               }, 150);
             }}
             className={clsx(
-              'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-2 rounded-lg focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 shadow-sm',
+              'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg focus:outline-none shadow-sm',
               copied 
                 ? 'bg-green-50 border-green-400 text-green-700' 
                 : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
@@ -653,9 +653,9 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
           </button>
         </div>
       </div>
-      <div className={clsx('bg-white', isHeader || isTableMode ? 'overflow-visible' : 'overflow-auto')} style={isHeader || isTableMode ? {} : { height: contentHeight, maxHeight: contentHeight }}>
+      <div className={clsx('bg-white', isHeader || isTableMode ? 'overflow-visible' : 'overflow-auto')} style={isHeader || isTableMode || title?.startsWith('Signature:') ? {} : { height: contentHeight, maxHeight: contentHeight }}>
         {viewMode === 'table' && parsedPayload ? (
-              <div className="p-3 sm:p-4 lg:p-6 w-full overflow-x-auto">
+              <div className="p-3 sm:p-4 lg:p-5 w-full overflow-x-auto">
             <table className="w-full text-xs sm:text-sm">
               <thead>
                 <tr className="border-b-2 border-gray-200">
@@ -673,14 +673,26 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
               </tbody>
             </table>
           </div>
-        ) : title?.startsWith('Signature:') ? (
-          <div className="p-3 sm:p-4 lg:p-6">
-            <pre className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">
-              <code className="font-mono text-gray-800">
-                {content || '—'}
-              </code>
-            </pre>
-          </div>
+        ) : title?.startsWith('Signature:') || (editable && title?.startsWith('Verify Signature:')) ? (
+          editable && title?.startsWith('Verify Signature:') ? (
+            <div className="p-3 sm:p-4">
+              <textarea
+                value={content || ''}
+                onChange={(e) => onContentChange?.(e.target.value)}
+                placeholder={placeholder || ''}
+                className="w-full h-full min-h-[180px] resize-none border-0 bg-transparent px-0 py-0 font-mono text-xs sm:text-sm leading-relaxed text-gray-800 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
+                tabIndex={0}
+              />
+            </div>
+          ) : (
+            <div className="p-3 sm:p-4">
+              <pre className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">
+                <code className="font-mono text-gray-800">
+                  {content || '—'}
+                </code>
+              </pre>
+            </div>
+          )
         ) : (
           <div className="flex bg-white" style={{ flex: '1 1 auto', minHeight: '100%' }}>
             {/* Line Numbers Banner - Left Side */}
@@ -757,30 +769,89 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
 
 const Tooltip = ({ children, content, position = 'top' }) => {
   const [show, setShow] = useState(false);
-  const positionClasses = {
-    top: 'left-1/2 bottom-full mb-2 -translate-x-1/2',
-    left: 'right-full top-1/2 mr-2 -translate-y-1/2',
-    right: 'left-full top-1/2 ml-2 -translate-y-1/2',
-    bottom: 'left-1/2 top-full mt-2 -translate-x-1/2'
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const tooltipRef = useRef(null);
+  const triggerRef = useRef(null);
+
+  const updatePosition = () => {
+    if (triggerRef.current && tooltipRef.current) {
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      let top = 0;
+      let left = 0;
+
+      switch (position) {
+        case 'right':
+          top = triggerRect.top + (triggerRect.height / 2) - (tooltipRect.height / 2);
+          left = triggerRect.right + 8;
+          break;
+        case 'left':
+          top = triggerRect.top + (triggerRect.height / 2) - (tooltipRect.height / 2);
+          left = triggerRect.left - tooltipRect.width - 8;
+          break;
+        case 'bottom':
+          top = triggerRect.bottom + 8;
+          left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+          break;
+        default: // top
+          top = triggerRect.top - tooltipRect.height - 8;
+          left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+      }
+
+      // Keep tooltip within viewport
+      const padding = 8;
+      if (left < padding) left = padding;
+      if (left + tooltipRect.width > window.innerWidth - padding) {
+        left = window.innerWidth - tooltipRect.width - padding;
+      }
+      if (top < padding) top = padding;
+      if (top + tooltipRect.height > window.innerHeight - padding) {
+        top = window.innerHeight - tooltipRect.height - padding;
+      }
+
+      setCoords({ top, left });
+    }
   };
-  const arrowClasses = {
-    top: 'left-1/2 top-full -translate-x-1/2 -mt-1 border-4 border-transparent border-t-white',
-    left: 'left-full top-1/2 -translate-y-1/2 -ml-1 border-4 border-transparent border-r-white',
-    right: 'right-full top-1/2 -translate-y-1/2 -mr-1 border-4 border-transparent border-l-white',
-    bottom: 'left-1/2 bottom-full -translate-x-1/2 -mb-1 border-4 border-transparent border-b-white'
-  };
+
+  useEffect(() => {
+    if (show) {
+      // Use requestAnimationFrame to ensure DOM is updated
+      requestAnimationFrame(() => {
+        updatePosition();
+      });
+      const handleResize = () => {
+        requestAnimationFrame(() => {
+          updatePosition();
+        });
+      };
+      window.addEventListener('resize', handleResize);
+      window.addEventListener('scroll', handleResize, true);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('scroll', handleResize, true);
+      };
+    }
+  }, [show, position]);
+
   return (
-    <div className="relative inline-block">
-      <div onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onFocus={() => setShow(true)} onBlur={() => setShow(false)} className="cursor-help" tabIndex={0}>
-        {children}
+    <>
+      <div className="relative inline-block">
+        <div ref={triggerRef} onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} onFocus={() => setShow(true)} onBlur={() => setShow(false)} className="cursor-help" tabIndex={0}>
+          {children}
+        </div>
       </div>
       {show && (
-        <div className={`absolute ${positionClasses[position]} z-50 w-64 rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-700 shadow-lg`}>
-          {content}
-          <div className={`absolute ${arrowClasses[position]}`} />
-        </div>
+        <>
+          <div
+            ref={tooltipRef}
+            className="fixed z-[9999] w-64 max-w-[calc(100vw-2rem)] rounded-lg bg-gray-900 border border-gray-700 p-3 text-xs text-white shadow-2xl"
+            style={{ top: `${coords.top}px`, left: `${coords.left}px`, pointerEvents: 'auto' }}
+          >
+            {content}
+          </div>
+        </>
       )}
-    </div>
+    </>
   );
 };
 
@@ -805,6 +876,8 @@ const JWTDecoder = () => {
   const [showTimePanelExpanded, setShowTimePanelExpanded] = useState(false); // Collapsed by default
   const [showRedactionExpanded, setShowRedactionExpanded] = useState(false); // Collapsed by default
   const [showComparisonExpanded, setShowComparisonExpanded] = useState(false); // Collapsed by default
+  const [showJWKSExpanded, setShowJWKSExpanded] = useState(false); // Collapsed by default
+
   const [jwksUrl, setJwksUrl] = useState('');
   const [jwks, setJwks] = useState(null);
   const [jwksLoading, setJwksLoading] = useState(false);
@@ -869,6 +942,7 @@ const JWTDecoder = () => {
       textarea.style.height = `${newHeight}px`;
     }
   }, [token]);
+
 
   // Keyboard navigation
   useEffect(() => {
@@ -1106,7 +1180,7 @@ const JWTDecoder = () => {
               </div>
               <div className="relative" ref={companyMenuRef}>
                 <button
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all border border-gray-300 rounded-lg hover:border-sky-400 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-all border-[0.5px] border-gray-300 rounded-lg hover:border-gray-500 hover:bg-gray-50 focus:outline-none focus:outline-none"
                   onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -1168,7 +1242,7 @@ const JWTDecoder = () => {
                           setShowExampleMenu(!showExampleMenu);
                         }
                       }}
-                      className="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow inline-flex items-center gap-2"
+                      className="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow inline-flex items-center gap-2"
                       tabIndex={0}
                     >
                       <RefreshCw className="h-3.5 w-3.5" />
@@ -1221,7 +1295,7 @@ const JWTDecoder = () => {
                         copyText(token);
                       }
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow"
                     tabIndex={0}
                   >
                     <Copy className="h-4 w-4" />
@@ -1235,7 +1309,7 @@ const JWTDecoder = () => {
                         setToken('');
                       }
                     }}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow"
                     tabIndex={0}
                   >
                     <X className="h-3.5 w-3.5" />
@@ -1257,7 +1331,7 @@ const JWTDecoder = () => {
                   e.target.style.height = `${newHeight}px`;
                 }}
                 placeholder="Paste a JWT token here..."
-                className="min-h-[100px] sm:min-h-[120px] max-h-[300px] sm:max-h-[400px] w-full resize-none border border-gray-300 rounded-xl bg-white px-3 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all overflow-y-auto shadow-sm"
+                className="min-h-[100px] sm:min-h-[120px] max-h-[300px] sm:max-h-[400px] w-full resize-none border-[0.5px] border-gray-300 rounded-xl bg-white px-3 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60 overflow-y-auto shadow-sm"
                 style={{ color: 'transparent', caretColor: '#111827', height: 'auto' }}
                 tabIndex={0}
               />
@@ -1390,243 +1464,367 @@ const JWTDecoder = () => {
                 </div>
               )}
               
-              {/* Row 1: Header | Key Claims */}
-              <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 mb-4 sm:mb-6">
-                <CodeSection
-                  title="Header: Signing Algorithms & Token Type"
-                  content={pretty(headerRaw)}
-                  description=""
-                  onCopy={copyText}
-                  viewMode="json"
-                  theme={theme}
-                  statusColor={null}
-                  isHeader={true}
-                />
-                <CodeSection
-                  title="Key Claims: Important JWT Claims"
-                  content={(() => {
-                    const claimsObj = {};
-                    targetClaims.forEach(claim => {
-                      const claimValue = payload?.[claim];
-                      if (claimValue !== undefined && claimValue !== null) {
-                        // Format timestamp claims
-                        if (claim === 'iat' || claim === 'exp' || claim === 'nbf') {
-                          claimsObj[claim] = formatRelativeTime(claimValue, currentTime);
-                        } else if (typeof claimValue === 'object') {
-                          claimsObj[claim] = claimValue;
-                        } else {
-                          claimsObj[claim] = claimValue;
-                        }
-                      }
-                    });
-                    return JSON.stringify(claimsObj, null, 2);
-                  })()}
-                  description=""
-                  onCopy={copyText}
-                  viewMode="json"
-                  theme={theme}
-                  statusColor={null}
-                  isHeader={true}
-                  payload={payload}
-                  targetClaims={targetClaims}
-                  getClaimInfo={getClaimInfo}
-                  companyClaimSet={companyClaimSet}
-                  currentCompany={currentCompany}
-                  currentTime={currentTime}
-                  calculateTTL={calculateTTL}
-                />
-              </div>
+              {/* Two Column Layout: Token Structure | Signature + Verification */}
+              <div className={clsx('grid gap-4 sm:gap-6 mb-4 sm:mb-6 items-stretch', hasSignature ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1')}>
+                {/* Left Column: Unified Token Structure */}
+                <div className={clsx('flex flex-col h-full', !hasSignature && 'lg:col-span-1')}>
+                  <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
+                  {/* Main Header */}
+                  <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900">JWT Token Structure</h3>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
+                        <button
+                          onClick={() => setPayloadViewMode('json')}
+                          className={clsx('px-2 py-1 text-xs font-medium transition-colors rounded', payloadViewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 hover:bg-gray-50')}
+                          tabIndex={0}
+                        >
+                          JSON
+                        </button>
+                        <button
+                          onClick={() => setPayloadViewMode('table')}
+                          className={clsx('px-2 py-1 text-xs font-medium transition-colors rounded inline-flex items-center gap-1', payloadViewMode === 'table' ? 'bg-sky-500 text-white' : 'text-gray-700 hover:bg-gray-50')}
+                          tabIndex={0}
+                        >
+                          <Table className="h-3 w-3" />
+                          <span className="hidden sm:inline">Table</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Row 2: Payload | Signature + Verification - Equal sizes */}
-              <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2 mb-4 sm:mb-6">
-                {/* Left: Payload */}
-                <CodeSection
-                  title="Payload: Claims and User Data"
-                  content={pretty(payloadRaw)}
-                  description=""
-                  onCopy={copyText}
-                  viewMode={payloadViewMode}
-                  onViewModeChange={setPayloadViewMode}
-                  theme={theme}
-                  statusColor={null}
-                />
-                
-                {/* Right: Signature + Verification - Combined in single section */}
+                  {/* Content Area */}
+                  <div className="flex-1 py-3 sm:py-4 lg:py-5 px-4 sm:px-5 lg:px-6 text-xs sm:text-sm leading-relaxed bg-white space-y-4 overflow-y-auto min-h-0">
+                      {/* Header Sub-section */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full" style={{ backgroundColor: theme.primary }} />
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide">Header</h4>
+                          </div>
+                          <button
+                            onClick={async () => {
+                              await copyText(pretty(headerRaw));
+                            }}
+                            className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-500 focus:outline-none shadow-sm"
+                            tabIndex={0}
+                          >
+                            <Copy className="h-3 w-3" />
+                            <span className="hidden sm:inline">Copy</span>
+                          </button>
+                        </div>
+                        <div className="font-mono text-gray-800 whitespace-pre-wrap break-words">
+                          {pretty(headerRaw)}
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-gray-200 my-4" />
+
+                      {/* Payload Sub-section */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full" style={{ backgroundColor: theme.primary }} />
+                            <h4 className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide">Payload</h4>
+                          </div>
+                          <button
+                            onClick={async () => {
+                              await copyText(pretty(payloadRaw));
+                            }}
+                            className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-500 focus:outline-none shadow-sm"
+                            tabIndex={0}
+                          >
+                            <Copy className="h-3 w-3" />
+                            <span className="hidden sm:inline">Copy</span>
+                          </button>
+                        </div>
+                        {payloadViewMode === 'table' && payload ? (
+                          <div className="w-full overflow-x-auto">
+                            <table className="w-full text-xs sm:text-sm border-collapse">
+                              <thead>
+                                <tr className="border-b-2 border-gray-200">
+                                  <th className="px-3 sm:px-4 py-2 text-left font-semibold text-gray-900">Claim</th>
+                                  <th className="px-3 sm:px-4 py-2 text-left font-semibold text-gray-900">Value</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {Object.entries(payload).map(([key, value]) => {
+                                  const claimInfo = targetClaims.includes(key) ? getClaimInfo(key) : null;
+                                  const hasCompanyBadge = companyClaimSet?.has(key) || false;
+                                  const isTimeClaim = key === 'iat' || key === 'exp' || key === 'nbf';
+                                  const displayValue = isTimeClaim ? formatRelativeTime(value, currentTime) : (typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value));
+                                  
+                                  return (
+                                    <tr key={key} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                      <td className="px-3 sm:px-4 py-2 font-mono text-gray-700 text-xs sm:text-sm">
+                                        <div className="flex items-center gap-1.5">
+                                          <span>{key}</span>
+                                          {hasCompanyBadge && (
+                                            <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white flex-shrink-0" style={{ backgroundColor: theme.badgeBg }}>
+                                              {currentCompany === 'servicenow' ? 'SN' : 'SF'}
+                                            </span>
+                                          )}
+                                          {claimInfo && (
+                                            <Tooltip
+                                              content={
+                                                <div className="max-w-sm">
+                                                  <p className="font-semibold mb-1.5 text-sm text-white">{claimInfo.name}</p>
+                                                  <p className="text-xs text-gray-300 leading-relaxed mb-2">{claimInfo.description}</p>
+                                                  {claimInfo.example && (
+                                                    <div className="mt-2 pt-2 border-t border-gray-600">
+                                                      <p className="text-xs text-gray-400 mb-1">Example:</p>
+                                                      <code className="text-xs text-gray-300 font-mono">{claimInfo.example}</code>
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              }
+                                              position="right"
+                                            >
+                                              <Info className="h-3.5 w-3.5 text-gray-500 hover:text-sky-600 cursor-help flex-shrink-0 transition-colors" />
+                                            </Tooltip>
+                                          )}
+                                        </div>
+                                      </td>
+                                      <td className="px-3 sm:px-4 py-2 text-gray-900 text-xs sm:text-sm break-words">{displayValue}</td>
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <div className="font-mono text-gray-800 whitespace-pre-wrap break-words">
+                            {pretty(payloadRaw).split('\n').map((line, index) => {
+                              const claimMatch = line.match(/^\s*"([^"]+)":\s*(.+)/);
+                              let claimInfo = null;
+                              let hasCompanyBadge = false;
+                              if (claimMatch && targetClaims.includes(claimMatch[1])) {
+                                const claimName = claimMatch[1];
+                                claimInfo = getClaimInfo(claimName);
+                                hasCompanyBadge = companyClaimSet?.has(claimName) || false;
+                              }
+                              
+                              if (claimInfo || hasCompanyBadge) {
+                                const colonIndex = line.indexOf(':');
+                                if (colonIndex !== -1) {
+                                  const keyPart = line.substring(0, colonIndex + 1);
+                                  const valuePart = line.substring(colonIndex + 1).trim();
+                                  return (
+                                    <div key={index} className="flex items-center gap-2" style={{ minHeight: '18px' }}>
+                                      <span className="text-gray-900 whitespace-pre">{keyPart}</span>
+                                      <span className="text-gray-900 whitespace-pre">{valuePart}</span>
+                                      {hasCompanyBadge && (
+                                        <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white flex-shrink-0" style={{ backgroundColor: theme.badgeBg }}>
+                                          {currentCompany === 'servicenow' ? 'SN' : 'SF'}
+                                        </span>
+                                      )}
+                                      {claimInfo && (
+                                        <Tooltip
+                                          content={
+                                            <div className="max-w-sm">
+                                              <p className="font-semibold mb-1.5 text-sm text-white">{claimInfo.name}</p>
+                                              <p className="text-xs text-gray-300 leading-relaxed mb-2">{claimInfo.description}</p>
+                                              {claimInfo.example && (
+                                                <div className="mt-2 pt-2 border-t border-gray-600">
+                                                  <p className="text-xs text-gray-400 mb-1">Example:</p>
+                                                  <code className="text-xs text-gray-300 font-mono">{claimInfo.example}</code>
+                                                </div>
+                                              )}
+                                            </div>
+                                          }
+                                          position="right"
+                                        >
+                                          <Info className="h-3.5 w-3.5 text-gray-500 hover:text-sky-600 cursor-help flex-shrink-0 transition-colors" />
+                                        </Tooltip>
+                                      )}
+                                    </div>
+                                  );
+                                }
+                              }
+                              return <div key={index} style={{ minHeight: '18px' }}>{line}</div>;
+                            })}
+                          </div>
+                        )}
+                      </div>
+                  </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Signature + Verification */}
                 {hasSignature && (
                   <div className="flex flex-col h-full">
                     {/* Signature - Compact */}
-                    <CodeSection
-                      title="Signature: Cryptographic Signature"
-                      content={signature}
-                      description=""
-                      onCopy={copyText}
-                      viewMode="json"
-                      theme={theme}
-                      statusColor={verificationResult?.verified === false ? getStatusColor('error') : null}
-                      isHeader={true}
-                    />
+                    <div className="flex-shrink-0">
+                      <CodeSection
+                        title="Signature: Cryptographic Signature"
+                        content={signature}
+                        description=""
+                        onCopy={copyText}
+                        viewMode="json"
+                        theme={theme}
+                        statusColor={verificationResult?.verified === false ? getStatusColor('error') : null}
+                        isHeader={true}
+                      />
+                    </div>
                     
-                    {/* Signature Verification - Professional Box */}
-                    <div className="mt-4 sm:mt-6 bg-white border border-gray-200 rounded-xl shadow-sm">
-                      <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-3.5 border-b border-gray-200">
-                        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                          <span className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide">Verify Signature</span>
+                    {/* Signature Verification - Using CodeSection Pattern */}
+                    <div className="mt-4 sm:mt-6 flex flex-col flex-1 min-h-0 border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+                      <div className="flex-1 min-h-0 [&>div]:border-0 [&>div]:rounded-none [&>div]:shadow-none">
+                        <CodeSection
+                          title={`Verify Signature: ${isHMAC ? 'Secret Key' : 'Public Key'}`}
+                          content={isHMAC ? secret : publicKey || ''}
+                          description=""
+                          onCopy={copyText}
+                          viewMode="json"
+                          theme={theme}
+                          statusColor={verificationResult?.verified === false ? getStatusColor('error') : verificationResult?.verified === true ? null : null}
+                          isHeader={true}
+                          editable={true}
+                          onContentChange={(value) => {
+                            if (isHMAC) {
+                              setSecret(value);
+                            } else {
+                              setPublicKey(value);
+                            }
+                            setVerificationResult(null);
+                          }}
+                          placeholder={isHMAC ? 'Enter the secret used to sign the JWT' : keyFormat === 'PEM' ? '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END PUBLIC KEY-----' : '{\n  "kty": "RSA",\n  "n": "...",\n  "e": "AQAB"\n}'}
+                        />
+                      </div>
+                      {/* Bottom Banner with Options - Attached */}
+                      <div className="flex items-center justify-between bg-gray-50 border-t border-gray-200 px-3 sm:px-4 py-2 sm:py-2.5">
+                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                          <label className="text-xs sm:text-sm font-medium text-gray-700">
+                            {isHMAC ? 'Secret' : 'Public Key'} Format
+                          </label>
                           {!isHMAC && (
-                            <Tooltip
-                              content={
-                                <div className="max-w-xs">
-                                  <p className="font-semibold mb-1 text-sm text-white">Supported Algorithms</p>
-                                  <p className="text-xs text-gray-300 leading-relaxed">
-                                    RSA: RS256, RS384, RS512 | ECDSA: ES256, ES384, ES512. Paste your public key in PEM or JWK format, or upload a file.
-                                  </p>
-                                </div>
-                              }
-                              position="bottom"
-                            >
-                              <Info className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-gray-400 hover:text-gray-600 cursor-help flex-shrink-0" />
-                            </Tooltip>
+                            <div className="relative" ref={keyFormatMenuRef}>
+                              <button
+                                type="button"
+                                onClick={() => setKeyFormatMenuOpen(!keyFormatMenuOpen)}
+                                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm font-medium text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none transition-all shadow-sm"
+                                tabIndex={0}
+                              >
+                                <span>{keyFormat}</span>
+                                <ChevronDown className={clsx('h-3.5 w-3.5 text-gray-500 transition-transform duration-200', keyFormatMenuOpen && 'rotate-180')} />
+                              </button>
+                              {keyFormatMenuOpen && (
+                                <>
+                                  <div className="fixed inset-0 z-[49]" onClick={() => setKeyFormatMenuOpen(false)} />
+                                  <div className="absolute left-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-xl z-[100] overflow-hidden">
+                                    <button
+                                      onClick={() => {
+                                        setKeyFormat('PEM');
+                                        setPublicKey('');
+                                        setVerificationResult(null);
+                                        setKeyFormatMenuOpen(false);
+                                      }}
+                                      className={clsx('w-full px-3 py-2 text-left text-xs sm:text-sm transition-colors focus:outline-none border-b border-gray-100 last:border-b-0', keyFormat === 'PEM' ? 'bg-sky-50 text-sky-600 font-medium' : 'text-gray-700 hover:bg-gray-50')}
+                                      tabIndex={0}
+                                    >
+                                      PEM
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        setKeyFormat('JWK');
+                                        setPublicKey('');
+                                        setVerificationResult(null);
+                                        setKeyFormatMenuOpen(false);
+                                      }}
+                                      className={clsx('w-full px-3 py-2 text-left text-xs sm:text-sm transition-colors focus:outline-none border-b border-gray-100 last:border-b-0', keyFormat === 'JWK' ? 'bg-sky-50 text-sky-600 font-medium' : 'text-gray-700 hover:bg-gray-50')}
+                                      tabIndex={0}
+                                    >
+                                      JWK
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+                            </div>
                           )}
+                          {!isHMAC && (
+                            <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 cursor-pointer transition-all focus-within:outline-none shadow-sm">
+                              <Upload className="h-3.5 w-3.5" />
+                              Upload
+                              <input type="file" accept=".pem,.key,.crt,.pub,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
+                            </label>
+                          )}
+                          {(publicKey || secret) && (
+                            <button
+                              onClick={() => {
+                                setPublicKey('');
+                                setSecret('');
+                                setVerificationResult(null);
+                              }}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none transition-all shadow-sm hover:shadow"
+                              tabIndex={0}
+                            >
+                              <X className="h-3.5 w-3.5" />
+                              Clear
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
                           {verificationResult && (
-                            <div className={clsx('ml-1 sm:ml-2 flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-0.5 rounded text-xs font-medium flex-shrink-0', verificationResult.verified ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700')}>
+                            <div className={clsx('flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-0.5 rounded text-xs font-medium flex-shrink-0', verificationResult.verified ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700')}>
                               {verificationResult.verified ? <CheckCircle2 className="h-3 sm:h-3.5 w-3 sm:w-3.5" /> : <X className="h-3 sm:h-3.5 w-3 sm:w-3.5" />}
                               <span className="hidden sm:inline">{verificationResult.verified ? 'Verified' : 'Failed'}</span>
                             </div>
                           )}
+                          <button
+                            onClick={handleVerify}
+                            disabled={!token || (!isHMAC && !publicKey) || (isHMAC && !secret) || isVerifying}
+                            className="px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 shadow-sm hover:shadow"
+                            tabIndex={0}
+                          >
+                            {isVerifying ? 'Verifying...' : 'Verify Signature'}
+                          </button>
                         </div>
-                        <button
-                          onClick={() => setShowVerification(!showVerification)}
-                          className="flex-shrink-0 p-1 text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
-                          tabIndex={0}
-                          aria-label={showVerification ? 'Collapse' : 'Expand'}
-                        >
-                          {showVerification ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                        </button>
                       </div>
-                      {showVerification && (
-                        <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-                          <div>
-                            <textarea
-                              value={isHMAC ? secret : publicKey}
-                              onChange={(e) => {
-                                if (isHMAC) {
-                                  setSecret(e.target.value);
-                                } else {
-                                  setPublicKey(e.target.value);
-                                }
-                                setVerificationResult(null);
-                              }}
-                              placeholder={isHMAC ? 'Enter the secret used to sign the JWT' : keyFormat === 'PEM' ? '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END PUBLIC KEY-----' : '{\n  "kty": "RSA",\n  "n": "...",\n  "e": "AQAB"\n}'}
-                              className="w-full h-32 resize-none border border-gray-300 rounded-lg bg-gray-50 px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
-                              tabIndex={0}
-                            />
+                      {verificationResult && !verificationResult.verified && (
+                        <div className="mt-2 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-red-700 font-medium">
+                            <X className="h-3.5 w-3.5 flex-shrink-0" />
+                            <span>{verificationResult.error || 'Signature verification failed'}</span>
                           </div>
-                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                            <button
-                              onClick={handleVerify}
-                              disabled={!token || (!isHMAC && !publicKey) || (isHMAC && !secret) || isVerifying}
-                              className="px-5 py-2.5 text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 shadow-sm hover:shadow"
-                              tabIndex={0}
-                            >
-                              {isVerifying ? 'Verifying...' : 'Verify Signature'}
-                            </button>
-                            <div className="flex items-center gap-2 ml-auto">
-                              {!isHMAC && (
-                                <>
-                                  <label className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 cursor-pointer transition-all focus-within:outline-none focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-1 shadow-sm hover:shadow">
-                                    <Upload className="h-4 w-4" />
-                                    Upload
-                                    <input type="file" accept=".pem,.key,.crt,.pub,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
-                                  </label>
-                                  <div className="relative" ref={keyFormatMenuRef}>
-                                    <button
-                                      type="button"
-                                      onClick={() => setKeyFormatMenuOpen(!keyFormatMenuOpen)}
-                                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
-                                      tabIndex={0}
-                                    >
-                                      <span>{keyFormat}</span>
-                                      <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200', keyFormatMenuOpen && 'rotate-180')} />
-                                    </button>
-                                    {keyFormatMenuOpen && (
-                                      <>
-                                        <div className="fixed inset-0 z-[49]" onClick={() => setKeyFormatMenuOpen(false)} />
-                                        <div className="absolute right-0 top-full mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-xl z-[100] overflow-hidden">
-                                          <button
-                                            onClick={() => {
-                                              setKeyFormat('PEM');
-                                              setPublicKey('');
-                                              setVerificationResult(null);
-                                              setKeyFormatMenuOpen(false);
-                                            }}
-                                            className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors focus:outline-none border-b border-gray-100 last:border-b-0', keyFormat === 'PEM' ? 'bg-sky-50 text-sky-600 font-medium' : 'text-gray-700 hover:bg-gray-50')}
-                                            tabIndex={0}
-                                          >
-                                            PEM
-                                          </button>
-                                          <button
-                                            onClick={() => {
-                                              setKeyFormat('JWK');
-                                              setPublicKey('');
-                                              setVerificationResult(null);
-                                              setKeyFormatMenuOpen(false);
-                                            }}
-                                            className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors focus:outline-none border-b border-gray-100 last:border-b-0', keyFormat === 'JWK' ? 'bg-sky-50 text-sky-600 font-medium' : 'text-gray-700 hover:bg-gray-50')}
-                                            tabIndex={0}
-                                          >
-                                            JWK
-                                          </button>
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
-                                </>
-                              )}
-                              {(publicKey || secret) && (
-                                <button
-                                  onClick={() => {
-                                    setPublicKey('');
-                                    setSecret('');
-                                    setVerificationResult(null);
-                                  }}
-                                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1 transition-all shadow-sm hover:shadow"
-                                  tabIndex={0}
-                                >
-                                  <X className="h-4 w-4" />
-                                  Clear
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                          {verificationResult && !verificationResult.verified && (
-                            <div className="bg-red-50 border border-red-200 px-5 py-3 rounded-lg">
-                              <div className="flex items-center gap-3 text-sm text-red-700 font-medium">
-                                <X className="h-5 w-5 flex-shrink-0" />
-                                <span>{verificationResult.error || 'Signature verification failed'}</span>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       )}
                     </div>
                   </div>
-                )}
+              )}
               </div>
 
               {/* JWKS Panel */}
               {!isHMAC && (
-                <div className="mb-4 sm:mb-6 bg-white border border-gray-200 rounded-xl shadow-sm px-4 sm:px-6 py-4 sm:py-6">
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-gray-200">
-                    <Key className="h-4 sm:h-5 w-4 sm:w-5 text-gray-600 flex-shrink-0" />
-                    <span className="text-sm sm:text-base font-semibold text-gray-900">JWKS (JSON Web Key Set)</span>
+                <div className="mb-4 sm:mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                  <div 
+                    className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
+                    onClick={() => setShowJWKSExpanded(!showJWKSExpanded)}
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <Key className="h-4 sm:h-5 w-4 sm:w-5 text-gray-600 flex-shrink-0" />
+                      <span className="text-sm sm:text-base font-semibold text-gray-900">JWKS (JSON Web Key Set)</span>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowJWKSExpanded(!showJWKSExpanded);
+                      }}
+                      className="p-1 text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
+                      tabIndex={0}
+                    >
+                      {showJWKSExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    </button>
                   </div>
-                  <div className="space-y-4">
+                  {showJWKSExpanded && (
+                    <div className="p-4 sm:px-6 sm:py-4 space-y-4">
                     <div className="flex items-center gap-2">
                       <input
                         type="url"
                         value={jwksUrl}
                         onChange={(e) => setJwksUrl(e.target.value)}
                         placeholder="https://example.com/.well-known/jwks.json"
-                          className="flex-1 border border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
+                          className="flex-1 border-[0.5px] border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             handleFetchJWKS();
@@ -1662,7 +1860,7 @@ const JWTDecoder = () => {
                         <select
                           value={selectedKeyId}
                           onChange={(e) => setSelectedKeyId(e.target.value)}
-                          className="w-full border border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all cursor-pointer hover:bg-gray-50"
+                          className="w-full border-[0.5px] border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50"
                         >
                           <option value="">-- Select a key --</option>
                           {jwks.keys.map((key, index) => (
@@ -1676,7 +1874,8 @@ const JWTDecoder = () => {
                         </p>
                       </div>
                     )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -1721,7 +1920,7 @@ const JWTDecoder = () => {
                           const time = new Date(e.target.value).getTime();
                           setSimulatedTime(time);
                         }}
-                        className="border border-gray-300 rounded bg-white px-3 py-1.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                        className="border-[0.5px] border-gray-300 rounded bg-white px-3 py-1.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60"
                       />
                       <button
                         onClick={() => {
@@ -1744,8 +1943,12 @@ const JWTDecoder = () => {
                     </div>
                     {payload?.exp && (
                       <div className="pt-3 border-t border-gray-100">
-                        <p className="text-sm text-gray-600">
-                          Token {payload.exp * 1000 < currentTime ? 'expired' : 'valid'} at simulated time
+                        <p className="text-sm">
+                          <span className="text-gray-600">Token </span>
+                          <span className={clsx('font-semibold', payload.exp * 1000 < currentTime ? 'text-red-600' : 'text-green-600')}>
+                            {payload.exp * 1000 < currentTime ? 'expired' : 'valid'}
+                          </span>
+                          <span className="text-gray-600"> at simulated time</span>
                         </p>
                       </div>
                     )}
@@ -1810,7 +2013,7 @@ const JWTDecoder = () => {
                         <textarea
                           value={redactedToken}
                           readOnly
-                          className="w-full h-24 resize-none border border-gray-300 rounded bg-gray-50 px-3 py-2 font-mono text-xs text-gray-700"
+                          className="w-full h-24 resize-none border-[0.5px] border-gray-300 rounded bg-gray-50 px-3 py-2 font-mono text-xs text-gray-700 focus:outline-none focus:border-sky-400/60"
                         />
                         <button
                           onClick={() => copyText(redactedToken)}
@@ -1863,7 +2066,7 @@ const JWTDecoder = () => {
                         value={comparisonToken}
                         onChange={(e) => setComparisonToken(e.target.value)}
                         placeholder="Paste the second JWT token to compare"
-                        className="w-full h-32 resize-none border border-gray-300 rounded bg-white px-3 py-2 font-mono text-sm text-gray-900 placeholder:text-gray-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
+                        className="w-full h-32 resize-none border-[0.5px] border-gray-300 rounded bg-white px-3 py-2 font-mono text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60"
                       />
                     </div>
                     <button
