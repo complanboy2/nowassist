@@ -495,6 +495,7 @@ const EncoderDecoder = () => {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
         <Footer />
