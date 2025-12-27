@@ -180,8 +180,9 @@ const JsonUtility = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
-        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 flex-1 flex flex-col">
-          <div className="space-y-4 sm:space-y-6">
+        <div className="flex-1 flex flex-col">
+          <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 flex-1">
+            <div className="space-y-4 sm:space-y-6">
           {/* Professional Header with Border */}
           <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
