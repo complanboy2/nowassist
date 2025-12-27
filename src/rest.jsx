@@ -201,7 +201,24 @@ const RestTester = () => {
   }, [methodMenuOpen, authTypeMenuOpen, historyOpen, codeLangMenuOpen]);
 
   const sendRequest = async () => {
-    if (!url.trim()) return;
+    if (!url.trim()) {
+      setResponse({
+        error: 'Please enter a valid URL',
+        ok: false,
+      });
+      return;
+    }
+
+    // Basic URL validation
+    try {
+      new URL(url);
+    } catch {
+      setResponse({
+        error: 'Invalid URL format. Please enter a valid URL (e.g., https://example.com/api)',
+        ok: false,
+      });
+      return;
+    }
 
     setLoading(true);
     setResponse(null);
