@@ -537,7 +537,6 @@ const JsonUtility = () => {
               </div>
             )}
             </div>
-            </div>
           </div>
         </div>
         <Footer />
