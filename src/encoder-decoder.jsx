@@ -420,7 +420,7 @@ const EncoderDecoder = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Input Panel */}
               <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col">
-                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                <div className="flex items-center justify-between bg-gray-50 px-4 py-2.5 border-b border-gray-200">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full bg-gray-400 flex-shrink-0"></div>
                     <h2 className="text-sm sm:text-base font-semibold text-gray-900">Input</h2>
@@ -458,7 +458,7 @@ const EncoderDecoder = () => {
 
               {/* Output Panel */}
               <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col">
-                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                <div className="flex items-center justify-between bg-gray-50 px-4 py-2.5 border-b border-gray-200">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full bg-gray-400 flex-shrink-0"></div>
                     <h2 className="text-sm sm:text-base font-semibold text-gray-900">Output</h2>
