@@ -87,9 +87,21 @@ See `CHROME_STORE_LISTING.md` for the full detailed description.
 
 #### Privacy Policy URL (Required)
 ```
-(Your hosted privacy policy URL - see HOSTING_PRIVACY_POLICY.md for instructions)
-Example: https://username.github.io/repo-name/privacy-policy.html
+https://complanboy2.github.io/nowassist/privacy_policy.html
 ```
+
+#### Additional Store Listing Information
+
+**Copyright Notice:**
+© 2025 NowAssist. All Rights Reserved.
+
+**License:**
+Proprietary License - All Rights Reserved. Unauthorized copying, modification, distribution, or use is strictly prohibited.
+
+**Legal Information:**
+- License: Proprietary (All Rights Reserved)
+- Copyright: © 2025 NowAssist
+- Privacy Policy: https://complanboy2.github.io/nowassist/privacy_policy.html
 
 ---
 
