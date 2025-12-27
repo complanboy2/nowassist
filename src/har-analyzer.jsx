@@ -645,7 +645,8 @@ const HarAnalyzer = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden flex flex-col" style={{ width: '100%', minWidth: 0 }}>
-        <div className="mx-auto max-w-[1400px] w-full px-6 py-8 flex-1 flex flex-col min-h-0 bg-white">
+        <div className="flex-1 flex flex-col min-h-0 bg-white">
+          <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 flex-1">
           {/* Clean Header */}
           <header className="pb-4 border-b border-gray-200 mb-4">
             <h1 className="text-2xl font-semibold text-gray-900 mb-1">HAR Analyzer</h1>
@@ -1770,6 +1771,8 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           </div>
         </div>
       )}
+          </div>
+        </div>
         <Footer />
       </div>
     </div>

@@ -1071,7 +1071,7 @@ const JWTEncoder = () => {
                   <span className="font-medium text-gray-900">JWT generated successfully</span>
                 </div>
               </div>
-          </div>
+            </div>
           </div>
         </div>
         <Footer />

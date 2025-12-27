@@ -288,8 +288,9 @@ const EncoderDecoder = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
-        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex-1 flex flex-col">
-          <div className="space-y-3 sm:space-y-4 flex-1">
+        <div className="flex-1 flex flex-col">
+          <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex-1">
+            <div className="space-y-3 sm:space-y-4">
             {/* Compact Header */}
             <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Encoder/Decoder</h1>
@@ -495,8 +496,8 @@ const EncoderDecoder = () => {
               </div>
             </div>
           </div>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </div>
   );
