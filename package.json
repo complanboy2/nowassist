@@ -19,7 +19,7 @@
     "tailwindcss"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "PROPRIETARY",
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "jsoneditor": "^10.4.1",

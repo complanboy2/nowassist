@@ -2,7 +2,7 @@
 
 ## Copyright Notice
 
-**Copyright © 2024 NowAssist. All Rights Reserved.**
+**Copyright © 2025 NowAssist. All Rights Reserved.**
 
 This software and associated documentation files (the "Software") are the exclusive property of the developers of NowAssist.
 

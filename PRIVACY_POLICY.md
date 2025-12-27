@@ -1,6 +1,6 @@
 # Privacy Policy for NowAssist Chrome Extension
 
-**Last Updated**: December 27, 2024
+**Last Updated**: January 2025
 
 ## Introduction
 
