@@ -244,7 +244,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
   // Generate highlighted JSON with inline highlighting for differences
   const getHighlightedJson = (jsonString, diffType, diffItems) => {
     if (!highlightDiff || !diffItems || diffItems.length === 0) {
-      return { json: jsonString, errorLines: [], errorMessage: null, highlightedJson: jsonString };
+      return { json: jsonString, errorLines: [], errorMessage: null, highlightedHtml: jsonString };
     }
 
     try {
@@ -255,35 +255,48 @@ const JsonDiff = ({ onOutputUpdate }) => {
       // Find all error lines
       const errorLinesArray = findLinesForDiffItems(formattedJson, diffItems);
       
-      // Create inline highlighted version
-      let highlightedJson = formattedJson;
-      const lines = formattedJson.split('\n');
+      // First, get Prism syntax highlighting
+      let highlightedHtml = highlight(formattedJson, languages.json, 'json');
       
       // Color mapping based on diff type
       const getHighlightColor = (type) => {
-        if (diffType.includes('added') || diffType.includes('added/changed')) return 'rgba(34, 197, 94, 0.3)'; // green
-        if (diffType.includes('removed') || diffType.includes('removed/changed')) return 'rgba(239, 68, 68, 0.3)'; // red
-        return 'rgba(251, 191, 36, 0.3)'; // yellow for changed
+        if (diffType.includes('added') || diffType.includes('added/changed')) return 'rgba(34, 197, 94, 0.4)'; // green
+        if (diffType.includes('removed') || diffType.includes('removed/changed')) return 'rgba(239, 68, 68, 0.4)'; // red
+        return 'rgba(251, 191, 36, 0.4)'; // yellow for changed
       };
       
       const highlightColor = getHighlightColor(diffType);
+      const borderColor = diffType.includes('added') || diffType.includes('added/changed') 
+        ? '#22c55e' 
+        : diffType.includes('removed') || diffType.includes('removed/changed')
+        ? '#ef4444'
+        : '#fbbf24';
       
       // For each diff item, find and highlight the value in the JSON
+      // We need to find the value after the key in the formatted JSON
       diffItems.forEach(item => {
         const valueToHighlight = item.value !== undefined ? item.value : (item.oldValue !== undefined ? item.oldValue : item.newValue);
         if (valueToHighlight === undefined || valueToHighlight === null) return;
         
+        // Convert value to string representation as it appears in JSON
         let valueStr = typeof valueToHighlight === 'object' 
-          ? JSON.stringify(valueToHighlight, null, 2)
+          ? JSON.stringify(valueToHighlight)
+          : typeof valueToHighlight === 'string'
+          ? `"${valueToHighlight}"`
           : String(valueToHighlight);
         
-        // Escape special regex characters
-        valueStr = valueStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // Find the path key first, then highlight the value after it
+        const cleanPath = item.path.startsWith('$.') ? item.path.substring(2) : item.path;
+        const parts = cleanPath.split('.');
+        const lastKey = parts[parts.length - 1].replace(/\[\d+\]$/, '');
+        const escapedKey = lastKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
-        // Find and wrap the value with highlight
-        const regex = new RegExp(`(${valueStr})`, 'g');
-        highlightedJson = highlightedJson.replace(regex, (match) => {
-          return `<span style="background-color: ${highlightColor}; padding: 2px 4px; border-radius: 2px;">${match}</span>`;
+        // Pattern to find key and its value
+        const keyValuePattern = new RegExp(`("${escapedKey}"\\s*:\\s*)(${valueStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'g');
+        
+        highlightedHtml = highlightedHtml.replace(keyValuePattern, (match, keyPart, valuePart) => {
+          // Wrap only the value part
+          return `${keyPart}<span style="background-color: ${highlightColor}; border: 1px solid ${borderColor}; border-radius: 3px; padding: 1px 3px; font-weight: 500;">${valuePart}</span>`;
         });
       });
       
@@ -297,7 +310,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
         errorLines: errorLinesArray,
         errorLine: errorLinesArray.length > 0 ? errorLinesArray : null,
         errorMessage: message,
-        highlightedJson: highlightedJson
+        highlightedHtml: highlightedHtml
       };
     } catch (e) {
       // Fallback to simple key matching
@@ -333,7 +346,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
         errorMessage: errorLinesArray.length > 0 
           ? `${diffItems.length} differences detected (lines: ${errorLinesArray.join(', ')})`
           : `${diffItems.length} differences detected`,
-        highlightedJson: jsonString
+        highlightedHtml: jsonString
       };
     }
   };
