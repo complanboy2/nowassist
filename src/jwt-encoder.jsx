@@ -475,9 +475,9 @@ const JWTEncoder = () => {
     
     const examplePayload = {
       ...DEFAULT_PAYLOAD,
-      sub: selectedCompany === 'servicenow' ? 'veera@servicenow.com' : 'veera@salesforce.com',
-      name: 'Veera Solutions',
-      user_name: selectedCompany === 'servicenow' ? 'veera.solutions' : undefined,
+      sub: selectedCompany === 'servicenow' ? 'user@example.com' : 'user@example.com',
+      name: 'John Doe',
+      user_name: selectedCompany === 'servicenow' ? 'john.doe' : undefined,
       sys_id: selectedCompany === 'servicenow' ? 'a12b34c' : undefined,
       organization_id: selectedCompany === 'salesforce' ? '00D123456789' : undefined,
     };
