@@ -12,6 +12,7 @@ import {
   Key,
   ListChecks,
   Network,
+  RefreshCw,
   Search,
   ShieldCheck,
   Table,
@@ -87,7 +88,10 @@ const signJWT = async (header, payload, algorithm, key, keyFormat) => {
 
     let signature;
 
-    if (algorithm.startsWith('HS')) {
+    if (algorithm === 'none') {
+      // Unsigned JWT
+      signature = '';
+    } else if (algorithm.startsWith('HS')) {
       // HMAC signing
       const encoder = new TextEncoder();
       const keyData = encoder.encode(key);
@@ -177,7 +181,7 @@ const signJWT = async (header, payload, algorithm, key, keyFormat) => {
       return { error: `Algorithm ${algorithm} not supported` };
     }
 
-    const token = `${message}.${signature}`;
+    const token = algorithm === 'none' ? `${message}.` : `${message}.${signature}`;
     return { token, error: null };
   } catch (err) {
     return { token: null, error: err.message || 'Signing error' };
@@ -185,7 +189,7 @@ const signJWT = async (header, payload, algorithm, key, keyFormat) => {
 };
 
 const DEFAULT_HEADER = {
-  alg: 'HS256',
+  alg: 'none',
   typ: 'JWT',
 };
 
@@ -194,6 +198,62 @@ const DEFAULT_PAYLOAD = {
   name: 'John Doe',
   iat: Math.floor(Date.now() / 1000),
   exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour
+};
+
+// Generate random secret for HMAC
+const generateRandomSecret = (length = 32) => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+};
+
+// Generate key pair for RSA/ECDSA and export private key
+const generateKeyPairForExample = async (algorithm) => {
+  try {
+    if (algorithm.startsWith('RS')) {
+      const hashAlg = algorithm === 'RS256' ? 'SHA-256' : algorithm === 'RS384' ? 'SHA-384' : 'SHA-512';
+      const keyPair = await crypto.subtle.generateKey(
+        {
+          name: 'RSASSA-PKCS1-v1_5',
+          modulusLength: 2048,
+          publicExponent: new Uint8Array([1, 0, 1]),
+          hash: hashAlg,
+        },
+        true,
+        ['sign', 'verify']
+      );
+      
+      // Export private key in PKCS#8 format and convert to PEM
+      const privateKeyData = await crypto.subtle.exportKey('pkcs8', keyPair.privateKey);
+      const privateKeyBase64 = btoa(String.fromCharCode(...new Uint8Array(privateKeyData)));
+      const pem = `-----BEGIN PRIVATE KEY-----\n${privateKeyBase64.match(/.{1,64}/g).join('\n')}\n-----END PRIVATE KEY-----`;
+      return pem;
+    } else if (algorithm.startsWith('ES')) {
+      const hashAlg = algorithm === 'ES256' ? 'SHA-256' : algorithm === 'ES384' ? 'SHA-384' : 'SHA-512';
+      const namedCurve = algorithm === 'ES256' ? 'P-256' : algorithm === 'ES384' ? 'P-384' : 'P-521';
+      const keyPair = await crypto.subtle.generateKey(
+        {
+          name: 'ECDSA',
+          namedCurve: namedCurve,
+        },
+        true,
+        ['sign', 'verify']
+      );
+      
+      // Export private key in PKCS#8 format and convert to PEM
+      const privateKeyData = await crypto.subtle.exportKey('pkcs8', keyPair.privateKey);
+      const privateKeyBase64 = btoa(String.fromCharCode(...new Uint8Array(privateKeyData)));
+      const pem = `-----BEGIN PRIVATE KEY-----\n${privateKeyBase64.match(/.{1,64}/g).join('\n')}\n-----END PRIVATE KEY-----`;
+      return pem;
+    }
+    return null;
+  } catch (err) {
+    console.error('Error generating key pair:', err);
+    return null;
+  }
 };
 
 const CodeSection = ({ title, content, description, onCopy, theme }) => {
@@ -256,7 +316,7 @@ const CodeSection = ({ title, content, description, onCopy, theme }) => {
 const JWTEncoder = () => {
   const [headerJson, setHeaderJson] = useState(JSON.stringify(DEFAULT_HEADER, null, 2));
   const [payloadJson, setPayloadJson] = useState(JSON.stringify(DEFAULT_PAYLOAD, null, 2));
-  const [algorithm, setAlgorithm] = useState('HS256');
+  const [algorithm, setAlgorithm] = useState('none');
   const [key, setKey] = useState('');
   const [keyFormat, setKeyFormat] = useState('PEM');
   const [encodedToken, setEncodedToken] = useState('');
@@ -266,13 +326,26 @@ const JWTEncoder = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [companyMenuOpen, setCompanyMenuOpen] = useState(false);
   const [tokenCopied, setTokenCopied] = useState(false);
+  const [headerCopied, setHeaderCopied] = useState(false);
+  const [payloadCopied, setPayloadCopied] = useState(false);
+  const [keyCopied, setKeyCopied] = useState(false);
   const [showKeyInput, setShowKeyInput] = useState(false);
+  const [exampleAlgorithm, setExampleAlgorithm] = useState('none');
+  const [showExampleMenu, setShowExampleMenu] = useState(false);
+  const [algorithmMenuOpen, setAlgorithmMenuOpen] = useState(false);
+  const [keyFormatMenuOpen, setKeyFormatMenuOpen] = useState(false);
   const companyMenuRef = useRef(null);
+  const exampleMenuRef = useRef(null);
+  const algorithmMenuRef = useRef(null);
+  const keyFormatMenuRef = useRef(null);
   const headerTextareaRef = useRef(null);
   const payloadTextareaRef = useRef(null);
+  const encodedTokenRef = useRef(null);
 
   const theme = COMPANY_THEMES[selectedCompany];
+  const currentCompany = selectedCompany;
   const isHMAC = algorithm.startsWith('HS');
+  const isNone = algorithm === 'none';
 
   // Parse and validate JSON
   const header = useMemo(() => {
@@ -315,31 +388,59 @@ const JWTEncoder = () => {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && companyMenuOpen) {
-        setCompanyMenuOpen(false);
+      if (e.key === 'Escape') {
+        if (companyMenuOpen) setCompanyMenuOpen(false);
+        if (showExampleMenu) setShowExampleMenu(false);
+        if (algorithmMenuOpen) setAlgorithmMenuOpen(false);
+        if (keyFormatMenuOpen) setKeyFormatMenuOpen(false);
       }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [companyMenuOpen]);
+  }, [companyMenuOpen, showExampleMenu, algorithmMenuOpen, keyFormatMenuOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (companyMenuRef.current && !companyMenuRef.current.contains(event.target)) {
         setCompanyMenuOpen(false);
       }
+      if (exampleMenuRef.current && !exampleMenuRef.current.contains(event.target)) {
+        setShowExampleMenu(false);
+      }
+      if (algorithmMenuRef.current && !algorithmMenuRef.current.contains(event.target)) {
+        setAlgorithmMenuOpen(false);
+      }
+      if (keyFormatMenuRef.current && !keyFormatMenuRef.current.contains(event.target)) {
+        setKeyFormatMenuOpen(false);
+      }
     };
-    if (companyMenuOpen) {
+    if (companyMenuOpen || showExampleMenu || algorithmMenuOpen || keyFormatMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [companyMenuOpen]);
+  }, [companyMenuOpen, showExampleMenu, algorithmMenuOpen, keyFormatMenuOpen]);
 
   const handleGenerate = async () => {
     if (!header || !payload) {
       setError('Please fix JSON errors before generating');
+      return;
+    }
+
+    // For "none" algorithm, no key is needed
+    if (algorithm === 'none') {
+      setIsEncoding(true);
+      setError('');
+      const result = await signJWT(header, payload, algorithm, '', keyFormat);
+      if (result.error) {
+        setError(result.error);
+        setEncodedToken('');
+      } else {
+        setEncodedToken(result.token);
+        setError('');
+      }
+      setIsEncoding(false);
       return;
     }
 
@@ -367,18 +468,36 @@ const JWTEncoder = () => {
     setIsEncoding(false);
   };
 
-  const handleLoadExample = () => {
-    setHeaderJson(JSON.stringify(DEFAULT_HEADER, null, 2));
-    setPayloadJson(JSON.stringify({
+  const handleLoadExample = async (algorithm = exampleAlgorithm) => {
+    const updatedHeader = { ...DEFAULT_HEADER, alg: algorithm };
+    setHeaderJson(JSON.stringify(updatedHeader, null, 2));
+    
+    const examplePayload = {
       ...DEFAULT_PAYLOAD,
       sub: selectedCompany === 'servicenow' ? 'veera@servicenow.com' : 'veera@salesforce.com',
       name: 'Veera Solutions',
       user_name: selectedCompany === 'servicenow' ? 'veera.solutions' : undefined,
       sys_id: selectedCompany === 'servicenow' ? 'a12b34c' : undefined,
       organization_id: selectedCompany === 'salesforce' ? '00D123456789' : undefined,
-    }, null, 2));
-    setAlgorithm('HS256');
-    setKey('');
+    };
+    setPayloadJson(JSON.stringify(examplePayload, null, 2));
+    
+    setAlgorithm(algorithm);
+    
+    // Generate key based on algorithm
+    if (algorithm.startsWith('HS')) {
+      const secret = generateRandomSecret();
+      setKey(secret);
+    } else if (algorithm.startsWith('RS') || algorithm.startsWith('ES')) {
+      const privateKey = await generateKeyPairForExample(algorithm);
+      if (privateKey) {
+        setKey(privateKey);
+        setKeyFormat('PEM');
+      }
+    } else {
+      setKey('');
+    }
+    
     setEncodedToken('');
     setError('');
   };
@@ -407,212 +526,455 @@ const JWTEncoder = () => {
       <Navigation currentPageId="jwt-encoder" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden flex flex-col" style={{ width: '100%', minWidth: 0 }}>
-        <div className="mx-auto max-w-[1800px] w-full px-8 py-6 flex-1 flex flex-col min-h-0" style={{ width: '100%', maxWidth: '1800px' }}>
-          {/* Compact Header */}
-          <header className="mb-4 flex items-start justify-between">
-            <div className="space-y-1">
-              <h1 className="text-2xl font-bold text-slate-900">JSON Web Token (JWT) Encoder</h1>
-              <p className="text-sm text-slate-600">
-                Create and sign JSON Web Tokens. All processing happens in your browser—data never leaves your device.
-              </p>
-            </div>
-            <div className="relative" ref={companyMenuRef}>
-              <button
-                className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] focus:outline-none"
-                onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setCompanyMenuOpen(!companyMenuOpen);
-                  }
-                }}
-                tabIndex={0}
-                aria-label="Select company"
-                aria-expanded={companyMenuOpen}
-              >
-                <span className="text-slate-900 whitespace-nowrap">{theme.name}</span>
-                <ChevronDown className={clsx('h-3.5 w-3.5 text-slate-500 transition-transform duration-200 flex-shrink-0', companyMenuOpen && 'rotate-180')} />
-              </button>
-              {companyMenuOpen && (
-                <div className="absolute right-0 top-full mt-1.5 w-40 rounded-xl border border-slate-200 bg-white shadow-xl z-50 overflow-hidden">
-                  <button
-                    onClick={() => {
-                      setSelectedCompany('servicenow');
-                      setCompanyMenuOpen(false);
-                    }}
-                    className={clsx('w-full px-3 py-2 text-left text-sm transition-colors active:scale-[0.98] focus:outline-none', selectedCompany === 'servicenow' ? 'bg-slate-100 font-medium text-slate-900' : 'text-slate-700 hover:bg-slate-50')}
-                    tabIndex={0}
-                  >
-                    ServiceNow
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedCompany('salesforce');
-                      setCompanyMenuOpen(false);
-                    }}
-                    className={clsx('w-full px-3 py-2 text-left text-sm transition-colors active:scale-[0.98] focus:outline-none', selectedCompany === 'salesforce' ? 'bg-slate-100 font-medium text-slate-900' : 'text-slate-700 hover:bg-slate-50')}
-                    tabIndex={0}
-                  >
-                    Salesforce
-                  </button>
-                </div>
-              )}
+      <div className="flex-1 overflow-y-auto bg-gray-50" style={{ width: '100%', minWidth: 0 }}>
+        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
+          <div className="space-y-4 sm:space-y-6">
+          {/* Professional Header with Border */}
+          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div className="space-y-1 sm:space-y-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">JWT Encoder</h1>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Create and sign JSON Web Tokens. All processing happens in your browser—data never leaves your device.
+                </p>
+              </div>
+              <div className="relative" ref={companyMenuRef}>
+                <button
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border-[0.5px] border-gray-300 rounded-lg hover:border-gray-500 hover:bg-gray-50 focus:outline-none shadow-sm"
+                  onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setCompanyMenuOpen(!companyMenuOpen);
+                    }
+                  }}
+                  tabIndex={0}
+                  aria-label="Select company"
+                  aria-expanded={companyMenuOpen}
+                >
+                  <span className="whitespace-nowrap">{theme.name}</span>
+                  <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200', companyMenuOpen && 'rotate-180')} />
+                </button>
+                {companyMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setCompanyMenuOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
+                      <button
+                        onClick={() => {
+                          setSelectedCompany('servicenow');
+                          setCompanyMenuOpen(false);
+                        }}
+                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 last:border-b-0 focus:outline-none', currentCompany === 'servicenow' ? 'bg-sky-50 text-sky-700 font-semibold' : 'text-gray-700 hover:bg-gray-50')}
+                        tabIndex={0}
+                      >
+                        ServiceNow
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedCompany('salesforce');
+                          setCompanyMenuOpen(false);
+                        }}
+                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 last:border-b-0 focus:outline-none', currentCompany === 'salesforce' ? 'bg-sky-50 text-sky-700 font-semibold' : 'text-gray-700 hover:bg-gray-50')}
+                        tabIndex={0}
+                      >
+                        Salesforce
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </header>
 
-          {/* Header Input */}
-          <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden mb-4">
-            <div className="relative border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3 rounded-t-xl">
-              <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: theme.primary }} />
-              <label htmlFor="header-input" className="text-sm font-semibold text-slate-900">
-                JWT Header
-              </label>
-            </div>
-            <div className="relative">
-              <textarea
-                ref={headerTextareaRef}
-                id="header-input"
-                value={headerJson}
-                onChange={(e) => setHeaderJson(e.target.value)}
-                placeholder="Enter JWT header as JSON"
-                className="h-40 w-full resize-none border-0 bg-white px-6 py-5 font-mono text-base leading-relaxed text-slate-900 placeholder:text-slate-500 focus:outline-none"
-                tabIndex={0}
-              />
-            </div>
-          </div>
-
-          {/* Payload Input */}
-          <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden mb-4">
-            <div className="relative border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3 rounded-t-xl">
-              <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: theme.primary }} />
-              <label htmlFor="payload-input" className="text-sm font-semibold text-slate-900">
-                JWT Payload
-              </label>
-            </div>
-            <div className="relative">
-              <textarea
-                ref={payloadTextareaRef}
-                id="payload-input"
-                value={payloadJson}
-                onChange={(e) => setPayloadJson(e.target.value)}
-                placeholder="Enter JWT payload as JSON"
-                className="h-40 w-full resize-none border-0 bg-white px-6 py-5 font-mono text-base leading-relaxed text-slate-900 placeholder:text-slate-500 focus:outline-none"
-                tabIndex={0}
-              />
-            </div>
-          </div>
-
-          {/* Algorithm and Key Selection */}
-          <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden mb-4">
-            <div className="relative border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3 rounded-t-xl">
-              <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: theme.primary }} />
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-slate-900">
-                  Signing Configuration
-                </label>
-                <div className="flex items-center gap-2">
+          {/* Two Column Layout: Header + Payload | Signing Configuration */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-stretch mb-4 sm:mb-6">
+            {/* Left Column: Header + Payload */}
+            <div className="flex flex-col gap-4 sm:gap-6">
+              {/* Header Input */}
+              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
+                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
+                    <label htmlFor="header-input" className="text-sm sm:text-base font-semibold text-gray-900">
+                      JWT Header
+                    </label>
+                  </div>
                   <button
-                    onClick={handleLoadExample}
-                    className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-300 active:scale-95 focus:outline-none"
+                    onClick={async () => {
+                      await copyText(headerJson);
+                      setHeaderCopied(true);
+                      setTimeout(() => setHeaderCopied(false), 2000);
+                    }}
+                    className={clsx(
+                      'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
+                      headerCopied 
+                        ? 'bg-green-50 border-green-400 text-green-700' 
+                        : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                    )}
                     tabIndex={0}
                   >
-                    Load Example
+                    {headerCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    <span className="hidden sm:inline">{headerCopied ? 'Copied!' : 'Copy'}</span>
                   </button>
+                </div>
+                <textarea
+                  ref={headerTextareaRef}
+                  id="header-input"
+                  value={headerJson}
+                  onChange={(e) => setHeaderJson(e.target.value)}
+                  placeholder="Enter JWT header as JSON"
+                  className="w-full flex-1 min-h-[160px] resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
+                  tabIndex={0}
+                />
+              </div>
+
+              {/* Payload Input */}
+              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
+                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
+                    <label htmlFor="payload-input" className="text-sm sm:text-base font-semibold text-gray-900">
+                      JWT Payload
+                    </label>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      await copyText(payloadJson);
+                      setPayloadCopied(true);
+                      setTimeout(() => setPayloadCopied(false), 2000);
+                    }}
+                    className={clsx(
+                      'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
+                      payloadCopied 
+                        ? 'bg-green-50 border-green-400 text-green-700' 
+                        : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                    )}
+                    tabIndex={0}
+                  >
+                    {payloadCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    <span className="hidden sm:inline">{payloadCopied ? 'Copied!' : 'Copy'}</span>
+                  </button>
+                </div>
+                <textarea
+                  ref={payloadTextareaRef}
+                  id="payload-input"
+                  value={payloadJson}
+                  onChange={(e) => setPayloadJson(e.target.value)}
+                  placeholder="Enter JWT payload as JSON"
+                  className="w-full flex-1 min-h-[200px] resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
+                  tabIndex={0}
+                />
+              </div>
+            </div>
+
+            {/* Right Column: Signing Configuration */}
+            <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
+            <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
+                <label className="text-sm sm:text-base font-semibold text-gray-900">
+                  Signing Configuration
+                </label>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="relative" ref={exampleMenuRef}>
+                  <button
+                    onClick={() => setShowExampleMenu(!showExampleMenu)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setShowExampleMenu(!showExampleMenu);
+                      }
+                    }}
+                    className="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none shadow-sm hover:shadow inline-flex items-center gap-2"
+                    tabIndex={0}
+                  >
+                    <RefreshCw className="h-3.5 w-3.5" />
+                    Load Example {exampleAlgorithm === 'none' ? '(none)' : `(${exampleAlgorithm})`}
+                    <ChevronDown className={clsx('h-3 w-3 transition-transform duration-200', showExampleMenu && 'rotate-180')} />
+                  </button>
+                  {showExampleMenu && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setShowExampleMenu(false)} />
+                      <div className="absolute right-0 top-full mt-2 w-40 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-y-auto max-h-64">
+                        {['none', 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512'].map((alg) => (
+                          <button
+                            key={alg}
+                            onClick={async () => {
+                              setExampleAlgorithm(alg);
+                              setShowExampleMenu(false);
+                              if (alg === 'none') {
+                                // For "none", we'll still use a default algorithm but show it as selected
+                                await handleLoadExample('none');
+                              } else {
+                                await handleLoadExample(alg);
+                              }
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setExampleAlgorithm(alg);
+                                setShowExampleMenu(false);
+                                if (alg === 'none') {
+                                  handleLoadExample('none');
+                                } else {
+                                  handleLoadExample(alg);
+                                }
+                              }
+                            }}
+                            className={clsx(
+                              'w-full px-3 py-2 text-left text-sm transition-colors active:scale-[0.98] focus:outline-none',
+                              exampleAlgorithm === alg 
+                                ? 'bg-gray-100 font-medium text-gray-900' 
+                                : 'text-gray-700 hover:bg-gray-50'
+                            )}
+                            tabIndex={0}
+                          >
+                            {alg === 'none' ? 'none (Unsecured)' : alg}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Algorithm
-                  </label>
-                  <select
-                    value={algorithm}
-                    onChange={(e) => {
-                      setAlgorithm(e.target.value);
-                      setKey('');
-                      setEncodedToken('');
-                      setError('');
-                    }}
-                    className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:border-slate-400 transition-colors cursor-pointer hover:bg-slate-50"
-                    tabIndex={0}
-                  >
-                    <optgroup label="HMAC">
-                      <option value="HS256">HS256</option>
-                      <option value="HS384">HS384</option>
-                      <option value="HS512">HS512</option>
-                    </optgroup>
-                    <optgroup label="RSA">
-                      <option value="RS256">RS256</option>
-                      <option value="RS384">RS384</option>
-                      <option value="RS512">RS512</option>
-                    </optgroup>
-                    <optgroup label="ECDSA">
-                      <option value="ES256">ES256</option>
-                      <option value="ES384">ES384</option>
-                      <option value="ES512">ES512</option>
-                    </optgroup>
-                  </select>
-                </div>
-                {!isHMAC && (
+            <div className="p-4 sm:p-6 flex flex-col flex-1 min-h-0">
+              <div className="flex-1 space-y-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Key Format
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Algorithm
                     </label>
-                    <select
-                      value={keyFormat}
+                    <div className="relative" ref={algorithmMenuRef}>
+                      <button
+                        type="button"
+                        onClick={() => setAlgorithmMenuOpen(!algorithmMenuOpen)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setAlgorithmMenuOpen(!algorithmMenuOpen);
+                          }
+                        }}
+                        className="w-full text-left border-[0.5px] border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
+                        tabIndex={0}
+                        aria-expanded={algorithmMenuOpen}
+                      >
+                        <span>{algorithm === 'none' ? 'none (Unsecured)' : algorithm}</span>
+                        <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0', algorithmMenuOpen && 'rotate-180')} />
+                      </button>
+                      {algorithmMenuOpen && (
+                        <>
+                          <div className="fixed inset-0 z-40" onClick={() => setAlgorithmMenuOpen(false)} />
+                          <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-y-auto max-h-64">
+                            <div className="py-1">
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Unsigned</div>
+                              <button
+                                onClick={() => {
+                                  setAlgorithm('none');
+                                  setKey('');
+                                  setEncodedToken('');
+                                  setError('');
+                                  setAlgorithmMenuOpen(false);
+                                }}
+                                className={clsx(
+                                  'w-full px-3 py-2 text-left text-sm transition-colors',
+                                  algorithm === 'none' 
+                                    ? 'bg-gray-100 font-medium text-gray-900' 
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                )}
+                                tabIndex={0}
+                              >
+                                none (Unsecured)
+                              </button>
+                            </div>
+                            <div className="py-1 border-t border-gray-100">
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">HMAC</div>
+                              {['HS256', 'HS384', 'HS512'].map((alg) => (
+                                <button
+                                  key={alg}
+                                  onClick={() => {
+                                    setAlgorithm(alg);
+                                    setKey('');
+                                    setEncodedToken('');
+                                    setError('');
+                                    setAlgorithmMenuOpen(false);
+                                  }}
+                                  className={clsx(
+                                    'w-full px-3 py-2 text-left text-sm transition-colors',
+                                    algorithm === alg 
+                                      ? 'bg-gray-100 font-medium text-gray-900' 
+                                      : 'text-gray-700 hover:bg-gray-50'
+                                  )}
+                                  tabIndex={0}
+                                >
+                                  {alg}
+                                </button>
+                              ))}
+                            </div>
+                            <div className="py-1 border-t border-gray-100">
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">RSA</div>
+                              {['RS256', 'RS384', 'RS512'].map((alg) => (
+                                <button
+                                  key={alg}
+                                  onClick={() => {
+                                    setAlgorithm(alg);
+                                    setKey('');
+                                    setEncodedToken('');
+                                    setError('');
+                                    setAlgorithmMenuOpen(false);
+                                  }}
+                                  className={clsx(
+                                    'w-full px-3 py-2 text-left text-sm transition-colors',
+                                    algorithm === alg 
+                                      ? 'bg-gray-100 font-medium text-gray-900' 
+                                      : 'text-gray-700 hover:bg-gray-50'
+                                  )}
+                                  tabIndex={0}
+                                >
+                                  {alg}
+                                </button>
+                              ))}
+                            </div>
+                            <div className="py-1 border-t border-gray-100">
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">ECDSA</div>
+                              {['ES256', 'ES384', 'ES512'].map((alg) => (
+                                <button
+                                  key={alg}
+                                  onClick={() => {
+                                    setAlgorithm(alg);
+                                    setKey('');
+                                    setEncodedToken('');
+                                    setError('');
+                                    setAlgorithmMenuOpen(false);
+                                  }}
+                                  className={clsx(
+                                    'w-full px-3 py-2 text-left text-sm transition-colors',
+                                    algorithm === alg 
+                                      ? 'bg-gray-100 font-medium text-gray-900' 
+                                      : 'text-gray-700 hover:bg-gray-50'
+                                  )}
+                                  tabIndex={0}
+                                >
+                                  {alg}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {!isHMAC && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Key Format
+                      </label>
+                      <div className="relative" ref={keyFormatMenuRef}>
+                        <button
+                          type="button"
+                          onClick={() => setKeyFormatMenuOpen(!keyFormatMenuOpen)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setKeyFormatMenuOpen(!keyFormatMenuOpen);
+                            }
+                          }}
+                          className="w-full text-left border-[0.5px] border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
+                          tabIndex={0}
+                          aria-expanded={keyFormatMenuOpen}
+                        >
+                          <span>{keyFormat}</span>
+                          <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0', keyFormatMenuOpen && 'rotate-180')} />
+                        </button>
+                        {keyFormatMenuOpen && (
+                          <>
+                            <div className="fixed inset-0 z-40" onClick={() => setKeyFormatMenuOpen(false)} />
+                            <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-hidden">
+                              {['PEM', 'JWK'].map((format) => (
+                                <button
+                                  key={format}
+                                  onClick={() => {
+                                    setKeyFormat(format);
+                                    setKey('');
+                                    setEncodedToken('');
+                                    setKeyFormatMenuOpen(false);
+                                  }}
+                                  className={clsx(
+                                    'w-full px-3 py-2 text-left text-sm transition-colors',
+                                    keyFormat === format 
+                                      ? 'bg-gray-100 font-medium text-gray-900' 
+                                      : 'text-gray-700 hover:bg-gray-50'
+                                  )}
+                                  tabIndex={0}
+                                >
+                                  {format}
+                                </button>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {!isNone && (
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        {isHMAC ? 'Secret' : 'Private Key'}
+                      </label>
+                      {key.trim() && (
+                        <button
+                          onClick={async () => {
+                            await copyText(key);
+                            setKeyCopied(true);
+                            setTimeout(() => setKeyCopied(false), 2000);
+                          }}
+                          className={clsx(
+                            'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
+                            keyCopied 
+                              ? 'bg-green-50 border-green-400 text-green-700' 
+                              : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                          )}
+                          tabIndex={0}
+                        >
+                          {keyCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                          <span className="hidden sm:inline">{keyCopied ? 'Copied!' : 'Copy'}</span>
+                        </button>
+                      )}
+                    </div>
+                    <textarea
+                      value={key}
                       onChange={(e) => {
-                        setKeyFormat(e.target.value);
-                        setKey('');
+                        setKey(e.target.value);
                         setEncodedToken('');
+                        setError('');
                       }}
-                      className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:border-slate-400 transition-colors cursor-pointer hover:bg-slate-50"
+                      placeholder={isHMAC 
+                        ? 'Enter the secret used to sign the JWT' 
+                        : keyFormat === 'PEM' 
+                          ? '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC...\n-----END PRIVATE KEY-----'
+                          : '{\n  "kty": "RSA",\n  "n": "...",\n  "e": "AQAB",\n  "d": "...",\n  ...\n}'}
+                      className="w-full min-h-[180px] resize-none border-[0.5px] border-gray-300 rounded-lg bg-white px-3 sm:px-4 py-2 sm:py-2.5 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60 mb-2"
                       tabIndex={0}
-                    >
-                      <option value="PEM">PEM</option>
-                      <option value="JWK">JWK</option>
-                    </select>
+                    />
+                    {!isHMAC && (
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 cursor-pointer focus-within:outline-none shadow-sm">
+                        <Upload className="h-3.5 w-3.5" />
+                        Upload
+                        <input type="file" accept=".pem,.key,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
+                      </label>
+                    )}
                   </div>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  {isHMAC ? 'Secret' : 'Private Key'}
-                </label>
-                <div className="flex items-center gap-2">
-                  <textarea
-                    value={key}
-                    onChange={(e) => {
-                      setKey(e.target.value);
-                      setEncodedToken('');
-                      setError('');
-                    }}
-                    placeholder={isHMAC 
-                      ? 'Enter the secret used to sign the JWT' 
-                      : keyFormat === 'PEM' 
-                        ? '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC...\n-----END PRIVATE KEY-----'
-                        : '{\n  "kty": "RSA",\n  "n": "...",\n  "e": "AQAB",\n  "d": "...",\n  ...\n}'}
-                    className="flex-1 h-32 resize-none rounded-xl border-2 border-slate-200 bg-white px-4 py-3 font-mono text-sm leading-relaxed text-slate-900 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none transition-colors"
-                    tabIndex={0}
-                  />
-                  {!isHMAC && (
-                    <label className="flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-3.5 py-2 text-xs font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-300 active:scale-95 cursor-pointer focus-within:outline-none focus-within:border-slate-400">
-                      <Upload className="h-3.5 w-3.5" />
-                      Upload
-                      <input type="file" accept=".pem,.key,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
-                    </label>
-                  )}
-                </div>
-              </div>
-
               <button
                 onClick={handleGenerate}
-                disabled={!header || !payload || (!isHMAC && !key.trim()) || (isHMAC && !key.trim()) || isEncoding}
-                className="w-full rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all hover:opacity-90 hover:shadow-md active:scale-95 active:opacity-75 disabled:bg-slate-300 disabled:cursor-not-allowed focus:outline-none shadow-lg flex items-center justify-center gap-2"
-                style={{ backgroundColor: theme.primary }}
+                disabled={!header || !payload || (!isNone && !isHMAC && !key.trim()) || (!isNone && isHMAC && !key.trim()) || isEncoding}
+                className="w-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 shadow-sm hover:shadow flex items-center justify-center gap-2 mt-4"
                 tabIndex={0}
               >
                 {isEncoding ? (
@@ -628,11 +990,12 @@ const JWTEncoder = () => {
                 )}
               </button>
             </div>
+            </div>
           </div>
 
           {error && (
-            <div className="rounded-xl border-2 border-error/40 bg-error/10 px-6 py-4 mb-4">
-              <div className="flex items-center gap-2 text-sm font-medium text-error">
+            <div className="bg-red-50 border border-red-200 rounded-xl px-4 sm:px-6 py-3 sm:py-4">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-red-700 font-medium">
                 <AlertCircle className="h-4 w-4 flex-shrink-0" />
                 <span>{error}</span>
               </div>
@@ -640,66 +1003,75 @@ const JWTEncoder = () => {
           )}
 
           {/* Encoded Token Output */}
-          {encodedToken && (
-            <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden">
-              <div className="relative border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3 rounded-t-xl">
-                <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: theme.primary }} />
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-semibold text-slate-900">
-                    Encoded JWT Token
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={async () => {
-                        await copyText(encodedToken);
-                        setTokenCopied(true);
-                        setTimeout(() => setTokenCopied(false), 2000);
-                      }}
-                      className={clsx(
-                        'inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-300 active:scale-95 focus:outline-none',
-                        tokenCopied && 'bg-success/20 border-success text-success'
-                      )}
-                      tabIndex={0}
-                    >
-                      {tokenCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                      {tokenCopied ? 'Copied!' : 'Copy'}
-                    </button>
-                  </div>
-                </div>
+          <div ref={encodedTokenRef} className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
+                <label className="text-sm sm:text-base font-semibold text-gray-900">
+                  Encoded JWT Token
+                </label>
               </div>
-              <div className="relative">
-                <textarea
-                  value={encodedToken}
-                  readOnly
-                  className="h-32 w-full resize-none border-0 bg-white px-6 py-5 font-mono text-base leading-relaxed text-slate-900 focus:outline-none"
+              {encodedToken && (
+                <button
+                  onClick={async () => {
+                    await copyText(encodedToken);
+                    setTokenCopied(true);
+                    setTimeout(() => setTokenCopied(false), 2000);
+                  }}
+                  className={clsx(
+                    'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
+                    tokenCopied 
+                      ? 'bg-green-50 border-green-400 text-green-700' 
+                      : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                  )}
                   tabIndex={0}
-                />
-                <div className="absolute inset-0 pointer-events-none px-6 py-5 font-mono text-base leading-relaxed overflow-hidden">
+                >
+                  {tokenCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                  <span className="hidden sm:inline">{tokenCopied ? 'Copied!' : 'Copy'}</span>
+                </button>
+              )}
+            </div>
+            <div className="relative">
+              <textarea
+                value={encodedToken || ''}
+                readOnly
+                placeholder={encodedToken ? '' : 'Generated JWT token will appear here...'}
+                className="w-full min-h-[120px] resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                style={encodedToken ? { color: 'transparent', caretColor: 'transparent' } : {}}
+                tabIndex={0}
+              />
+              {encodedToken && (
+                <div className="absolute inset-0 pointer-events-none px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed overflow-hidden">
                   <pre className="whitespace-pre-wrap break-all">
                     {(() => {
                       const parts = encodedToken.split('.');
-                      if (parts.length !== 3) return <span className="text-slate-700">{encodedToken}</span>;
+                      if (parts.length < 2) return <span className="text-gray-700">{encodedToken}</span>;
                       return (
                         <>
                           <span className="text-blue-400">{parts[0]}</span>
-                          <span className="text-slate-300">.</span>
+                          <span className="text-gray-300">.</span>
                           <span className="text-purple-400">{parts[1]}</span>
-                          <span className="text-slate-300">.</span>
-                          <span className="text-emerald-400">{parts[2]}</span>
+                          {parts[2] && (
+                            <>
+                              <span className="text-gray-300">.</span>
+                              <span className="text-emerald-400">{parts[2]}</span>
+                            </>
+                          )}
                         </>
                       );
                     })()}
                   </pre>
                 </div>
-              </div>
-              <div className="border-t-2 border-slate-200 bg-slate-50 px-6 py-4 rounded-b-xl">
-                <div className="flex items-center gap-2 text-sm">
+              )}
+            </div>
+              <div className={clsx('border-t border-gray-200 bg-gray-50 px-4 sm:px-6 py-3 sm:py-4', !encodedToken && 'opacity-0 pointer-events-none')}>
+                <div className="flex items-center gap-2 text-xs sm:text-sm">
                   <CheckCircle2 className="h-4 w-4 text-green-600" />
-                  <span className="font-medium text-slate-900">JWT generated successfully</span>
+                  <span className="font-medium text-gray-900">JWT generated successfully</span>
                 </div>
               </div>
-            </div>
-          )}
+          </div>
+          </div>
         </div>
       </div>
     </div>

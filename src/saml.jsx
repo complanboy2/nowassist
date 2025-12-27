@@ -473,7 +473,7 @@ const highlightXml = (xml) => {
     // Highlight attributes
     if (attrs) {
       highlighted += attrs.replace(/(\w+)(=)(".*?"|'.*?')/g, (m, name, eq, value) => {
-        return `<span class="text-cyan-400">${name}</span><span class="text-slate-400">${eq}</span><span class="text-orange-400">${value}</span>`;
+        return `<span class="text-cyan-400">${name}</span><span class="text-gray-400">${eq}</span><span class="text-orange-400">${value}</span>`;
       });
     }
     
@@ -556,12 +556,12 @@ const CertificateSection = ({ certificate }) => {
           { label: 'SerialNumber', value: certificate.serialNumber || '—', fullWidth: true },
           { label: 'Thumbprint', value: certificate.thumbprint || '—', fullWidth: true },
         ].map((item) => (
-          <div key={item.label} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+          <div key={item.label} className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5">
             <div className="flex items-start gap-3">
-              <span className="font-semibold text-slate-700 text-sm flex-shrink-0 min-w-[110px]">{item.label}:</span>
+              <span className="font-semibold text-gray-700 text-sm flex-shrink-0 min-w-[110px]">{item.label}:</span>
               <div className="flex-1 min-w-0">
                 <div className="text-right">
-                  <span className="font-mono font-semibold text-slate-900 text-sm break-words whitespace-normal inline-block" style={{ textAlign: 'right', wordBreak: 'break-word', overflowWrap: 'break-word' }}>{item.value}</span>
+                  <span className="font-mono font-semibold text-gray-900 text-sm break-words whitespace-normal inline-block" style={{ textAlign: 'right', wordBreak: 'break-word', overflowWrap: 'break-word' }}>{item.value}</span>
                 </div>
               </div>
             </div>
@@ -576,16 +576,16 @@ const CertificateSection = ({ certificate }) => {
                 setShowPem(!showPem);
               }
             }}
-            className="w-full text-left rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-700 hover:bg-slate-100 hover:border-slate-300 transition flex items-center justify-between active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-300"
+            className="w-full text-left rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-700 hover:bg-gray-100 hover:border-gray-300 transition flex items-center justify-between active:scale-[0.98] focus:outline-none focus:ring-2 focus:outline-none300"
             tabIndex={0}
           >
             <span>Pem</span>
             <ChevronDown className={clsx('h-3 w-3 transition-transform duration-200', showPem && 'rotate-180')} />
           </button>
           {showPem && (
-            <div className="mt-2 rounded-lg border border-slate-200 bg-slate-950 p-3 animate-in fade-in duration-200">
+            <div className="mt-2 rounded-lg border border-gray-200 bg-gray-950 p-3 animate-in fade-in duration-200">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-slate-400">Certificate PEM</span>
+                <span className="text-xs text-gray-400">Certificate PEM</span>
                 <button
                   onClick={handleCopyPem}
                   onKeyDown={(e) => {
@@ -594,14 +594,14 @@ const CertificateSection = ({ certificate }) => {
                       handleCopyPem();
                     }
                   }}
-                  className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-600"
+                  className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-gray-400 hover:text-gray-200 hover:bg-gray-800 transition active:scale-95 focus:outline-none focus:ring-2 focus:outline-none600"
                   tabIndex={0}
                 >
                   {copied ? <CheckCircle2 className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
                   {copied ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <pre className="text-xs text-slate-300 font-mono whitespace-pre-wrap break-words overflow-auto max-h-48 leading-tight">
+              <pre className="text-xs text-gray-300 font-mono whitespace-pre-wrap break-words overflow-auto max-h-48 leading-tight">
                 {certificate.pem || certificate.raw}
               </pre>
             </div>
@@ -625,19 +625,19 @@ const XmlViewer = ({ xml, onCopy }) => {
   };
 
   return (
-    <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden">
-      <div className="flex items-center justify-between border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3">
+    <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+      <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center gap-2.5">
-          <div className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-          <h3 className="text-sm font-semibold text-slate-900">DECODED</h3>
+          <div className="h-1.5 w-1.5 rounded-full bg-gray-400" />
+          <h3 className="text-sm font-semibold text-gray-900">DECODED</h3>
         </div>
         <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+          <label className="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
             <input
               type="checkbox"
               checked={lineWrap}
               onChange={(e) => setLineWrap(e.target.checked)}
-              className="h-4 w-4 rounded border-slate-300"
+              className="h-4 w-4 rounded border-gray-300"
             />
             <span>Line wrap</span>
           </label>
@@ -655,22 +655,22 @@ const XmlViewer = ({ xml, onCopy }) => {
             onMouseUp={(e) => {
               e.currentTarget.style.transform = '';
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition active:scale-95 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300"
+            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition active:scale-95 border border-gray-200 focus:outline-none focus:ring-2 focus:outline-none300"
             tabIndex={0}
           >
-            {copied ? <CheckCircle2 className="h-3.5 w-3.5 text-success" /> : <Copy className="h-3.5 w-3.5" />}
-            {copied ? 'Copied!' : 'Copy'}
+            {copied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
           </button>
         </div>
       </div>
-      <div className="overflow-auto bg-slate-950" style={{ maxHeight: '500px' }}>
-        <pre className={clsx('p-6 text-sm leading-tight text-slate-100 font-mono', lineWrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre')}>
+      <div className="overflow-auto bg-gray-950" style={{ maxHeight: '500px' }}>
+        <pre className={clsx('p-6 text-sm leading-tight text-gray-100 font-mono', lineWrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre')}>
           <code>
             {lines.map((line, index) => (
               <React.Fragment key={index}>
-                <span className="inline-block w-10 select-none text-right text-slate-500 pr-4 flex-shrink-0">{index + 1}</span>
+                <span className="inline-block w-10 select-none text-right text-gray-500 pr-4 flex-shrink-0">{index + 1}</span>
                 <span 
-                  className="text-slate-100"
+                  className="text-gray-100"
                   dangerouslySetInnerHTML={{ __html: highlightXml(line) }}
                 />
                 {'\n'}
@@ -850,24 +850,29 @@ const SAMLInspector = () => {
   });
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-screen bg-white overflow-hidden">
       {/* Sidebar */}
       <Navigation currentPageId="saml" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden flex flex-col" style={{ width: '100%', minWidth: 0 }}>
-        <div className="mx-auto max-w-[1400px] w-full px-6 py-8 flex-1 flex flex-col min-h-0 bg-white">
-          {/* Clean Header */}
-          <header className="pb-4 border-b border-gray-200 mb-4">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-1">SAML Inspector</h1>
+      <div className="flex-1 overflow-y-auto bg-gray-50" style={{ width: '100%', minWidth: 0 }}>
+        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
+          <div className="space-y-4 sm:space-y-6">
+          {/* Professional Header with Border */}
+          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div className="space-y-1 sm:space-y-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">SAML Inspector</h1>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Decode base64 responses, inspect assertions, and automatically trace SAML requests/responses from your browser.
+                </p>
+              </div>
+            </div>
           </header>
 
-          <div className="flex-1 overflow-y-auto min-h-0 space-y-6">
-            <p className="text-sm text-slate-600 mb-4">Decode base64 responses, inspect assertions, and automatically trace SAML requests/responses from your browser.</p>
-
           {/* View Mode Toggle */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white p-1">
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
               <button
                 onClick={() => {
                   setViewMode('manual');
@@ -881,10 +886,10 @@ const SAMLInspector = () => {
                   }
                 }}
                 className={clsx(
-                  'px-4 py-2 text-sm font-medium rounded-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300',
+                  'px-2 py-1 text-xs font-medium transition-colors rounded',
                   viewMode === 'manual' 
-                    ? 'bg-slate-900 text-white' 
-                    : 'text-slate-700 hover:bg-slate-50'
+                    ? 'bg-sky-500 text-white' 
+                    : 'text-gray-700 hover:bg-gray-50'
                 )}
                 tabIndex={0}
               >
@@ -903,10 +908,10 @@ const SAMLInspector = () => {
                   }
                 }}
                 className={clsx(
-                  'px-4 py-2 text-sm font-medium rounded-lg transition flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-slate-300',
+                  'px-2 py-1 text-xs font-medium transition-colors rounded inline-flex items-center gap-1',
                   viewMode === 'captured' 
-                    ? 'bg-slate-900 text-white' 
-                    : 'text-slate-700 hover:bg-slate-50'
+                    ? 'bg-sky-500 text-white' 
+                    : 'text-gray-700 hover:bg-gray-50'
                 )}
                 tabIndex={0}
               >
@@ -930,7 +935,7 @@ const SAMLInspector = () => {
                     }
                   }}
                   disabled={loading}
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none shadow-sm hover:shadow transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
                   tabIndex={loading ? -1 : 0}
                 >
                   <RefreshCw className={clsx('h-4 w-4', loading && 'animate-spin')} />
@@ -944,7 +949,7 @@ const SAMLInspector = () => {
                       clearMessages();
                     }
                   }}
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-red-600 active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 hover:text-red-600 focus:outline-none shadow-sm hover:shadow transition-all"
                   tabIndex={0}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -956,16 +961,16 @@ const SAMLInspector = () => {
 
           {/* Captured Messages List */}
           {viewMode === 'captured' && (
-            <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden">
-              <div className="border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3">
-                <h2 className="text-sm font-semibold text-slate-900">Captured SAML Messages</h2>
+            <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                <h2 className="text-sm sm:text-base font-semibold text-gray-900">Captured SAML Messages</h2>
               </div>
               <div className="p-4">
                 {capturedMessages.length === 0 ? (
-                  <div className="text-center py-12 text-slate-500">
-                    <Network className="h-12 w-12 mx-auto mb-3 text-slate-300" />
+                  <div className="text-center py-12 text-gray-500">
+                    <Network className="h-12 w-12 mx-auto mb-3 text-gray-300" />
                     <p className="text-sm">No SAML messages captured yet.</p>
-                    <p className="text-xs mt-2 text-slate-400">Navigate to a SAML SSO flow to automatically capture messages.</p>
+                    <p className="text-xs mt-2 text-gray-400">Navigate to a SAML SSO flow to automatically capture messages.</p>
                   </div>
                 ) : (
                   <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -984,10 +989,10 @@ const SAMLInspector = () => {
                           }
                         }}
                         className={clsx(
-                          'w-full text-left rounded-xl border-2 p-4 transition focus:outline-none focus:ring-2 focus:ring-slate-300',
+                          'w-full text-left border-[0.5px] p-4 rounded-lg transition focus:outline-none focus:border-sky-400/60',
                           selectedMessage?.id === msg.id
-                            ? 'border-slate-900 bg-slate-50'
-                            : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
+                            ? 'border-gray-900 bg-gray-50'
+                            : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
                         )}
                         tabIndex={0}
                       >
@@ -999,20 +1004,20 @@ const SAMLInspector = () => {
                                 ? 'bg-blue-100 text-blue-700' 
                                 : msg.type === 'response'
                                 ? 'bg-green-100 text-green-700'
-                                : 'bg-slate-100 text-slate-700'
+                                : 'bg-gray-100 text-gray-700'
                             )}>
                               {msg.type.toUpperCase()}
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-slate-900">{msg.method} Request</p>
-                              <p className="text-xs text-slate-500 mt-0.5 truncate max-w-md">{msg.url}</p>
+                              <p className="text-sm font-medium text-gray-900">{msg.method} Request</p>
+                              <p className="text-xs text-gray-500 mt-0.5 truncate max-w-md">{msg.url}</p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs text-slate-500">
+                            <p className="text-xs text-gray-500">
                               {new Date(msg.timestamp).toLocaleTimeString()}
                             </p>
-                            <p className="text-xs text-slate-400 mt-0.5">
+                            <p className="text-xs text-gray-400 mt-0.5">
                               {new Date(msg.timestamp).toLocaleDateString()}
                             </p>
                           </div>
@@ -1026,20 +1031,22 @@ const SAMLInspector = () => {
           )}
 
           {/* Input Section */}
-          <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden">
-            <div className="relative border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3">
-              <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-slate-400" />
-              <div className="flex items-center justify-between">
-                <label htmlFor="saml-input" className="text-sm font-semibold text-slate-900">
+          <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0 bg-gray-400" />
+                <label htmlFor="saml-input" className="text-sm sm:text-base font-semibold text-gray-900">
                   SAML TOKEN
                 </label>
+              </div>
+              <div className="flex items-center gap-3">
                 <div className="flex items-center gap-3">
-                  <label className="flex items-center gap-2 text-xs text-slate-700">
+                  <label className="flex items-center gap-2 text-xs text-gray-700">
                     <input 
                       type="checkbox" 
                       checked={autoDecode} 
                       onChange={() => setAutoDecode((prev) => !prev)} 
-                      className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" 
+                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" 
                     />
                     Auto Base64 Decode
                   </label>
@@ -1061,7 +1068,7 @@ const SAMLInspector = () => {
                     onMouseUp={(e) => {
                       e.currentTarget.style.transform = '';
                     }}
-                    className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 hover:border-slate-300 active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                    className="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none shadow-sm hover:shadow transition-all inline-flex items-center gap-2"
                     tabIndex={0}
                   >
                     Clear
@@ -1069,17 +1076,15 @@ const SAMLInspector = () => {
                 </div>
               </div>
             </div>
-            <div>
-              <textarea 
-                id="saml-input"
-                value={input} 
-                onChange={(event) => setInput(event.target.value)} 
-                placeholder="Paste SAML response (Base64 encoded) or let the extension capture it automatically" 
-                className="h-40 w-full resize-none border-0 bg-white px-6 py-5 font-mono text-base leading-relaxed text-slate-900 placeholder:text-slate-500 focus:outline-none" 
-              />
-            </div>
+            <textarea 
+              id="saml-input"
+              value={input} 
+              onChange={(event) => setInput(event.target.value)} 
+              placeholder="Paste SAML response (Base64 encoded) or let the extension capture it automatically" 
+              className="w-full min-h-[160px] resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30" 
+            />
             {input && (
-              <div className={clsx('border-t-2 border-slate-200 px-6 py-4', 
+              <div className={clsx('border-t border-gray-200 px-4 sm:px-6 py-3 sm:py-4', 
                 status.status === 'success' ? 'bg-success/10 border-success/40 text-success' :
                 status.status === 'warning' ? 'bg-warning/10 border-warning/40 text-warning' :
                 'bg-error/10 border-error/40 text-error'
@@ -1092,7 +1097,7 @@ const SAMLInspector = () => {
                   )} />
                   <div>
                     <p className="font-semibold text-sm">{status.message}</p>
-                    <p className="text-xs text-slate-700 mt-0.5">{status.details}</p>
+                    <p className="text-xs text-gray-700 mt-0.5">{status.details}</p>
                   </div>
                 </div>
               </div>
@@ -1106,11 +1111,11 @@ const SAMLInspector = () => {
 
           {/* SAML Information Panel */}
           {input && (
-            <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm overflow-hidden">
-              <div className="border-b-2 border-slate-200 bg-slate-50/50 px-6 py-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-                  <h3 className="text-sm font-bold text-slate-900">SAML Information</h3>
+            <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+              <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0 bg-gray-400" />
+                  <h3 className="text-sm font-bold text-gray-900">SAML Information</h3>
                 </div>
               </div>
               <div className="p-6">
@@ -1124,7 +1129,7 @@ const SAMLInspector = () => {
                               <ListTree className="h-5 w-5" style={{ color: '#60a5fa' }} />
                               <h4 className="text-sm font-bold" style={{ color: '#3b82f6' }}>SAML Claims</h4>
                             </div>
-                          <span className="px-2.5 py-1 rounded-lg bg-slate-100 text-xs font-semibold text-slate-700">
+                          <span className="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-semibold text-gray-700">
                             {parsed.attributes.length}
                           </span>
                         </div>
@@ -1132,10 +1137,10 @@ const SAMLInspector = () => {
                           {parsed.attributes.map((attribute) => (
                             <div 
                               key={attribute.name} 
-                              className="rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 transition"
+                              className="rounded-lg border border-gray-200 bg-white p-3 hover:border-gray-300 transition"
                             >
                               <div className="flex items-start justify-between gap-2 mb-2">
-                                <div className="font-mono text-sm font-semibold text-slate-900 break-words flex-1">
+                                <div className="font-mono text-sm font-semibold text-gray-900 break-words flex-1">
                                   {attribute.name}
                                 </div>
                                 <button 
@@ -1164,7 +1169,7 @@ const SAMLInspector = () => {
                                       e.currentTarget.style.backgroundColor = '';
                                     }, 150);
                                   }}
-                                  className="inline-flex items-center gap-1 rounded px-1.5 py-1 text-xs text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition active:scale-95 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-slate-300"
+                                  className="inline-flex items-center gap-1 rounded px-1.5 py-1 text-xs text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition active:scale-95 flex-shrink-0 focus:outline-none focus:ring-2 focus:outline-none300"
                                   tabIndex={0}
                                 >
                                   <Copy className="h-3 w-3" />
@@ -1174,7 +1179,7 @@ const SAMLInspector = () => {
                                 {attribute.values.map((value, vIdx) => (
                                   <div 
                                     key={vIdx}
-                                    className="text-sm text-slate-700 bg-slate-50 rounded px-2.5 py-2 break-words leading-tight font-medium"
+                                    className="text-sm text-gray-700 bg-gray-50 rounded px-2.5 py-2 break-words leading-tight font-medium"
                                   >
                                     {value || '—'}
                                   </div>
@@ -1204,13 +1209,13 @@ const SAMLInspector = () => {
                             { label: 'Destination', value: parsed.samlInfo.destination || '—', fullWidth: true },
                             { label: 'IssueInstant', value: formatRelativeTime(parsed.meta.issueInstant) || '—', fullWidth: true },
                           ].map((item) => (
-                            <div key={item.label} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+                            <div key={item.label} className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5">
                               <div className="flex items-start gap-3">
-                                <span className="font-semibold text-slate-700 text-sm flex-shrink-0 min-w-[110px]">{item.label}:</span>
+                                <span className="font-semibold text-gray-700 text-sm flex-shrink-0 min-w-[110px]">{item.label}:</span>
                                 <div className="flex-1 text-right">
                                   <span 
                                     className={clsx(
-                                      'font-semibold text-slate-900 text-sm break-words whitespace-normal inline-block',
+                                      'font-semibold text-gray-900 text-sm break-words whitespace-normal inline-block',
                                       item.fullWidth ? '' : 'truncate max-w-[140px]'
                                     )}
                                     style={{ textAlign: 'right', width: '100%' }}
@@ -1237,15 +1242,15 @@ const SAMLInspector = () => {
                             { label: 'Signature Method', value: parsed.meta.signatureMethod || '—', fullWidth: true },
                             { label: 'Digest Method', value: parsed.meta.digestMethod || '—', fullWidth: true },
                           ].map((item) => (
-                            <div key={item.label} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+                            <div key={item.label} className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5">
                               <div className="flex items-start gap-3">
-                                <span className="font-semibold text-slate-700 text-sm flex-shrink-0 min-w-[130px]">{item.label}:</span>
+                                <span className="font-semibold text-gray-700 text-sm flex-shrink-0 min-w-[130px]">{item.label}:</span>
                                 <div className="flex-1 text-right">
                                   <span 
                                     className={clsx(
                                       'font-semibold text-sm break-words whitespace-normal inline-block',
                                       item.value === 'Valid Signature' ? 'text-success' :
-                                      item.value === 'Signed' ? 'text-slate-900' : 'text-slate-600',
+                                      item.value === 'Signed' ? 'text-gray-900' : 'text-gray-600',
                                       item.fullWidth ? '' : 'truncate max-w-[140px]'
                                     )}
                                     style={{ textAlign: 'right', width: '100%' }}
@@ -1280,13 +1285,13 @@ const SAMLInspector = () => {
                             { label: 'Audience', value: parsed.meta.audience || '—', fullWidth: true },
                             { label: 'Assertion ID', value: parsed.meta.assertionId || '—', fullWidth: true },
                           ].map((item) => (
-                            <div key={item.label} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+                            <div key={item.label} className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5">
                               <div className="flex items-start gap-3">
-                                <span className="font-semibold text-slate-700 text-sm flex-shrink-0 min-w-[130px]">{item.label}:</span>
+                                <span className="font-semibold text-gray-700 text-sm flex-shrink-0 min-w-[130px]">{item.label}:</span>
                                 <div className="flex-1 text-right">
                                   <span 
                                     className={clsx(
-                                      'font-semibold text-slate-900 text-sm break-words whitespace-normal inline-block',
+                                      'font-semibold text-gray-900 text-sm break-words whitespace-normal inline-block',
                                       item.fullWidth ? '' : 'truncate max-w-[140px]'
                                     )}
                                     style={{ textAlign: 'right', width: '100%' }}
@@ -1312,11 +1317,11 @@ const SAMLInspector = () => {
                           { label: 'NotBefore', value: formatRelativeTime(parsed.meta.notBefore) || '—' },
                           { label: 'NotOnOrAfter', value: formatRelativeTime(parsed.meta.notOnOrAfter) || '—' },
                         ].map((item) => (
-                          <div key={item.label} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
+                          <div key={item.label} className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5">
                             <div className="flex items-start gap-3">
-                              <span className="font-semibold text-slate-700 text-sm flex-shrink-0 min-w-[130px]">{item.label}:</span>
+                              <span className="font-semibold text-gray-700 text-sm flex-shrink-0 min-w-[130px]">{item.label}:</span>
                               <div className="flex-1 text-right">
-                                <span className="font-semibold text-slate-900 text-sm break-words whitespace-normal inline-block" style={{ textAlign: 'right', width: '100%' }}>{item.value}</span>
+                                <span className="font-semibold text-gray-900 text-sm break-words whitespace-normal inline-block" style={{ textAlign: 'right', width: '100%' }}>{item.value}</span>
                               </div>
                             </div>
                           </div>
