@@ -85,6 +85,12 @@ See `CHROME_STORE_LISTING.md` for the full detailed description.
 (Add your support page URL if available)
 ```
 
+#### Privacy Policy URL (Required)
+```
+(Your hosted privacy policy URL - see HOSTING_PRIVACY_POLICY.md for instructions)
+Example: https://username.github.io/repo-name/privacy-policy.html
+```
+
 ---
 
 ## Permissions Justification

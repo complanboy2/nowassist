@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - NowAssist Chrome Extension</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #333;
+            background-color: #f9fafb;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1f2937;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #374151;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #4b5563;
+            margin-top: 25px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul {
+            margin-bottom: 15px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            color: #1f2937;
+        }
+        .highlight {
+            background-color: #eff6ff;
+            padding: 20px;
+            border-left: 4px solid #3b82f6;
+            margin: 20px 0;
+        }
+        .summary {
+            background-color: #f0fdf4;
+            padding: 15px;
+            border-left: 4px solid #10b981;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        code {
+            background-color: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Privacy Policy for NowAssist Chrome Extension</h1>
+        
+        <p><strong>Last Updated</strong>: December 27, 2024</p>
+
+        <div class="summary">
+            <strong>Summary</strong>: NowAssist processes everything locally in your browser. Your data never leaves your device. We don't collect, store, or transmit any information.
+        </div>
+
+        <h2>Introduction</h2>
+        <p>NowAssist ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you use the NowAssist Chrome extension.</p>
+
+        <h2>Data Collection</h2>
+        <p><strong>We do not collect, store, or transmit any personal data or user information.</strong></p>
+
+        <h3>What We Don't Do:</h3>
+        <ul>
+            <li>❌ We don't collect personal information</li>
+            <li>❌ We don't track your browsing activity</li>
+            <li>❌ We don't store data on external servers</li>
+            <li>❌ We don't use analytics or tracking services</li>
+            <li>❌ We don't share data with third parties</li>
+            <li>❌ We don't use cookies for tracking</li>
+        </ul>
+
+        <h3>What We Do:</h3>
+        <ul>
+            <li>✅ All processing happens locally in your browser</li>
+            <li>✅ Data stays on your device</li>
+            <li>✅ No network requests are made (except when you explicitly use REST API Tester or JWKS fetcher)</li>
+            <li>✅ No data is transmitted to external servers</li>
+        </ul>
+
+        <h2>Local Storage</h2>
+        <p>The extension may use Chrome's local storage API to:</p>
+        <ul>
+            <li>Store your preferences (if any)</li>
+            <li>Cache JWKS keys temporarily for performance</li>
+            <li>Save REST API request history locally on your device</li>
+        </ul>
+        <p>All this data remains on your device and is never transmitted externally.</p>
+
+        <h2>Network Requests</h2>
+        <p>The extension makes network requests only in the following scenarios:</p>
+        <ol>
+            <li><strong>REST API Tester</strong>: When you explicitly send HTTP requests using the REST API Tester feature</li>
+            <li><strong>JWKS Fetcher</strong>: When you explicitly fetch JSON Web Key Sets from a URL you provide</li>
+        </ol>
+        <p>These requests are made directly from your browser to the endpoints you specify. We do not intercept, log, or store these requests.</p>
+
+        <h2>Permissions</h2>
+        <p>The extension requires the following permissions:</p>
+        <ul>
+            <li><strong>webRequest</strong>: To enable REST API testing functionality</li>
+            <li><strong>storage</strong>: To save your preferences locally on your device</li>
+            <li><strong>debugger</strong>: For advanced debugging features</li>
+            <li><strong>scripting</strong>: To inject content scripts when needed</li>
+            <li><strong>tabs</strong>: To interact with browser tabs</li>
+            <li><strong>host_permissions</strong>: To allow REST API requests to any URL you specify</li>
+        </ul>
+        <p>These permissions are used solely for the extension's functionality and not for data collection.</p>
+
+        <h2>Third-Party Services</h2>
+        <p>We do not integrate with any third-party analytics, advertising, or tracking services.</p>
+
+        <h2>Data Security</h2>
+        <p>Since we don't collect or transmit data, there's no data to secure. All processing happens locally in your browser using standard web technologies.</p>
+
+        <h2>Children's Privacy</h2>
+        <p>Our extension does not knowingly collect information from children. Since we don't collect any information, this is not applicable.</p>
+
+        <h2>Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Last Updated" date at the top of this policy.</p>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy, please contact us through the Chrome Web Store listing or the extension's About page.</p>
+
+        <h2>Your Rights</h2>
+        <p>Since we don't collect any data, there's no data to access, modify, or delete. You have complete control over your data as it never leaves your device.</p>
+
+        <div class="highlight">
+            <p><strong>Summary</strong>: NowAssist processes everything locally in your browser. Your data never leaves your device. We don't collect, store, or transmit any information.</p>
+        </div>
+
+        <footer>
+            <p><strong>Last Updated</strong>: December 27, 2024</p>
+        </footer>
+    </div>
+</body>
+</html>
+
