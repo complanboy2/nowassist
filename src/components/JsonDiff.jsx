@@ -241,7 +241,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
     return Array.from(errorLines).sort((a, b) => a - b);
   };
 
-  // Generate highlighted JSON with inline highlighting for differences
+  // Generate highlighted JSON with row highlighting for differences
   const getHighlightedJson = (jsonString, diffType, diffItems) => {
     if (!highlightDiff || !diffItems || diffItems.length === 0) {
       return { json: jsonString, errorLines: [], errorMessage: null, highlightedHtml: jsonString };
@@ -260,45 +260,37 @@ const JsonDiff = ({ onOutputUpdate }) => {
       
       // Color mapping based on diff type
       const getHighlightColor = (type) => {
-        if (diffType.includes('added') || diffType.includes('added/changed')) return 'rgba(34, 197, 94, 0.4)'; // green
-        if (diffType.includes('removed') || diffType.includes('removed/changed')) return 'rgba(239, 68, 68, 0.4)'; // red
-        return 'rgba(251, 191, 36, 0.4)'; // yellow for changed
+        if (diffType.includes('added') || diffType.includes('added/changed')) return 'rgba(34, 197, 94, 0.2)'; // green
+        if (diffType.includes('removed') || diffType.includes('removed/changed')) return 'rgba(239, 68, 68, 0.2)'; // red
+        return 'rgba(251, 191, 36, 0.2)'; // yellow for changed
+      };
+      
+      const getBorderColor = (type) => {
+        if (diffType.includes('added') || diffType.includes('added/changed')) return '#22c55e'; // green
+        if (diffType.includes('removed') || diffType.includes('removed/changed')) return '#ef4444'; // red
+        return '#fbbf24'; // yellow for changed
       };
       
       const highlightColor = getHighlightColor(diffType);
-      const borderColor = diffType.includes('added') || diffType.includes('added/changed') 
-        ? '#22c55e' 
-        : diffType.includes('removed') || diffType.includes('removed/changed')
-        ? '#ef4444'
-        : '#fbbf24';
+      const borderColor = getBorderColor(diffType);
       
-      // For each diff item, find and highlight the value in the JSON
-      // We need to find the value after the key in the formatted JSON
-      diffItems.forEach(item => {
-        const valueToHighlight = item.value !== undefined ? item.value : (item.oldValue !== undefined ? item.oldValue : item.newValue);
-        if (valueToHighlight === undefined || valueToHighlight === null) return;
-        
-        // Convert value to string representation as it appears in JSON
-        let valueStr = typeof valueToHighlight === 'object' 
-          ? JSON.stringify(valueToHighlight)
-          : typeof valueToHighlight === 'string'
-          ? `"${valueToHighlight}"`
-          : String(valueToHighlight);
-        
-        // Find the path key first, then highlight the value after it
-        const cleanPath = item.path.startsWith('$.') ? item.path.substring(2) : item.path;
-        const parts = cleanPath.split('.');
-        const lastKey = parts[parts.length - 1].replace(/\[\d+\]$/, '');
-        const escapedKey = lastKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        
-        // Pattern to find key and its value
-        const keyValuePattern = new RegExp(`("${escapedKey}"\\s*:\\s*)(${valueStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'g');
-        
-        highlightedHtml = highlightedHtml.replace(keyValuePattern, (match, keyPart, valuePart) => {
-          // Wrap only the value part
-          return `${keyPart}<span style="background-color: ${highlightColor}; border: 1px solid ${borderColor}; border-radius: 3px; padding: 1px 3px; font-weight: 500;">${valuePart}</span>`;
-        });
+      // Split into lines and highlight entire rows
+      const lines = formattedJson.split('\n');
+      const highlightedLines = lines.map((line, index) => {
+        const lineNum = index + 1;
+        if (errorLinesArray.includes(lineNum)) {
+          // Wrap entire line in a span with background color
+          // First get the highlighted version of this line if it exists in the Prism output
+          const highlightedLinesArray = highlightedHtml.split('\n');
+          const highlightedLine = highlightedLinesArray[index] || line;
+          return `<div style="background-color: ${highlightColor}; border-left: 3px solid ${borderColor}; padding: 2px 8px; margin: 0 -8px;">${highlightedLine}</div>`;
+        }
+        // Return the Prism highlighted line
+        const highlightedLinesArray = highlightedHtml.split('\n');
+        return highlightedLinesArray[index] || line;
       });
+      
+      highlightedHtml = highlightedLines.join('\n');
       
       const diffCount = diffItems.length;
       const message = errorLinesArray.length > 0 
@@ -339,6 +331,29 @@ const JsonDiff = ({ onOutputUpdate }) => {
 
       const errorLinesArray = Array.from(errorLines).sort((a, b) => a - b);
       
+      // Apply row highlighting in fallback mode too
+      const getHighlightColor = (type) => {
+        if (diffType.includes('added') || diffType.includes('added/changed')) return 'rgba(34, 197, 94, 0.2)';
+        if (diffType.includes('removed') || diffType.includes('removed/changed')) return 'rgba(239, 68, 68, 0.2)';
+        return 'rgba(251, 191, 36, 0.2)';
+      };
+      
+      const getBorderColor = (type) => {
+        if (diffType.includes('added') || diffType.includes('added/changed')) return '#22c55e';
+        if (diffType.includes('removed') || diffType.includes('removed/changed')) return '#ef4444';
+        return '#fbbf24';
+      };
+      
+      const highlightColor = getHighlightColor(diffType);
+      const borderColor = getBorderColor(diffType);
+      const highlightedLines = lines.map((line, index) => {
+        const lineNum = index + 1;
+        if (errorLinesArray.includes(lineNum)) {
+          return `<div style="background-color: ${highlightColor}; border-left: 3px solid ${borderColor}; padding: 2px 8px; margin: 0 -8px;">${line}</div>`;
+        }
+        return line;
+      });
+      
       return { 
         json: jsonString, 
         errorLines: errorLinesArray,
@@ -346,7 +361,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
         errorMessage: errorLinesArray.length > 0 
           ? `${diffItems.length} differences detected (lines: ${errorLinesArray.join(', ')})`
           : `${diffItems.length} differences detected`,
-        highlightedHtml: jsonString
+        highlightedHtml: highlightedLines.join('\n')
       };
     }
   };
