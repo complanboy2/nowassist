@@ -1112,6 +1112,14 @@ const HarAnalyzer = () => {
               </div>
             </>
           )}
+          </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    </div>
+  );
+};
 
 // HAR Entry Row Component
 const HarEntryRow = ({ entry, index, isSelected, onSelect, getStatusColor, formatBytes, formatTime, searchQuery = '' }) => {
@@ -1765,14 +1773,10 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           </div>
         </div>
       )}
-          </div>
-          </div>
         </div>
-        <Footer />
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 // Initialize React app
 const root = ReactDOM.createRoot(document.getElementById('root'));
