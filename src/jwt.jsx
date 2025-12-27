@@ -2124,8 +2124,7 @@ const JWTDecoder = () => {
               )}
             </>
           )}
-            </div>
-            </div>
+          </div>
           </div>
         </div>
         <Footer />
