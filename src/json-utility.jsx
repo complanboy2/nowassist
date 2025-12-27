@@ -197,81 +197,81 @@ const JsonUtility = () => {
           <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-center gap-2">
             <button
               onClick={generateSample}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition shadow-sm text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-white bg-sky-500 hover:bg-sky-600 hover:border-gray-400 hover:shadow"
               title="Generate random sample JSON"
             >
-              <Sparkles className="h-4 w-4" />
+              <Sparkles className="h-3.5 w-3.5" />
               Generate Sample
             </button>
             <button
               onClick={prettyPrint}
               disabled={!isValidJson}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
               title="Format JSON with indentation"
             >
-              <Code className="h-4 w-4" />
+              <Code className="h-3.5 w-3.5" />
               Pretty Print
             </button>
             <button
               onClick={minify}
               disabled={!isValidJson}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
               title="Minify JSON (remove whitespace)"
             >
-              <Code className="h-4 w-4" />
+              <Code className="h-3.5 w-3.5" />
               Minify
             </button>
             <button
               onClick={showTreeView}
               disabled={!isValidJson}
-              className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
               title="Show JSON as tree view"
             >
-              <ListTree className="h-4 w-4" />
+              <ListTree className="h-3.5 w-3.5" />
               Tree View
             </button>
             <button
               onClick={sortKeysAsc}
               disabled={!isValidJson}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
               title="Sort keys alphabetically (A-Z)"
             >
-              <Layers className="h-4 w-4" />
+              <Layers className="h-3.5 w-3.5" />
               Sort A-Z
             </button>
             <button
               onClick={sortKeysDesc}
               disabled={!isValidJson}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
               title="Sort keys reverse alphabetically (Z-A)"
             >
-              <Layers className="h-4 w-4" />
+              <Layers className="h-3.5 w-3.5" />
               Sort Z-A
             </button>
             <button
               onClick={flatten}
               disabled={!isValidJson}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
               title="Flatten nested JSON object"
             >
-              <Layers className="h-4 w-4" />
+              <Layers className="h-3.5 w-3.5" />
               Flatten
             </button>
             <button
               onClick={unflatten}
               disabled={!isValidJson}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
               title="Unflatten JSON object"
             >
-              <Layers className="h-4 w-4" />
+              <Layers className="h-3.5 w-3.5" />
               Unflatten
             </button>
             <button
               onClick={clearAll}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition shadow-sm text-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow"
               title="Clear all content"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5" />
               Clear
             </button>
           </div>
@@ -346,7 +346,7 @@ const JsonUtility = () => {
             <button
               onClick={() => setActiveTab('editor')}
               className={clsx(
-                'px-2 py-1 text-xs font-medium transition-colors rounded',
+                'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
                 activeTab === 'editor'
                   ? 'bg-sky-500 text-white'
                   : 'text-gray-700 hover:bg-gray-50'
@@ -357,7 +357,7 @@ const JsonUtility = () => {
             <button
               onClick={() => setActiveTab('diff')}
               className={clsx(
-                'px-2 py-1 text-xs font-medium transition-colors rounded',
+                'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
                 activeTab === 'diff'
                   ? 'bg-sky-500 text-white'
                   : 'text-gray-700 hover:bg-gray-50'
@@ -369,7 +369,7 @@ const JsonUtility = () => {
               onClick={() => setActiveTab('convert')}
               disabled={!isValidJson}
               className={clsx(
-                'px-2 py-1 text-xs font-medium transition-colors rounded disabled:opacity-50 disabled:cursor-not-allowed',
+                'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded disabled:opacity-50 disabled:cursor-not-allowed',
                 activeTab === 'convert'
                   ? 'bg-sky-500 text-white'
                   : 'text-gray-700 hover:bg-gray-50'
