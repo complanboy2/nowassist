@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   ChevronLeft,
@@ -13,6 +13,7 @@ import {
   Network,
   FileJson,
   Sparkles,
+  ChevronDown,
 } from 'lucide-react';
 import clsx from 'clsx';
 import Navigation from './components/Navigation';
@@ -144,6 +145,22 @@ const EncoderDecoder = () => {
   const [mode, setMode] = useState('encode'); // 'encode' or 'decode'
   const [error, setError] = useState('');
   const [copied, setCopied] = useState({ input: false, output: false });
+  const [encodingTypeMenuOpen, setEncodingTypeMenuOpen] = useState(false);
+  const encodingTypeMenuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (encodingTypeMenuRef.current && !encodingTypeMenuRef.current.contains(event.target)) {
+        setEncodingTypeMenuOpen(false);
+      }
+    };
+
+    if (encodingTypeMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [encodingTypeMenuOpen]);
 
   // Auto encode/decode on input or mode change
   useEffect(() => {
@@ -295,21 +312,61 @@ const EncoderDecoder = () => {
                   <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                     Encoding Type
                   </label>
-                  <select
-                    value={selectedType}
-                    onChange={(e) => {
-                      setSelectedType(e.target.value);
-                      setOutputText('');
-                      setError('');
-                    }}
-                    className="w-full px-3 sm:px-4 py-2 text-xs sm:text-sm border-[0.5px] border-gray-300 rounded-lg focus:outline-none focus:border-sky-400/60 bg-white text-gray-900 custom-select"
-                  >
-                    {ENCODING_TYPES.map(type => (
-                      <option key={type.id} value={type.id}>
-                        {type.name} - {type.description}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative" ref={encodingTypeMenuRef}>
+                    <button
+                      type="button"
+                      onClick={() => setEncodingTypeMenuOpen(!encodingTypeMenuOpen)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setEncodingTypeMenuOpen(!encodingTypeMenuOpen);
+                        }
+                      }}
+                      className="w-full text-left border-[0.5px] border-gray-300 rounded-lg bg-white px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
+                      tabIndex={0}
+                      aria-expanded={encodingTypeMenuOpen}
+                    >
+                      <span>{ENCODING_TYPES.find(t => t.id === selectedType)?.name || 'Select encoding type'}</span>
+                      <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0', encodingTypeMenuOpen && 'rotate-180')} />
+                    </button>
+                    {encodingTypeMenuOpen && (
+                      <>
+                        <div className="fixed inset-0 z-40" onClick={() => setEncodingTypeMenuOpen(false)} />
+                        <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-y-auto max-h-64">
+                          {ENCODING_TYPES.map((type) => (
+                            <button
+                              key={type.id}
+                              onClick={() => {
+                                setSelectedType(type.id);
+                                setOutputText('');
+                                setError('');
+                                setEncodingTypeMenuOpen(false);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  setSelectedType(type.id);
+                                  setOutputText('');
+                                  setError('');
+                                  setEncodingTypeMenuOpen(false);
+                                }
+                              }}
+                              className={clsx(
+                                'w-full px-3 sm:px-4 py-2 text-left text-xs sm:text-sm transition-colors',
+                                selectedType === type.id 
+                                  ? 'bg-gray-100 font-medium text-gray-900' 
+                                  : 'text-gray-700 hover:bg-gray-50'
+                              )}
+                              tabIndex={0}
+                            >
+                              <div className="font-medium">{type.name}</div>
+                              <div className="text-xs text-gray-500 mt-0.5">{type.description}</div>
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {/* Mode Toggle */}
