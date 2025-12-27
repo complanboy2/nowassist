@@ -296,10 +296,10 @@ const EncoderDecoder = () => {
 
             {/* Encoding Type and Mode Selection */}
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm">
-              <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
-                <h2 className="text-sm sm:text-base font-semibold text-gray-900">Configuration</h2>
+              <div className="flex items-center justify-between bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <h2 className="text-sm font-semibold text-gray-900">Configuration</h2>
               </div>
-              <div className="p-4 sm:p-6 space-y-4">
+              <div className="p-3 space-y-3">
                 {/* Encoding Type */}
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
@@ -451,7 +451,7 @@ const EncoderDecoder = () => {
                       setError('');
                     }}
                     placeholder="Enter text to encode/decode..."
-                    className="w-full h-full resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
+                    className="w-full h-full resize-none border-0 bg-white px-4 py-3 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
                   />
                 </div>
               </div>
@@ -488,7 +488,7 @@ const EncoderDecoder = () => {
                     value={outputText}
                     readOnly
                     placeholder="Output will appear here..."
-                    className="w-full h-full resize-none border-0 bg-gray-50 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                    className="w-full h-full resize-none border-0 bg-gray-50 px-4 py-3 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none"
                   />
                 </div>
               </div>
