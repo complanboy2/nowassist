@@ -173,20 +173,28 @@ const JsonUtility = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-screen bg-white overflow-hidden">
       {/* Sidebar */}
       <Navigation currentPageId="json" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden flex flex-col" style={{ width: '100%', minWidth: 0 }}>
-        <div className="mx-auto max-w-[1400px] w-full px-6 py-8 flex-1 flex flex-col min-h-0 bg-white">
-          {/* Clean Header */}
-          <header className="pb-4 border-b border-gray-200 mb-4">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-1">JSON Utility</h1>
+      <div className="flex-1 overflow-y-auto bg-gray-50" style={{ width: '100%', minWidth: 0 }}>
+        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
+          <div className="space-y-4 sm:space-y-6">
+          {/* Professional Header with Border */}
+          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div className="space-y-1 sm:space-y-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">JSON Utility</h1>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Format, validate, transform, and analyze JSON data with ease
+                </p>
+              </div>
+            </div>
           </header>
 
-          {/* Action Buttons - Centered, No Groups */}
-          <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
+          {/* Action Buttons */}
+          <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-center gap-2">
             <button
               onClick={generateSample}
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition shadow-sm text-sm"
@@ -270,22 +278,22 @@ const JsonUtility = () => {
 
           {/* Expandable Error Information */}
           {jsonError && (
-            <div className="mb-4">
+            <div className="rounded-xl border border-error/20 bg-error/5 overflow-hidden">
               <div 
                 onClick={() => setErrorExpanded(!errorExpanded)}
-                className="cursor-pointer p-3 bg-red-50 border-2 border-red-300 rounded-lg hover:bg-red-100 transition"
+                className="cursor-pointer px-4 sm:px-6 py-3 sm:py-4 hover:bg-error/10 transition-colors border-b border-error/20"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
+                    <AlertCircle className="h-5 w-5 text-error flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-red-900 truncate">
+                      <div className="font-semibold text-error truncate">
                         {jsonError.message || 'Invalid JSON'}
                         {jsonError.line && ` (Line ${jsonError.line}${jsonError.column ? `, Column ${jsonError.column}` : ''})`}
                       </div>
                     </div>
                   </div>
-                  <button className="text-red-600 hover:text-red-700 flex-shrink-0">
+                  <button className="text-error hover:text-error/80 flex-shrink-0">
                     {errorExpanded ? (
                       <ChevronUp className="h-5 w-5" />
                     ) : (
@@ -296,33 +304,33 @@ const JsonUtility = () => {
               </div>
               
               {errorExpanded && (
-                <div className="mt-2 p-4 bg-red-50 border-2 border-red-300 rounded-lg">
+                <div className="px-4 sm:px-6 py-4 border-t border-error/20">
                   <div className="space-y-2 text-sm">
                     {jsonError.originalMessage && (
                       <div>
-                        <span className="font-semibold text-red-900">Error:</span>
-                        <span className="text-red-700 ml-2">{jsonError.originalMessage}</span>
+                        <span className="font-semibold text-error">Error:</span>
+                        <span className="text-error/90 ml-2">{jsonError.originalMessage}</span>
                       </div>
                     )}
                     {jsonError.line && (
                       <div>
-                        <span className="font-semibold text-red-900">Location:</span>
-                        <span className="text-red-700 ml-2">
+                        <span className="font-semibold text-error">Location:</span>
+                        <span className="text-error/90 ml-2">
                           Line {jsonError.line}
                           {jsonError.column && `, Column ${jsonError.column}`}
                         </span>
                       </div>
                     )}
                     {jsonError.suggestion && (
-                      <div className="mt-3 p-3 bg-red-100/50 rounded border-l-2 border-red-400">
-                        <div className="font-semibold text-red-900 mb-1">💡 Suggestion:</div>
-                        <div className="text-red-800">{jsonError.suggestion}</div>
+                      <div className="mt-3 p-3 bg-error/10 rounded border-l-2 border-error/40">
+                        <div className="font-semibold text-error mb-1">💡 Suggestion:</div>
+                        <div className="text-error/90">{jsonError.suggestion}</div>
                       </div>
                     )}
                     {jsonError.context && (
                       <div className="mt-3">
-                        <div className="font-semibold text-red-900 mb-1">Context:</div>
-                        <div className="text-xs text-red-700 font-mono bg-red-100/30 rounded p-2">
+                        <div className="font-semibold text-error mb-1">Context:</div>
+                        <div className="text-xs text-error/80 font-mono bg-error/10 rounded p-2">
                           {jsonError.context}
                         </div>
                       </div>
@@ -334,55 +342,53 @@ const JsonUtility = () => {
           )}
 
           {/* Tabs */}
-          <div className="mb-4 border-b-2 border-slate-200 flex-shrink-0">
-            <div className="flex gap-1">
-              <button
-                onClick={() => setActiveTab('editor')}
-                className={clsx(
-                  'px-6 py-2.5 text-sm font-semibold transition border-b-2 -mb-0.5',
-                  activeTab === 'editor'
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-slate-600 hover:text-slate-900'
-                )}
-              >
-                Editor
-              </button>
-              <button
-                onClick={() => setActiveTab('diff')}
-                className={clsx(
-                  'px-6 py-2.5 text-sm font-semibold transition border-b-2 -mb-0.5',
-                  activeTab === 'diff'
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-slate-600 hover:text-slate-900'
-                )}
-              >
-                Diff
-              </button>
-              <button
-                onClick={() => setActiveTab('convert')}
-                disabled={!isValidJson}
-                className={clsx(
-                  'px-6 py-2.5 text-sm font-semibold transition border-b-2 -mb-0.5 disabled:opacity-50 disabled:cursor-not-allowed',
-                  activeTab === 'convert'
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-slate-600 hover:text-slate-900'
-                )}
-              >
-                Convert
-              </button>
-            </div>
+          <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
+            <button
+              onClick={() => setActiveTab('editor')}
+              className={clsx(
+                'px-2 py-1 text-xs font-medium transition-colors rounded',
+                activeTab === 'editor'
+                  ? 'bg-sky-500 text-white'
+                  : 'text-gray-700 hover:bg-gray-50'
+              )}
+            >
+              Editor
+            </button>
+            <button
+              onClick={() => setActiveTab('diff')}
+              className={clsx(
+                'px-2 py-1 text-xs font-medium transition-colors rounded',
+                activeTab === 'diff'
+                  ? 'bg-sky-500 text-white'
+                  : 'text-gray-700 hover:bg-gray-50'
+              )}
+            >
+              Diff
+            </button>
+            <button
+              onClick={() => setActiveTab('convert')}
+              disabled={!isValidJson}
+              className={clsx(
+                'px-2 py-1 text-xs font-medium transition-colors rounded disabled:opacity-50 disabled:cursor-not-allowed',
+                activeTab === 'convert'
+                  ? 'bg-sky-500 text-white'
+                  : 'text-gray-700 hover:bg-gray-50'
+              )}
+            >
+              Convert
+            </button>
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 overflow-hidden min-h-0">
+          <div className="flex-1 min-h-0">
             {activeTab === 'editor' && (
-              <div className="grid grid-cols-2 gap-6 h-full" style={{ gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)' }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6" style={{ gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)' }}>
                 {/* Input Panel */}
-                <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm overflow-hidden flex flex-col" style={{ height: '100%', minHeight: 0, minWidth: 0, maxWidth: '100%' }}>
-                  <div className="border-b-2 border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100/50 px-6 py-3 flex items-center justify-between flex-shrink-0">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0"></div>
-                      <h2 className="text-base font-semibold text-slate-900 whitespace-nowrap">Input JSON</h2>
+                <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col">
+                  <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                      <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full bg-gray-400 flex-shrink-0"></div>
+                      <h2 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap">Input JSON</h2>
                       {inputJson && (
                         <div className="flex items-center gap-2 ml-2">
                           {jsonError ? (
@@ -401,17 +407,23 @@ const JsonUtility = () => {
                     </div>
                     <button
                       onClick={() => copyToClipboard(inputJson, 'input')}
-                      className="p-1.5 text-slate-600 hover:bg-slate-200 rounded-lg transition"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow"
                       title="Copy input to clipboard"
                     >
                       {copied.input ? (
-                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <>
+                          <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                          <span className="hidden sm:inline">Copied!</span>
+                        </>
                       ) : (
-                        <Copy className="h-4 w-4" />
+                        <>
+                          <Copy className="h-3.5 w-3.5" />
+                          <span className="hidden sm:inline">Copy</span>
+                        </>
                       )}
                     </button>
                   </div>
-                  <div className="flex-1 overflow-hidden" style={{ minHeight: 0 }}>
+                  <div className="flex-1 min-h-0" style={{ minHeight: '400px' }}>
                     <EnhancedJsonEditor
                       value={inputJson}
                       onChange={setInputJson}
@@ -424,11 +436,11 @@ const JsonUtility = () => {
                 </div>
 
                 {/* Output Panel */}
-                <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm overflow-hidden flex flex-col" style={{ height: '100%', minHeight: 0, minWidth: 0, maxWidth: '100%' }}>
-                  <div className="border-b-2 border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100/50 px-6 py-3 flex items-center justify-between flex-shrink-0">
-                    <div className="flex items-center gap-3">
-                      <div className="h-2 w-2 rounded-full bg-green-500 flex-shrink-0"></div>
-                      <h2 className="text-base font-semibold text-slate-900 whitespace-nowrap">
+                <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col">
+                  <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full bg-gray-400 flex-shrink-0"></div>
+                      <h2 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap">
                         {outputViewMode === 'tree' ? 'Tree View' : 'Output JSON'}
                       </h2>
                     </div>
@@ -436,18 +448,24 @@ const JsonUtility = () => {
                       <button
                         onClick={() => copyToClipboard(outputJson, 'output')}
                         disabled={!outputJson}
-                        className="p-1.5 text-slate-600 hover:bg-slate-200 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
                         title="Copy output to clipboard"
                       >
                         {copied.output ? (
-                          <CheckCircle2 className="h-4 w-4 text-green-600" />
+                          <>
+                            <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                            <span className="hidden sm:inline">Copied!</span>
+                          </>
                         ) : (
-                          <Copy className="h-4 w-4" />
+                          <>
+                            <Copy className="h-3.5 w-3.5" />
+                            <span className="hidden sm:inline">Copy</span>
+                          </>
                         )}
                       </button>
                     )}
                   </div>
-                  <div className="flex-1 overflow-hidden" style={{ minHeight: 0 }}>
+                  <div className="flex-1 min-h-0" style={{ minHeight: '400px' }}>
                     {outputViewMode === 'tree' ? (
                       isValidJson ? (
                         (() => {
@@ -481,7 +499,7 @@ const JsonUtility = () => {
                         <div className="p-12 text-center">
                           <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-400" />
                           <div className="text-red-600 font-semibold mb-2 text-lg">Invalid JSON</div>
-                          <div className="text-sm text-slate-600">Please fix errors to view tree.</div>
+                          <div className="text-sm text-gray-600">Please fix errors to view tree.</div>
                         </div>
                       )
                     ) : (
@@ -498,7 +516,7 @@ const JsonUtility = () => {
             )}
 
             {activeTab === 'diff' && (
-              <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm overflow-hidden h-full">
+              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
                 <div className="h-full overflow-auto">
                   <JsonDiff onOutputUpdate={(output) => setOutputJson(output)} />
                 </div>
@@ -506,7 +524,7 @@ const JsonUtility = () => {
             )}
 
             {activeTab === 'convert' && isValidJson && (
-              <div className="bg-white rounded-xl border-2 border-slate-200 shadow-sm overflow-hidden h-full">
+              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
                 <div className="h-full overflow-auto">
                   <JsonConvert
                     inputJson={inputJson}
@@ -516,6 +534,7 @@ const JsonUtility = () => {
                 </div>
               </div>
             )}
+          </div>
           </div>
         </div>
       </div>
