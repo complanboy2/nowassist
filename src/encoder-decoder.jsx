@@ -317,7 +317,7 @@ const EncoderDecoder = () => {
                   <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                     Mode
                   </label>
-                  <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md w-fit">
+                  <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md w-full">
                     <button
                       onClick={() => {
                         setMode('encode');
@@ -325,7 +325,7 @@ const EncoderDecoder = () => {
                         setError('');
                       }}
                       className={clsx(
-                        'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
+                        'flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
                         mode === 'encode'
                           ? 'bg-sky-500 text-white'
                           : 'text-gray-700 hover:bg-gray-50'
@@ -340,7 +340,7 @@ const EncoderDecoder = () => {
                         setError('');
                       }}
                       className={clsx(
-                        'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
+                        'flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
                         mode === 'decode'
                           ? 'bg-sky-500 text-white'
                           : 'text-gray-700 hover:bg-gray-50'
