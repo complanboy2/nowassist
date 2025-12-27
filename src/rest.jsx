@@ -239,10 +239,19 @@ const RestTester = () => {
 
       let responseBody;
       const contentType = res.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        responseBody = await res.json();
-      } else {
-        responseBody = await res.text();
+      try {
+        if (contentType && contentType.includes('application/json')) {
+          responseBody = await res.json();
+        } else {
+          responseBody = await res.text();
+        }
+      } catch (parseError) {
+        // If response body parsing fails, use text
+        try {
+          responseBody = await res.text();
+        } catch {
+          responseBody = `[Unable to parse response body: ${parseError.message}]`;
+        }
       }
 
       const responseData = {
@@ -266,8 +275,18 @@ const RestTester = () => {
         response: responseData,
       });
     } catch (error) {
+      // Provide user-friendly error messages
+      let errorMessage = error.message || 'Request failed';
+      if (error.message?.includes('Failed to fetch')) {
+        errorMessage = 'Network error: Unable to connect to the server. Check the URL and your internet connection.';
+      } else if (error.message?.includes('CORS')) {
+        errorMessage = 'CORS error: The server is blocking cross-origin requests.';
+      } else if (error.message?.includes('timeout')) {
+        errorMessage = 'Request timeout: The server took too long to respond.';
+      }
+      
       const errorResponse = {
-        error: error.message,
+        error: errorMessage,
         ok: false,
       };
       setResponse(errorResponse);

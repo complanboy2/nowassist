@@ -7,7 +7,7 @@ const tools = [
   {
     id: 'jwt',
     name: 'JWT Decoder',
-    description: 'Inspect tokens in real time with health indicators.',
+    description: 'Decode, verify, and analyze JWT tokens with security insights.',
     href: 'jwt.html',
     status: 'Ready',
     icon: ShieldCheck,
@@ -16,20 +16,20 @@ const tools = [
   {
     id: 'saml',
     name: 'SAML Inspector',
-    description: 'Decode assertions and validate certificate details.',
+    description: 'Decode assertions, validate certificates, and inspect SAML messages.',
     href: 'saml.html',
-    status: 'In Progress',
+    status: 'Ready',
     icon: FileKey2,
-    accent: 'from-warning/10 to-warning/5',
+    accent: 'from-success/10 to-success/5',
   },
   {
     id: 'rest',
     name: 'REST API Tester',
-    description: 'Quickly hit ServiceNow APIs with saved presets.',
+    description: 'Test REST APIs with custom headers, authentication, and request bodies.',
     href: 'rest.html',
-    status: 'Planned',
+    status: 'Ready',
     icon: ServerCog,
-    accent: 'from-primary/10 to-primary/5',
+    accent: 'from-success/10 to-success/5',
   },
   {
     id: 'json',
@@ -38,7 +38,7 @@ const tools = [
     href: 'json-utility.html',
     status: 'Ready',
     icon: FileJson,
-    accent: 'from-primary/10 to-primary/5',
+    accent: 'from-success/10 to-success/5',
   },
 ];
 
@@ -57,11 +57,9 @@ const openTool = (path) => {
 const StatusBadge = ({ status }) => {
   const map = {
     Ready: 'bg-success/10 text-success',
-    'In Progress': 'bg-warning/10 text-warning',
-    Planned: 'bg-primary/10 text-primary',
   };
   return (
-    <span className={`rounded-full px-3 py-1 text-xs font-medium ${map[status]}`}>
+    <span className={`rounded-full px-3 py-1 text-xs font-medium ${map[status] || map.Ready}`}>
       {status}
     </span>
   );
@@ -107,8 +105,8 @@ const Popup = () => (
       </div>
 
       <footer className="rounded-lg bg-muted px-3 py-2 text-xs text-primary/60">
-        <p className="font-medium text-primary">Roadmap</p>
-        <p>Week 1: Stabilize JWT · Week 2: ship SAML · Week 3: REST tester beta.</p>
+        <p className="font-medium text-primary">NowAssist</p>
+        <p>Professional developer utilities. Everything happens in your browser.</p>
       </footer>
     </div>
   </div>
