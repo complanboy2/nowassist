@@ -113,6 +113,13 @@ Example: https://username.github.io/repo-name/privacy-policy.html
 ### host_permissions (<all_urls>)
 **Why**: Required for REST API Tester to allow users to test APIs on any domain they specify.
 
+**Justification for Reviewers**:
+- REST API Tester: Users need to test APIs across different domains (their own servers, third-party APIs, internal services, etc.). All requests are user-initiated.
+- JWKS Fetcher: Users need to fetch public keys from JWKS endpoints on any identity provider domain (Auth0, Okta, Azure AD, custom providers, etc.). Only fetches JSON data, never executes code.
+- Cannot use `activeTab`: API requests are made from extension context, not tied to a specific tab.
+- Cannot specify specific sites: Users test their own APIs and services which vary by organization.
+- All network activity is user-initiated. No automatic requests. No data is collected or transmitted externally.
+
 ---
 
 ## Publishing Checklist
