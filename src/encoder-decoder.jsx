@@ -302,7 +302,7 @@ const EncoderDecoder = () => {
             </header>
 
             {/* Encoding Type and Mode Selection */}
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm">
               <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
                 <h2 className="text-sm sm:text-base font-semibold text-gray-900">Configuration</h2>
               </div>
@@ -332,7 +332,7 @@ const EncoderDecoder = () => {
                     {encodingTypeMenuOpen && (
                       <>
                         <div className="fixed inset-0 z-40" onClick={() => setEncodingTypeMenuOpen(false)} />
-                        <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-y-auto max-h-64">
+                        <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-[100] overflow-y-auto max-h-64">
                           {ENCODING_TYPES.map((type) => (
                             <button
                               key={type.id}
