@@ -287,18 +287,11 @@ const EncoderDecoder = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto bg-gray-50" style={{ width: '100%', minWidth: 0 }}>
-        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
-          <div className="space-y-4 sm:space-y-6">
-            {/* Professional Header */}
-            <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div className="space-y-1 sm:space-y-2">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Encoder/Decoder</h1>
-                  <p className="text-sm sm:text-base text-gray-600">
-                    Encode and decode text using various encoding schemes
-                  </p>
-                </div>
-              </div>
+        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="space-y-3 sm:space-y-4">
+            {/* Compact Header */}
+            <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Encoder/Decoder</h1>
             </header>
 
             {/* Encoding Type and Mode Selection */}
