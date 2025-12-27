@@ -14,7 +14,7 @@ This software and associated documentation files (the "Software") are the exclus
 
 ## License
 
-This Software is licensed under the MIT License. See the [LICENSE](LICENSE) file for full license terms.
+This Software is licensed under a Proprietary License. See the [LICENSE](LICENSE) file for full license terms.
 
 ## Disclaimer
 
