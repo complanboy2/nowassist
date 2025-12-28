@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info, Home, Moon, Sun } from 'lucide-react';
 import clsx from 'clsx';
 import { getExtensionURL } from '../utils/chrome-polyfill';
+import { useTheme } from '../contexts/ThemeContext';
 
 const FEATURES = [
   { id: 'jwt', name: 'JWT Decoder', icon: ShieldCheck, category: 'Authentication', status: 'active', path: '/jwt', url: getExtensionURL('jwt.html') },
@@ -57,7 +58,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
       {/* Sidebar */}
       <div
         className={clsx(
-          'bg-white border-r-2 border-slate-200 transition-all duration-300 flex flex-col overflow-hidden z-50',
+          'bg-white dark:bg-gray-800 border-r-2 border-slate-200 dark:border-gray-700 transition-all duration-300 flex flex-col overflow-hidden z-50',
           // Mobile: overlay positioning
           'fixed lg:static inset-y-0 left-0',
           // Desktop: inline sidebar, Mobile: overlay
@@ -68,25 +69,39 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
       >
         {sidebarOpen && (
           <div className="flex flex-col h-full overflow-hidden">
-            <div className="p-3 lg:p-4 border-b-2 border-slate-200 flex items-center justify-between">
-              <h2 className="text-base lg:text-lg font-bold text-slate-900">NowAssist Tools</h2>
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="p-1.5 hover:bg-slate-100 rounded-lg transition"
-                aria-label="Close sidebar"
-              >
-                <ChevronLeft className="h-4 w-4 text-slate-600" />
-              </button>
+            <div className="p-3 lg:p-4 border-b-2 border-slate-200 dark:border-gray-700 flex items-center justify-between">
+              <h2 className="text-base lg:text-lg font-bold text-slate-900 dark:text-white">NowAssist Tools</h2>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={toggleTheme}
+                  className="p-1.5 hover:bg-slate-100 dark:hover:bg-gray-700 rounded-lg transition"
+                  aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                  title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="h-4 w-4 text-yellow-500" />
+                  ) : (
+                    <Moon className="h-4 w-4 text-slate-600" />
+                  )}
+                </button>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-1.5 hover:bg-slate-100 dark:hover:bg-gray-700 rounded-lg transition"
+                  aria-label="Close sidebar"
+                >
+                  <ChevronLeft className="h-4 w-4 text-slate-600 dark:text-gray-300" />
+                </button>
+              </div>
             </div>
-            <div className="p-3 lg:p-4 border-b-2 border-slate-200">
+            <div className="p-3 lg:p-4 border-b-2 border-slate-200 dark:border-gray-700">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-gray-500" />
                 <input
                   type="text"
                   placeholder="Search tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none"
+                  className="w-full rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-700 py-2 pl-9 pr-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:border-primary focus:outline-none"
                 />
               </div>
             </div>
@@ -104,8 +119,8 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       currentPageId === 'home' || (!isExtension && location.pathname === '/')
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-slate-700 hover:bg-slate-100'
+                        ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary'
+                        : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
                     <Home className="h-4 w-4 flex-shrink-0" />
@@ -122,8 +137,8 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       location.pathname === '/' || location.pathname === ''
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-slate-700 hover:bg-slate-100'
+                        ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary'
+                        : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
                     <Home className="h-4 w-4 flex-shrink-0" />
@@ -133,7 +148,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
               </div>
               
               {/* Separator */}
-              <div className="border-t border-gray-200 my-4 lg:my-6"></div>
+              <div className="border-t border-gray-200 dark:border-gray-700 my-4 lg:my-6"></div>
               
               {categories.map((category, categoryIndex) => {
                 const categoryFeatures = filteredFeatures.filter(f => f.category === category);
@@ -141,10 +156,10 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                 return (
                   <div key={category}>
                     {categoryIndex > 0 && (
-                      <div className="border-t border-gray-200 my-4 lg:my-6"></div>
+                      <div className="border-t border-gray-200 dark:border-gray-700 my-4 lg:my-6"></div>
                     )}
                     <div className="mb-4 lg:mb-6">
-                      <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                      <h3 className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                         {category}
                       </h3>
                       <div className="space-y-1">
@@ -154,8 +169,8 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                           const linkClasses = clsx(
                             'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                             isActive
-                              ? 'bg-primary/10 text-primary'
-                              : 'text-slate-700 hover:bg-slate-100'
+                              ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary'
+                              : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                           );
                           const onClick = () => {
                             if (window.innerWidth < 1024) {
@@ -196,7 +211,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
               })}
               
               {/* About Link */}
-              <div className="border-t border-gray-200 my-4 lg:my-6"></div>
+              <div className="border-t border-gray-200 dark:border-gray-700 my-4 lg:my-6"></div>
               <div>
                 {isExtension ? (
                   <a
@@ -209,8 +224,8 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       currentPageId === 'about'
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-slate-700 hover:bg-slate-100'
+                        ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary'
+                        : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
                     <Info className="h-4 w-4 flex-shrink-0" />
@@ -227,8 +242,8 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       location.pathname === '/about'
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-slate-700 hover:bg-slate-100'
+                        ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary'
+                        : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
                     <Info className="h-4 w-4 flex-shrink-0" />
@@ -245,10 +260,10 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
       {!sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="fixed left-0 top-4 z-50 rounded-r-lg bg-white p-2 shadow-lg border-r border-t border-b border-slate-200 transition hover:bg-slate-50"
+          className="fixed left-0 top-4 z-50 rounded-r-lg bg-white dark:bg-gray-800 p-2 shadow-lg border-r border-t border-b border-slate-200 dark:border-gray-700 transition hover:bg-slate-50 dark:hover:bg-gray-700"
           aria-label="Open sidebar"
         >
-          <ChevronRight className="h-4 w-4 text-slate-600" />
+          <ChevronRight className="h-4 w-4 text-slate-600 dark:text-gray-300" />
         </button>
       )}
     </>

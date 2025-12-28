@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
 import {
   ShieldCheck,
   Sparkles,
@@ -61,15 +62,15 @@ const Home = () => {
                   <Link
                     key={tool.id}
                     to={tool.path}
-                    className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow block"
+                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-md dark:hover:shadow-lg transition-shadow block"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="p-3 bg-gray-100 rounded-lg">
-                        <Icon className="h-6 w-6 text-gray-700" />
+                      <div className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        <Icon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{tool.name}</h3>
-                        <p className="text-sm text-gray-600">{tool.description}</p>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{tool.name}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{tool.description}</p>
                       </div>
                     </div>
                   </Link>
@@ -77,12 +78,12 @@ const Home = () => {
               })}
             </div>
 
-            <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-xl p-6">
+            <div className="bg-gradient-to-r from-sky-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 border border-sky-200 dark:border-gray-700 rounded-xl p-6">
               <div className="flex items-center gap-3 mb-3">
-                <Info className="h-6 w-6 text-sky-600" />
-                <h2 className="text-xl font-bold text-gray-900">100% Local Processing</h2>
+                <Info className="h-6 w-6 text-sky-600 dark:text-sky-400" />
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">100% Local Processing</h2>
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 All operations happen locally in your browser. No data is sent to external servers. 
                 REST API Tester and JWKS fetcher require internet, but all other tools work completely offline.
               </p>
@@ -101,10 +102,11 @@ const App = () => {
   const basename = '/nowassist';
   
   return (
-    <BrowserRouter basename={basename}>
-      <div className="flex h-screen bg-white overflow-hidden">
-        <Navigation sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
-        <Routes>
+    <ThemeProvider>
+      <BrowserRouter basename={basename}>
+        <div className="flex h-screen bg-white dark:bg-gray-900 overflow-hidden">
+          <Navigation sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+          <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/jwt" element={<JWTDecoder />} />
           <Route path="/jwt-encoder" element={<JWTEncoder />} />
@@ -115,9 +117,10 @@ const App = () => {
           <Route path="/encoder-decoder" element={<EncoderDecoder />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 
