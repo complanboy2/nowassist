@@ -41,14 +41,6 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Check build output
-        run: |
-          ls -la dist/
-          echo "--- index.html ---"
-          head -20 dist/index.html || echo "No dist/index.html"
-          echo "--- public/index.html ---"
-          head -20 dist/public/index.html || echo "No dist/public/index.html"
-      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
