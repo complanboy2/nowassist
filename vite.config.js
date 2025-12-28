@@ -12,24 +12,23 @@ export default defineConfig({
   base: isWebBuild ? '/nowassist/' : '/',
   plugins: [
     react(),
-    // Copy public/404.html to dist/404.html for GitHub Pages SPA routing
-    // The 404.html uses a redirect script to preserve the path in the query string
-    // Also clean up extension HTML files that conflict with SPA routing
+    // For web builds: Copy only necessary files (404.html, icons) and clean up extension files
     ...(isWebBuild ? [{
-      name: 'copy-404-and-cleanup',
+      name: 'web-build-setup',
       closeBundle() {
         const distDir = resolve(__dirname, 'dist');
+        const publicDir = resolve(__dirname, 'public');
+        const { mkdirSync, readdirSync, statSync } = require('fs');
         
-        // Copy 404.html
-        const public404Path = resolve(__dirname, 'public/404.html');
-        const dist404Path = resolve(__dirname, 'dist/404.html');
+        // Copy 404.html for GitHub Pages SPA routing
+        const public404Path = resolve(publicDir, '404.html');
+        const dist404Path = resolve(distDir, '404.html');
         try {
           if (existsSync(public404Path)) {
             copyFileSync(public404Path, dist404Path);
-            console.log('✓ Copied public/404.html to dist/404.html for GitHub Pages SPA routing');
+            console.log('✓ Copied public/404.html to dist/404.html');
           } else {
-            // Fallback: copy index.html
-            const indexPath = resolve(__dirname, 'dist/index.html');
+            const indexPath = resolve(distDir, 'index.html');
             copyFileSync(indexPath, dist404Path);
             console.log('✓ Copied index.html to 404.html (fallback)');
           }
@@ -37,35 +36,55 @@ export default defineConfig({
           console.error('Failed to copy 404.html:', err);
         }
         
-        // Remove extension HTML files that conflict with SPA routing
-        // Keep only index.html and 404.html
+        // Copy icons directory (needed for PWA and favicon)
+        try {
+          const iconsSource = resolve(publicDir, 'icons');
+          const iconsDest = resolve(distDir, 'icons');
+          if (existsSync(iconsSource)) {
+            if (!existsSync(iconsDest)) {
+              mkdirSync(iconsDest, { recursive: true });
+            }
+            const files = readdirSync(iconsSource);
+            files.forEach(file => {
+              const sourcePath = resolve(iconsSource, file);
+              const destPath = resolve(iconsDest, file);
+              if (statSync(sourcePath).isFile()) {
+                copyFileSync(sourcePath, destPath);
+              }
+            });
+            console.log('✓ Copied icons directory');
+          }
+        } catch (err) {
+          console.error('Failed to copy icons:', err);
+        }
+        
+        // CRITICAL: Remove ALL extension HTML files that conflict with SPA routing
+        // These should NEVER be in dist/ for web builds
         const extensionHtmlFiles = [
           'jwt.html', 'jwt-encoder.html', 'saml.html', 'rest.html', 'logs.html',
           'json-utility.html', 'har-analyzer.html', 'encoder-decoder.html',
           'about.html', 'popup.html', 'devtools.html', 'devtools-panel.html'
         ];
         
-        try {
-          extensionHtmlFiles.forEach(file => {
-            const filePath = resolve(distDir, file);
-            if (existsSync(filePath)) {
-              unlinkSync(filePath);
-              console.log(`✓ Removed ${file} (extension build file)`);
-            }
-          });
-          
-          // Also remove extension-specific files
-          const extensionFiles = ['manifest.json', 'background.js', 'content-script.js', 'devtools.js', 'devtools-panel.js'];
-          extensionFiles.forEach(file => {
-            const filePath = resolve(distDir, file);
-            if (existsSync(filePath)) {
-              unlinkSync(filePath);
-              console.log(`✓ Removed ${file} (extension build file)`);
-            }
-          });
-        } catch (err) {
-          console.error('Failed to clean extension files:', err);
-        }
+        extensionHtmlFiles.forEach(file => {
+          const filePath = resolve(distDir, file);
+          if (existsSync(filePath)) {
+            unlinkSync(filePath);
+            console.log(`✓ Removed ${file}`);
+          }
+        });
+        
+        // Remove extension-specific JS files
+        const extensionFiles = ['manifest.json', 'background.js', 'content-script.js', 'devtools.js', 'devtools-panel.js'];
+        extensionFiles.forEach(file => {
+          const filePath = resolve(distDir, file);
+          if (existsSync(filePath)) {
+            unlinkSync(filePath);
+            console.log(`✓ Removed ${file}`);
+          }
+        });
+        
+        console.log('✓ Web build cleanup complete - only index.html and 404.html remain');
       }
     }] : []),
     // PWA plugin only for web builds
