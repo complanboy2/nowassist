@@ -2122,9 +2122,8 @@ const JWTDecoder = () => {
           )}
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
   );
   
   // In Router mode, just return the content (Navigation is in App.jsx)
