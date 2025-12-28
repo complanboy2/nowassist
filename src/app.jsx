@@ -101,6 +101,16 @@ const App = () => {
   // Use basename for GitHub Pages subdirectory
   const basename = '/nowassist';
   
+  // Handle redirect from 404.html - restore original path if needed
+  React.useEffect(() => {
+    const redirectPath = sessionStorage.getItem('nowassist-redirect-path');
+    if (redirectPath && window.location.pathname === '/nowassist/index.html') {
+      sessionStorage.removeItem('nowassist-redirect-path');
+      // Replace the current history entry with the original path
+      window.history.replaceState(null, '', redirectPath + window.location.search + window.location.hash);
+    }
+  }, []);
+  
   return (
     <ThemeProvider>
       <BrowserRouter basename={basename}>
