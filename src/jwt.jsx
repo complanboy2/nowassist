@@ -2125,7 +2125,6 @@ const JWTDecoder = () => {
       </div>
       <Footer />
     </div>
-  </div>
   );
   
   if (isRouterMode) {
