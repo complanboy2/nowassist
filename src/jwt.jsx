@@ -2132,6 +2132,20 @@ const JWTDecoder = () => {
       </div>
     </div>
   );
+  
+  // In Router mode, just return content (Navigation is in App.jsx)
+  if (isRouterMode) {
+    return content;
+  }
+  
+  // In extension mode, wrap with Navigation
+  return (
+    <div className="flex h-screen bg-white overflow-hidden">
+      <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+      {content}
+    </div>
+  );
+};
 };
 
 // Export component for Router, render directly for extension
