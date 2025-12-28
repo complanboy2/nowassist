@@ -31,8 +31,6 @@ import './styles.css';
 
 // Home/Landing page
 const Home = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
   const tools = [
     { id: 'jwt', name: 'JWT Decoder', icon: ShieldCheck, category: 'Authentication', description: 'Decode, verify, and analyze JWT tokens', path: '/jwt' },
     { id: 'jwt-encoder', name: 'JWT Encoder', icon: Sparkles, category: 'Authentication', description: 'Create and encode custom JWTs', path: '/jwt-encoder' },
@@ -44,58 +42,55 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
-      <Navigation currentPageId="home" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
-      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col">
-        <div className="flex-1 flex flex-col">
-          <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-            <div className="space-y-6">
-              <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-6 py-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-3">NowAssist</h1>
-                <p className="text-base text-gray-600">
-                  Professional developer toolkit for ServiceNow engineers and developers. 
-                  Everything runs locally in your browser - your data never leaves your device.
-                </p>
-              </header>
+    <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col">
+      <div className="flex-1 flex flex-col">
+        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+          <div className="space-y-6">
+            <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-6 py-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-3">NowAssist</h1>
+              <p className="text-base text-gray-600">
+                Professional developer toolkit for ServiceNow engineers and developers. 
+                Everything runs locally in your browser - your data never leaves your device.
+              </p>
+            </header>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {tools.map((tool) => {
-                  const Icon = tool.icon;
-                  return (
-                    <a
-                      key={tool.id}
-                      href={tool.path}
-                      className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow block"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 bg-gray-100 rounded-lg">
-                          <Icon className="h-6 w-6 text-gray-700" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-1">{tool.name}</h3>
-                          <p className="text-sm text-gray-600">{tool.description}</p>
-                        </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {tools.map((tool) => {
+                const Icon = tool.icon;
+                return (
+                  <a
+                    key={tool.id}
+                    href={tool.path}
+                    className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow block"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 bg-gray-100 rounded-lg">
+                        <Icon className="h-6 w-6 text-gray-700" />
                       </div>
-                    </a>
-                  );
-                })}
-              </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">{tool.name}</h3>
+                        <p className="text-sm text-gray-600">{tool.description}</p>
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
 
-              <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Info className="h-6 w-6 text-sky-600" />
-                  <h2 className="text-xl font-bold text-gray-900">100% Local Processing</h2>
-                </div>
-                <p className="text-sm text-gray-700">
-                  All operations happen locally in your browser. No data is sent to external servers. 
-                  REST API Tester and JWKS fetcher require internet, but all other tools work completely offline.
-                </p>
+            <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Info className="h-6 w-6 text-sky-600" />
+                <h2 className="text-xl font-bold text-gray-900">100% Local Processing</h2>
               </div>
+              <p className="text-sm text-gray-700">
+                All operations happen locally in your browser. No data is sent to external servers. 
+                REST API Tester and JWKS fetcher require internet, but all other tools work completely offline.
+              </p>
             </div>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };
@@ -108,7 +103,7 @@ const App = () => {
   return (
     <BrowserRouter basename={basename}>
       <div className="flex h-screen bg-white overflow-hidden">
-        <Navigation currentPageId="home" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+        <Navigation sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/jwt" element={<JWTDecoder />} />
@@ -128,4 +123,3 @@ const App = () => {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
-
