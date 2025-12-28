@@ -521,13 +521,10 @@ const JWTEncoder = () => {
     reader.readAsText(file);
   };
 
-  return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
-      {/* Sidebar */}
-      <Navigation currentPageId="jwt-encoder" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
-
-      {/* Main Content */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
+  const isRouterMode = typeof window !== 'undefined' && window.__ROUTER_MODE__;
+  
+  const content = (
+    <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
         <div className="flex-1 flex flex-col">
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
             <div className="space-y-4 sm:space-y-6">

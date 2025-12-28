@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import {
   ShieldCheck,
   Sparkles,
@@ -58,9 +58,9 @@ const Home = () => {
               {tools.map((tool) => {
                 const Icon = tool.icon;
                 return (
-                  <a
+                  <Link
                     key={tool.id}
-                    href={tool.path}
+                    to={tool.path}
                     className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow block"
                   >
                     <div className="flex items-start gap-4">
@@ -72,7 +72,7 @@ const Home = () => {
                         <p className="text-sm text-gray-600">{tool.description}</p>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 );
               })}
             </div>

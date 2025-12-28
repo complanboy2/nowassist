@@ -173,10 +173,9 @@ const JsonUtility = () => {
     setOutputJson(formatted);
   };
 
-  return (
-    <div className="flex h-screen bg-white overflow-hidden">
-      {/* Sidebar */}
-      <Navigation currentPageId="json" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+  const isRouterMode = typeof window !== 'undefined' && window.__ROUTER_MODE__;
+  
+  const content = (
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
