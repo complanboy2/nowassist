@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
-import { copyFileSync, existsSync } from 'fs';
+import { copyFileSync, existsSync, unlinkSync, readdirSync, statSync } from 'fs';
 
 // Detect if building for web or extension
 const isWebBuild = process.env.BUILD_TARGET === 'web';
@@ -14,9 +14,13 @@ export default defineConfig({
     react(),
     // Copy public/404.html to dist/404.html for GitHub Pages SPA routing
     // The 404.html uses a redirect script to preserve the path in the query string
+    // Also clean up extension HTML files that conflict with SPA routing
     ...(isWebBuild ? [{
-      name: 'copy-404',
+      name: 'copy-404-and-cleanup',
       closeBundle() {
+        const distDir = resolve(__dirname, 'dist');
+        
+        // Copy 404.html
         const public404Path = resolve(__dirname, 'public/404.html');
         const dist404Path = resolve(__dirname, 'dist/404.html');
         try {
@@ -31,6 +35,36 @@ export default defineConfig({
           }
         } catch (err) {
           console.error('Failed to copy 404.html:', err);
+        }
+        
+        // Remove extension HTML files that conflict with SPA routing
+        // Keep only index.html and 404.html
+        const extensionHtmlFiles = [
+          'jwt.html', 'jwt-encoder.html', 'saml.html', 'rest.html', 'logs.html',
+          'json-utility.html', 'har-analyzer.html', 'encoder-decoder.html',
+          'about.html', 'popup.html', 'devtools.html', 'devtools-panel.html'
+        ];
+        
+        try {
+          extensionHtmlFiles.forEach(file => {
+            const filePath = resolve(distDir, file);
+            if (existsSync(filePath)) {
+              unlinkSync(filePath);
+              console.log(`✓ Removed ${file} (extension build file)`);
+            }
+          });
+          
+          // Also remove extension-specific files
+          const extensionFiles = ['manifest.json', 'background.js', 'content-script.js', 'devtools.js', 'devtools-panel.js'];
+          extensionFiles.forEach(file => {
+            const filePath = resolve(distDir, file);
+            if (existsSync(filePath)) {
+              unlinkSync(filePath);
+              console.log(`✓ Removed ${file} (extension build file)`);
+            }
+          });
+        } catch (err) {
+          console.error('Failed to clean extension files:', err);
         }
       }
     }] : []),
