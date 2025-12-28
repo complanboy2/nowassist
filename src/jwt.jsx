@@ -1161,13 +1161,17 @@ const JWTDecoder = () => {
     return items;
   }, [payload, status, hasSignature, verificationResult]);
 
+  const isRouterMode = typeof window !== 'undefined' && window.__ROUTER_MODE__;
+  
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
-      {/* Sidebar */}
-      <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+    <div className={isRouterMode ? "flex-1 overflow-y-auto bg-gray-50 flex flex-col" : "flex h-screen bg-white overflow-hidden"} style={isRouterMode ? { width: '100%', minWidth: 0 } : undefined}>
+      {/* Sidebar - Only render in extension mode */}
+      {!isRouterMode && (
+        <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+      )}
 
       {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
+      <div className={isRouterMode ? "flex-1 flex flex-col" : "flex-1 overflow-y-auto bg-gray-50 flex flex-col"} style={{ width: '100%', minWidth: 0 }}>
         <div className="flex-1 flex flex-col">
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
             <div className="space-y-4 sm:space-y-6">
