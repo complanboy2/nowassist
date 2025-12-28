@@ -8,23 +8,21 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
+    <script type="module">
       // GitHub Pages SPA routing fix
-      // When accessing routes directly (e.g., /nowassist/jwt), GitHub Pages
-      // looks for a file at that path. Since it doesn't exist, it serves this 404.html.
-      // We redirect to index.html and let React Router handle the routing.
+      // When accessing routes directly (e.g., /nowassist/jwt), GitHub Pages serves 404.html
+      // We redirect to index.html which will let React Router handle the routing
+      // This preserves the original path so React Router can route correctly
       var path = window.location.pathname;
-      var basePath = '/nowassist';
-      
-      // Build the index.html path
-      var indexPath = basePath + '/index.html';
-      
-      // Preserve query string and hash
       var search = window.location.search;
       var hash = window.location.hash;
       
-      // Redirect to index.html - React Router will handle the actual route
-      window.location.replace(indexPath + search + hash);
+      // If we're already on index.html, don't redirect (avoid infinite loop)
+      if (!path.includes('/index.html')) {
+        // Redirect to index.html with the same path - React Router will handle it
+        // We use replace to avoid adding to history
+        window.location.replace('/nowassist/index.html' + search + hash);
+      }
     </script>
   </body>
 </html>
