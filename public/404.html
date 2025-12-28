@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NowAssist</title>
+    <script>
+      // GitHub Pages SPA routing fix
+      // Redirect to index.html while preserving the path
+      // This allows React Router to see the correct pathname and route accordingly
+      var path = window.location.pathname;
+      var search = window.location.search;
+      var hash = window.location.hash;
+      
+      // Only redirect if we're not already on index.html
+      if (!path.includes('/index.html')) {
+        // Redirect to index.html - React Router will handle the routing based on pathname
+        window.location.replace('/nowassist/index.html' + search + hash);
+      }
+    </script>
+  </head>
+  <body>
+    <div style="text-align: center; padding: 50px; font-family: sans-serif;">
+      <p>Redirecting...</p>
+    </div>
+  </body>
+</html>
+
