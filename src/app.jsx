@@ -17,20 +17,35 @@ if (typeof window !== 'undefined') {
   window.__ROUTER_MODE__ = true;
   
   // Handle GitHub Pages 404.html redirect with path in query string
-  // This MUST run before React Router initializes
-  const searchParams = new URLSearchParams(window.location.search);
-  const pathFromQuery = searchParams.get('/');
-  
-  if (pathFromQuery) {
-    // Remove the path from query string
-    searchParams.delete('/');
-    const newSearch = searchParams.toString();
-    const newPath = '/nowassist/' + pathFromQuery.replace(/~&/g, '&');
-    const newUrl = newPath + (newSearch ? '?' + newSearch : '') + window.location.hash;
-    
-    // Replace current URL with the correct path BEFORE React Router initializes
-    window.history.replaceState(null, '', newUrl);
-  }
+  // This MUST run synchronously before React Router initializes
+  // The 404.html redirects to: /nowassist/index.html?/jwt
+  // We need to restore it to: /nowassist/jwt
+  (function() {
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const pathFromQuery = searchParams.get('/');
+      
+      if (pathFromQuery) {
+        // Decode the path (replace ~& back to &)
+        const decodedPath = pathFromQuery.replace(/~&/g, '&');
+        
+        // Remove the path parameter from query string
+        searchParams.delete('/');
+        const remainingSearch = searchParams.toString();
+        
+        // Build the correct path: /nowassist/[path]
+        const basePath = '/nowassist';
+        const newPath = basePath + '/' + decodedPath;
+        const newUrl = newPath + (remainingSearch ? '?' + remainingSearch : '') + window.location.hash;
+        
+        // CRITICAL: Replace URL BEFORE React Router reads window.location
+        // Use replaceState (not pushState) to avoid adding to history
+        window.history.replaceState(null, '', newUrl);
+      }
+    } catch (error) {
+      console.error('Error restoring path from 404.html redirect:', error);
+    }
+  })();
 }
 
 import JWTDecoder from './jwt';
