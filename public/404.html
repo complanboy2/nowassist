@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/nowassist/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NowAssist</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // GitHub Pages SPA routing fix
+      // When accessing routes directly (e.g., /nowassist/jwt), GitHub Pages
+      // looks for a file at that path. Since it doesn't exist, it serves this 404.html.
+      // We redirect to index.html and let React Router handle the routing.
+      var path = window.location.pathname;
+      var basePath = '/nowassist';
+      
+      // Build the index.html path
+      var indexPath = basePath + '/index.html';
+      
+      // Preserve query string and hash
+      var search = window.location.search;
+      var hash = window.location.hash;
+      
+      // Redirect to index.html - React Router will handle the actual route
+      window.location.replace(indexPath + search + hash);
+    </script>
+  </body>
+</html>
