@@ -87,7 +87,7 @@ export default defineConfig({
         about: resolve(__dirname, 'public/about.html'),
       },
     },
-    copyPublicDir: isWebBuild ? false : true, // Don't copy public for web (vite handles assets)
+    copyPublicDir: isWebBuild ? 'public' : true, // Copy icons from public for web build
   },
   publicDir: isWebBuild ? 'public' : 'public', // Keep publicDir so vite can reference icons
 });
