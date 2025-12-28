@@ -2141,7 +2141,6 @@ const JWTDecoder = () => {
     </div>
   );
 };
-};
 
 // Export component for Router, render directly for extension
 const JWTDecoderComponent = () => <JWTDecoder />;
