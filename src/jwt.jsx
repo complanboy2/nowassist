@@ -1161,13 +1161,16 @@ const JWTDecoder = () => {
     return items;
   }, [payload, status, hasSignature, verificationResult]);
 
-  const isRouterMode = typeof window !== 'undefined' && window.__ROUTER_MODE__;
-  
-  const content = (
-    <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
-      <div className="flex-1 flex flex-col">
-        <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
-          <div className="space-y-4 sm:space-y-6">
+  return (
+    <div className="flex h-screen bg-white overflow-hidden">
+      {/* Sidebar */}
+      <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+
+      {/* Main Content - Scrollable */}
+      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
+        <div className="flex-1 flex flex-col">
+          <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
+            <div className="space-y-4 sm:space-y-6">
           {/* Professional Header with Border */}
           <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -2121,23 +2124,29 @@ const JWTDecoder = () => {
               )}
             </>
           )}
-          </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
+  </div>
   );
   
-  // In Router mode, just return content (Navigation is in App.jsx)
+  // In Router mode, just return mainContent (Navigation is in App.jsx)
   if (isRouterMode) {
-    return content;
+    return (
+      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
+        {mainContent}
+      </div>
+    );
   }
   
   // In extension mode, wrap with Navigation
   return (
     <div className="flex h-screen bg-white overflow-hidden">
       <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
-      {content}
+      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
+        {mainContent}
+      </div>
     </div>
   );
 };
