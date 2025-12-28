@@ -101,11 +101,8 @@ const Home = () => {
 };
 
 const App = () => {
-  // Use basename only if not root domain (GitHub Pages subdirectory)
-  // For custom root domain, set basename to empty string
-  const basename = process.env.NODE_ENV === 'production' && window.location.hostname.includes('github.io') 
-    ? '/nowassist' 
-    : '';
+  // Use basename for GitHub Pages subdirectory
+  const basename = '/nowassist';
   
   return (
     <BrowserRouter basename={basename}>
