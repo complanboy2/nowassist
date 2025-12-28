@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info, Home } from 'lucide-react';
 import clsx from 'clsx';
 import { getExtensionURL } from '../utils/chrome-polyfill';
 
@@ -91,6 +91,50 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
               </div>
             </div>
             <div className="flex-1 overflow-y-auto p-3 lg:p-4">
+              {/* Home Link */}
+              <div className="mb-4 lg:mb-6">
+                {isExtension ? (
+                  <a
+                    href={getExtensionURL('index.html')}
+                    onClick={() => {
+                      if (window.innerWidth < 1024) {
+                        setSidebarOpen(false);
+                      }
+                    }}
+                    className={clsx(
+                      'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                      currentPageId === 'home' || (!isExtension && location.pathname === '/')
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-slate-700 hover:bg-slate-100'
+                    )}
+                  >
+                    <Home className="h-4 w-4 flex-shrink-0" />
+                    <span>Home</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/"
+                    onClick={() => {
+                      if (window.innerWidth < 1024) {
+                        setSidebarOpen(false);
+                      }
+                    }}
+                    className={clsx(
+                      'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                      location.pathname === '/' || location.pathname === ''
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-slate-700 hover:bg-slate-100'
+                    )}
+                  >
+                    <Home className="h-4 w-4 flex-shrink-0" />
+                    <span>Home</span>
+                  </Link>
+                )}
+              </div>
+              
+              {/* Separator */}
+              <div className="border-t border-gray-200 my-4 lg:my-6"></div>
+              
               {categories.map((category, categoryIndex) => {
                 const categoryFeatures = filteredFeatures.filter(f => f.category === category);
                 if (categoryFeatures.length === 0) return null;
