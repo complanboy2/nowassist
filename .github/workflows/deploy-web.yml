@@ -29,13 +29,10 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm cache clean --force || true
-          rm -rf node_modules package-lock.json || true
-          npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Build for web
-        run: npx vite build
+        run: npm run build:web
         env:
           BUILD_TARGET: web
 
@@ -57,4 +54,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
