@@ -12,24 +12,19 @@ export default defineConfig({
   base: isWebBuild ? '/nowassist/' : '/',
   plugins: [
     react(),
-    // Copy public/404.html to dist/404.html for GitHub Pages SPA routing
+    // Copy index.html to 404.html for GitHub Pages SPA routing
+    // When GitHub Pages serves 404.html, the URL still contains the original path
+    // This allows React Router to see the correct pathname and route accordingly
     ...(isWebBuild ? [{
       name: 'copy-404',
       closeBundle() {
-        const public404Path = resolve(__dirname, 'public/404.html');
+        const indexPath = resolve(__dirname, 'dist/index.html');
         const dist404Path = resolve(__dirname, 'dist/404.html');
         try {
-          if (existsSync(public404Path)) {
-            copyFileSync(public404Path, dist404Path);
-            console.log('✓ Copied public/404.html to dist/404.html for GitHub Pages SPA routing');
-          } else {
-            // Fallback: copy index.html if public/404.html doesn't exist
-            const indexPath = resolve(__dirname, 'dist/index.html');
-            copyFileSync(indexPath, dist404Path);
-            console.log('✓ Copied index.html to 404.html (fallback - public/404.html not found)');
-          }
+          copyFileSync(indexPath, dist404Path);
+          console.log('✓ Copied index.html to 404.html for GitHub Pages SPA routing');
         } catch (err) {
-          console.error('Failed to copy 404.html:', err);
+          console.error('Failed to copy index.html to 404.html:', err);
         }
       }
     }] : []),
