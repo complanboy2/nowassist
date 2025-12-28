@@ -34,6 +34,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
+  const { theme, toggleTheme } = useTheme();
 
   // Use controlled state if provided, otherwise use internal state
   const sidebarOpen = controlledSidebarOpen !== null ? controlledSidebarOpen : internalSidebarOpen;
