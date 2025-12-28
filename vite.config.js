@@ -18,7 +18,6 @@ export default defineConfig({
       closeBundle() {
         const distDir = resolve(__dirname, 'dist');
         const publicDir = resolve(__dirname, 'public');
-        const { mkdirSync, readdirSync, statSync } = require('fs');
         
         // Copy 404.html for GitHub Pages SPA routing
         const public404Path = resolve(publicDir, '404.html');
