@@ -72,7 +72,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: isWebBuild ? {
-      input: resolve(__dirname, 'public/index.html'),
+      input: resolve(__dirname, 'index.html'),
     } : {
       input: {
         popup: resolve(__dirname, 'public/popup.html'),
