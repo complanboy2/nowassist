@@ -15,6 +15,22 @@ import {
 // Mark that we're in Router mode
 if (typeof window !== 'undefined') {
   window.__ROUTER_MODE__ = true;
+  
+  // Handle GitHub Pages 404.html redirect with path in query string
+  // This MUST run before React Router initializes
+  const searchParams = new URLSearchParams(window.location.search);
+  const pathFromQuery = searchParams.get('/');
+  
+  if (pathFromQuery) {
+    // Remove the path from query string
+    searchParams.delete('/');
+    const newSearch = searchParams.toString();
+    const newPath = '/nowassist/' + pathFromQuery.replace(/~&/g, '&');
+    const newUrl = newPath + (newSearch ? '?' + newSearch : '') + window.location.hash;
+    
+    // Replace current URL with the correct path BEFORE React Router initializes
+    window.history.replaceState(null, '', newUrl);
+  }
 }
 
 import JWTDecoder from './jwt';
@@ -100,24 +116,6 @@ const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   // Use basename for GitHub Pages subdirectory
   const basename = '/nowassist';
-  
-  // Handle GitHub Pages 404.html redirect with path in query string
-  React.useEffect(() => {
-    // Check if we have a path in the query string (from 404.html redirect)
-    const searchParams = new URLSearchParams(window.location.search);
-    const pathFromQuery = searchParams.get('/');
-    
-    if (pathFromQuery) {
-      // Remove the path from query string
-      searchParams.delete('/');
-      const newSearch = searchParams.toString();
-      const newPath = '/nowassist/' + pathFromQuery.replace(/~&/g, '&');
-      const newUrl = newPath + (newSearch ? '?' + newSearch : '') + window.location.hash;
-      
-      // Replace current URL with the correct path (before React Router initializes)
-      window.history.replaceState(null, '', newUrl);
-    }
-  }, []);
   
   return (
     <ThemeProvider>
