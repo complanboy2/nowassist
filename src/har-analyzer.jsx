@@ -643,8 +643,7 @@ const HarAnalyzer = () => {
       {/* Sidebar */}
       <Navigation currentPageId="har" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
+    <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
         <div className="flex-1 flex flex-col">
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
           {/* Clean Header */}

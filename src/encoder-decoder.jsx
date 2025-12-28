@@ -499,6 +499,16 @@ const EncoderDecoder = () => {
         </div>
         <Footer />
       </div>
+  );
+  
+  if (isRouterMode) {
+    return content;
+  }
+  
+  return (
+    <div className="flex h-screen bg-white overflow-hidden">
+      <Navigation currentPageId="encoder-decoder" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+      {content}
     </div>
   );
 };
