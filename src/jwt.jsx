@@ -2132,4 +2132,12 @@ const JWTDecoder = () => {
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root')).render(<JWTDecoder />);
+// Export component for Router, render directly for extension
+const JWTDecoderComponent = () => <JWTDecoder />;
+export default JWTDecoderComponent;
+
+// Render directly if running as standalone (extension mode)
+if (typeof window !== 'undefined' && document.getElementById('root') && !window.__ROUTER_MODE__) {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<JWTDecoder />);
+}

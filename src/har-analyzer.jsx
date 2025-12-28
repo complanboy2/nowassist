@@ -1779,6 +1779,13 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
   };
 
 // Initialize React app
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<HarAnalyzer />);
+// Export component for Router, render directly for extension
+const HarAnalyzerComponent = () => <HarAnalyzer />;
+export default HarAnalyzerComponent;
+
+// Render directly if running as standalone (extension mode)
+if (typeof window !== 'undefined' && document.getElementById('root') && !window.__ROUTER_MODE__) {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<HarAnalyzer />);
+}
 

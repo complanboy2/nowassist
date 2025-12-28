@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:web": "BUILD_TARGET=web vite build",
+    "build:extension": "vite build",
     "preview": "vite preview",
+    "preview:web": "vite preview --base /nowassist/",
     "lint": "eslint src --ext .js,.jsx",
     "lint:fix": "eslint src --ext .js,.jsx --fix"
   },
@@ -27,8 +30,11 @@
     "prismjs": "^1.30.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router-dom": "^7.11.0",
     "react-simple-code-editor": "^0.14.1",
     "react-window": "^2.2.3",
+    "vite-plugin-pwa": "^1.2.0",
+    "workbox-window": "^7.4.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

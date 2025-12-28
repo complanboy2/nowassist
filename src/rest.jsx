@@ -996,4 +996,12 @@ ${goHeaders}
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root')).render(<RestTester />);
+// Export component for Router, render directly for extension
+const RestTesterComponent = () => <RestTester />;
+export default RestTesterComponent;
+
+// Render directly if running as standalone (extension mode)
+if (typeof window !== 'undefined' && document.getElementById('root') && !window.__ROUTER_MODE__) {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<RestTester />);
+}

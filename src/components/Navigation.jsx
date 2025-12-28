@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info } from 'lucide-react';
 import clsx from 'clsx';
+import { getExtensionURL } from '../utils/chrome-polyfill';
 
 const FEATURES = [
-  { id: 'jwt', name: 'JWT Decoder', icon: ShieldCheck, category: 'Authentication', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('jwt.html') : 'jwt.html' },
-  { id: 'jwt-encoder', name: 'JWT Encoder', icon: Sparkles, category: 'Authentication', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('jwt-encoder.html') : 'jwt-encoder.html' },
-  { id: 'saml', name: 'SAML Inspector', icon: Key, category: 'Authentication', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('saml.html') : 'saml.html' },
-  { id: 'rest', name: 'REST API Tester', icon: Network, category: 'API Testing', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('rest.html') : 'rest.html' },
-  { id: 'har', name: 'HAR Analyzer', icon: FileCode, category: 'Debugging', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('har-analyzer.html') : 'har-analyzer.html' },
-  { id: 'json', name: 'JSON Utility', icon: FileJson, category: 'Utilities', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('json-utility.html') : 'json-utility.html' },
-  { id: 'encoder-decoder', name: 'Encoder/Decoder', icon: Code, category: 'Utilities', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('encoder-decoder.html') : 'encoder-decoder.html' },
+  { id: 'jwt', name: 'JWT Decoder', icon: ShieldCheck, category: 'Authentication', status: 'active', path: '/jwt', url: getExtensionURL('jwt.html') },
+  { id: 'jwt-encoder', name: 'JWT Encoder', icon: Sparkles, category: 'Authentication', status: 'active', path: '/jwt-encoder', url: getExtensionURL('jwt-encoder.html') },
+  { id: 'saml', name: 'SAML Inspector', icon: Key, category: 'Authentication', status: 'active', path: '/saml', url: getExtensionURL('saml.html') },
+  { id: 'rest', name: 'REST API Tester', icon: Network, category: 'API Testing', status: 'active', path: '/rest', url: getExtensionURL('rest.html') },
+  { id: 'har', name: 'HAR Analyzer', icon: FileCode, category: 'Debugging', status: 'active', path: '/har', url: getExtensionURL('har-analyzer.html') },
+  { id: 'json', name: 'JSON Utility', icon: FileJson, category: 'Utilities', status: 'active', path: '/json', url: getExtensionURL('json-utility.html') },
+  { id: 'encoder-decoder', name: 'Encoder/Decoder', icon: Code, category: 'Utilities', status: 'active', path: '/encoder-decoder', url: getExtensionURL('encoder-decoder.html') },
   // Browser Logs temporarily disabled - not ready for production
-  // { id: 'logs', name: 'Browser Logs', icon: FileText, category: 'Debugging', status: 'active', url: chrome.runtime?.getURL ? chrome.runtime.getURL('logs.html') : 'logs.html' },
+  // { id: 'logs', name: 'Browser Logs', icon: FileText, category: 'Debugging', status: 'active', path: '/logs', url: getExtensionURL('logs.html') },
 ];
 
 // Professional category colors - muted, corporate-friendly
@@ -29,6 +31,8 @@ const CATEGORY_COLORS = {
 const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen = null, onSidebarToggle = null }) => {
   const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const location = useLocation();
+  const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
 
   // Use controlled state if provided, otherwise use internal state
   const sidebarOpen = controlledSidebarOpen !== null ? controlledSidebarOpen : internalSidebarOpen;
@@ -102,28 +106,44 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                       <div className="space-y-1">
                         {categoryFeatures.map(feature => {
                           const Icon = feature.icon;
-                          const isActive = currentPageId === feature.id;
-                          return (
-                            <a
-                              key={feature.id}
-                              href={feature.url}
-                              onClick={() => {
-                                // Close sidebar on mobile when navigating
-                                if (window.innerWidth < 1024) {
-                                  setSidebarOpen(false);
-                                }
-                              }}
-                              className={clsx(
-                                'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
-                                isActive
-                                  ? 'bg-primary/10 text-primary'
-                                  : 'text-slate-700 hover:bg-slate-100'
-                              )}
-                            >
-                              <Icon className="h-4 w-4 flex-shrink-0" />
-                              <span>{feature.name}</span>
-                            </a>
+                          const isActive = currentPageId === feature.id || (!isExtension && location.pathname === feature.path);
+                          const linkClasses = clsx(
+                            'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                            isActive
+                              ? 'bg-primary/10 text-primary'
+                              : 'text-slate-700 hover:bg-slate-100'
                           );
+                          const onClick = () => {
+                            if (window.innerWidth < 1024) {
+                              setSidebarOpen(false);
+                            }
+                          };
+                          
+                          if (isExtension) {
+                            return (
+                              <a
+                                key={feature.id}
+                                href={feature.url}
+                                onClick={onClick}
+                                className={linkClasses}
+                              >
+                                <Icon className="h-4 w-4 flex-shrink-0" />
+                                <span>{feature.name}</span>
+                              </a>
+                            );
+                          } else {
+                            return (
+                              <Link
+                                key={feature.id}
+                                to={feature.path || '#'}
+                                onClick={onClick}
+                                className={linkClasses}
+                              >
+                                <Icon className="h-4 w-4 flex-shrink-0" />
+                                <span>{feature.name}</span>
+                              </Link>
+                            );
+                          }
                         })}
                       </div>
                     </div>
@@ -134,23 +154,43 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
               {/* About Link */}
               <div className="border-t border-gray-200 my-4 lg:my-6"></div>
               <div>
-                <a
-                  href={chrome.runtime?.getURL ? chrome.runtime.getURL('about.html') : 'about.html'}
-                  onClick={() => {
-                    if (window.innerWidth < 1024) {
-                      setSidebarOpen(false);
-                    }
-                  }}
-                  className={clsx(
-                    'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
-                    currentPageId === 'about'
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-slate-700 hover:bg-slate-100'
-                  )}
-                >
-                  <Info className="h-4 w-4 flex-shrink-0" />
-                  <span>About</span>
-                </a>
+                {isExtension ? (
+                  <a
+                    href={getExtensionURL('about.html')}
+                    onClick={() => {
+                      if (window.innerWidth < 1024) {
+                        setSidebarOpen(false);
+                      }
+                    }}
+                    className={clsx(
+                      'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                      currentPageId === 'about'
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-slate-700 hover:bg-slate-100'
+                    )}
+                  >
+                    <Info className="h-4 w-4 flex-shrink-0" />
+                    <span>About</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/about"
+                    onClick={() => {
+                      if (window.innerWidth < 1024) {
+                        setSidebarOpen(false);
+                      }
+                    }}
+                    className={clsx(
+                      'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                      location.pathname === '/about'
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-slate-700 hover:bg-slate-100'
+                    )}
+                  >
+                    <Info className="h-4 w-4 flex-shrink-0" />
+                    <span>About</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

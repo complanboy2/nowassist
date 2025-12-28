@@ -1344,4 +1344,12 @@ const SAMLInspector = () => {
   );
 };
 
-ReactDOM.createRoot(document.getElementById('root')).render(<SAMLInspector />);
+// Export component for Router, render directly for extension
+const SAMLInspectorComponent = () => <SAMLInspector />;
+export default SAMLInspectorComponent;
+
+// Render directly if running as standalone (extension mode)
+if (typeof window !== 'undefined' && document.getElementById('root') && !window.__ROUTER_MODE__) {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<SAMLInspector />);
+}

@@ -1,0 +1,50 @@
+{
+  "name": "NowAssist - Developer Tools",
+  "short_name": "NowAssist",
+  "description": "Professional developer toolkit for ServiceNow engineers. JWT decoder, SAML inspector, REST API tester, HAR analyzer, and JSON utilities.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/icon16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["developer", "productivity", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "JWT Decoder",
+      "short_name": "JWT",
+      "description": "Decode and verify JWT tokens",
+      "url": "/jwt",
+      "icons": [{ "src": "/icons/icon48.png", "sizes": "48x48" }]
+    },
+    {
+      "name": "REST API Tester",
+      "short_name": "REST",
+      "description": "Test REST APIs",
+      "url": "/rest",
+      "icons": [{ "src": "/icons/icon48.png", "sizes": "48x48" }]
+    }
+  ]
+}
+
