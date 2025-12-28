@@ -20,27 +20,29 @@ if (typeof window !== 'undefined') {
   // This MUST run synchronously before React Router initializes
   // The 404.html redirects to: /nowassist/index.html?/jwt
   // We need to restore it to: /nowassist/jwt
+  // Note: URLSearchParams doesn't parse ?/jwt correctly, so we extract it manually
   (function() {
     try {
-      const searchParams = new URLSearchParams(window.location.search);
-      const pathFromQuery = searchParams.get('/');
+      const search = window.location.search;
       
-      if (pathFromQuery) {
-        // Decode the path (replace ~& back to &)
-        const decodedPath = pathFromQuery.replace(/~&/g, '&');
+      // Check if search string starts with ?/ (standard GitHub Pages SPA format)
+      if (search && search.startsWith('?/')) {
+        // Extract the path from the query string (remove ?/ prefix)
+        const pathFromQuery = search.slice(2); // Remove '?/'
         
-        // Remove the path parameter from query string
-        searchParams.delete('/');
-        const remainingSearch = searchParams.toString();
-        
-        // Build the correct path: /nowassist/[path]
-        const basePath = '/nowassist';
-        const newPath = basePath + '/' + decodedPath;
-        const newUrl = newPath + (remainingSearch ? '?' + remainingSearch : '') + window.location.hash;
-        
-        // CRITICAL: Replace URL BEFORE React Router reads window.location
-        // Use replaceState (not pushState) to avoid adding to history
-        window.history.replaceState(null, '', newUrl);
+        if (pathFromQuery) {
+          // Decode the path (replace ~& back to &, ~/ back to /)
+          const decodedPath = pathFromQuery.replace(/~&/g, '&').replace(/~/g, '/');
+          
+          // Build the correct path: /nowassist/[path]
+          const basePath = '/nowassist';
+          const newPath = basePath + '/' + decodedPath;
+          const newUrl = newPath + window.location.hash;
+          
+          // CRITICAL: Replace URL BEFORE React Router reads window.location
+          // Use replaceState (not pushState) to avoid adding to history
+          window.history.replaceState(null, '', newUrl);
+        }
       }
     } catch (error) {
       console.error('Error restoring path from 404.html redirect:', error);
