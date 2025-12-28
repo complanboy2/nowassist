@@ -144,7 +144,9 @@ export default defineConfig({
         about: resolve(__dirname, 'public/about.html'),
       },
     },
-    copyPublicDir: isWebBuild ? 'public' : true, // Copy icons from public for web build
+    // For web builds, we need to be selective about what we copy
+    // We only want icons and 404.html, NOT the extension HTML files
+    copyPublicDir: isWebBuild ? false : true, // Don't copy public dir for web build - we'll copy selectively
   },
-  publicDir: isWebBuild ? 'public' : 'public', // Keep publicDir so vite can reference icons
+  publicDir: isWebBuild ? false : 'public', // Disable publicDir for web build to prevent copying extension files
 });
