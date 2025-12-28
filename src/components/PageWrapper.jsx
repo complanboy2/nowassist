@@ -10,14 +10,14 @@ export const PageWrapper = ({ children, currentPageId, sidebarOpen, onSidebarTog
   
   if (isRouterMode) {
     // In Router mode, just render children (Navigation is in App.jsx)
-    return <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>{children}</div>;
+    return <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 flex flex-col" style={{ width: '100%', minWidth: 0 }}>{children}</div>;
   }
   
   // In extension mode, render with Navigation
   return (
     <div className="flex h-screen bg-white overflow-hidden">
       <Navigation currentPageId={currentPageId} sidebarOpen={sidebarOpen} onSidebarToggle={onSidebarToggle} />
-      <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
+      <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 flex flex-col" style={{ width: '100%', minWidth: 0 }}>
         {children}
       </div>
     </div>
