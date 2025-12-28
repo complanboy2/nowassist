@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
-import { copyFileSync } from 'fs';
+import { copyFileSync, existsSync } from 'fs';
 
 // Detect if building for web or extension
 const isWebBuild = process.env.BUILD_TARGET === 'web';
@@ -12,17 +12,24 @@ export default defineConfig({
   base: isWebBuild ? '/nowassist/' : '/',
   plugins: [
     react(),
-    // Copy index.html to 404.html for GitHub Pages SPA routing
+    // Copy public/404.html to dist/404.html for GitHub Pages SPA routing
     ...(isWebBuild ? [{
       name: 'copy-404',
       closeBundle() {
-        const indexPath = resolve(__dirname, 'dist/index.html');
-        const notFoundPath = resolve(__dirname, 'dist/404.html');
+        const public404Path = resolve(__dirname, 'public/404.html');
+        const dist404Path = resolve(__dirname, 'dist/404.html');
         try {
-          copyFileSync(indexPath, notFoundPath);
-          console.log('✓ Copied index.html to 404.html for GitHub Pages SPA routing');
+          if (existsSync(public404Path)) {
+            copyFileSync(public404Path, dist404Path);
+            console.log('✓ Copied public/404.html to dist/404.html for GitHub Pages SPA routing');
+          } else {
+            // Fallback: copy index.html if public/404.html doesn't exist
+            const indexPath = resolve(__dirname, 'dist/index.html');
+            copyFileSync(indexPath, dist404Path);
+            console.log('✓ Copied index.html to 404.html (fallback - public/404.html not found)');
+          }
         } catch (err) {
-          console.error('Failed to copy index.html to 404.html:', err);
+          console.error('Failed to copy 404.html:', err);
         }
       }
     }] : []),
