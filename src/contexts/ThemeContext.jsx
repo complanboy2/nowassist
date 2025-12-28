@@ -4,8 +4,15 @@ const ThemeContext = createContext();
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
+  // Provide a default if context is not available (for extension mode compatibility)
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    // Return default light theme and no-op toggle
+    return {
+      theme: 'light',
+      toggleTheme: () => {
+        console.warn('ThemeProvider not available, dark mode toggle disabled');
+      }
+    };
   }
   return context;
 };
