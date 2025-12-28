@@ -23,21 +23,21 @@ export default defineConfig({
           theme_color: '#0ea5e9',
           background_color: '#ffffff',
           display: 'standalone',
-          start_url: '/',
+          start_url: '/nowassist/',
           icons: [
             {
-              src: 'icons/icon128.png',
+              src: '/nowassist/icons/icon128.png',
               sizes: '128x128',
               type: 'image/png',
               purpose: 'any maskable'
             },
             {
-              src: 'icons/icon48.png',
+              src: '/nowassist/icons/icon48.png',
               sizes: '48x48',
               type: 'image/png'
             },
             {
-              src: 'icons/icon16.png',
+              src: '/nowassist/icons/icon16.png',
               sizes: '16x16',
               type: 'image/png'
             }
@@ -87,8 +87,7 @@ export default defineConfig({
         about: resolve(__dirname, 'public/about.html'),
       },
     },
-    copyPublicDir: true,
+    copyPublicDir: isWebBuild ? false : true, // Don't copy public for web (vite handles assets)
   },
+  publicDir: isWebBuild ? 'public' : 'public', // Keep publicDir so vite can reference icons
 });
-
-
