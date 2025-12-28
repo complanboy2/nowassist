@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
+import { copyFileSync } from 'fs';
 
 // Detect if building for web or extension
 const isWebBuild = process.env.BUILD_TARGET === 'web';
@@ -11,6 +12,20 @@ export default defineConfig({
   base: isWebBuild ? '/nowassist/' : '/',
   plugins: [
     react(),
+    // Copy index.html to 404.html for GitHub Pages SPA routing
+    ...(isWebBuild ? [{
+      name: 'copy-404',
+      closeBundle() {
+        const indexPath = resolve(__dirname, 'dist/index.html');
+        const notFoundPath = resolve(__dirname, 'dist/404.html');
+        try {
+          copyFileSync(indexPath, notFoundPath);
+          console.log('✓ Copied index.html to 404.html for GitHub Pages SPA routing');
+        } catch (err) {
+          console.error('Failed to copy index.html to 404.html:', err);
+        }
+      }
+    }] : []),
     // PWA plugin only for web builds
     ...(isWebBuild ? [
       VitePWA({
@@ -90,4 +105,40 @@ export default defineConfig({
     copyPublicDir: isWebBuild ? 'public' : true, // Copy icons from public for web build
   },
   publicDir: isWebBuild ? 'public' : 'public', // Keep publicDir so vite can reference icons
+});
+
+// For web builds, copy index.html to 404.html after build for GitHub Pages SPA routing
+if (isWebBuild) {
+  // This runs after Vite's build
+  const originalBuildEnd = (await import('vite')).build;
+}
+
+// Use a plugin to copy index.html to 404.html after build
+const copy404Plugin = () => {
+  return {
+    name: 'copy-404',
+    closeBundle() {
+      if (isWebBuild) {
+        const indexPath = resolve(__dirname, 'dist/index.html');
+        const notFoundPath = resolve(__dirname, 'dist/404.html');
+        try {
+          copyFileSync(indexPath, notFoundPath);
+          console.log('✓ Copied index.html to 404.html for GitHub Pages SPA routing');
+        } catch (err) {
+          console.error('Failed to copy index.html to 404.html:', err);
+        }
+      }
+    }
+  };
+};
+
+// Update the config to include the plugin
+export default defineConfig({
+  // ... existing config ...
+  plugins: [
+    react(),
+    // ... existing plugins ...
+    copy404Plugin(),
+  ],
+  // ... rest of config ...
 });
