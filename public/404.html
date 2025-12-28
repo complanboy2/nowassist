@@ -2,27 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/nowassist/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NowAssist</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module">
+    <script>
       // GitHub Pages SPA routing fix
-      // When accessing routes directly (e.g., /nowassist/jwt), GitHub Pages serves 404.html
-      // We redirect to index.html which will let React Router handle the routing
-      // This preserves the original path so React Router can route correctly
+      // When a route like /nowassist/jwt is accessed directly, GitHub Pages serves this 404.html
+      // We redirect to index.html, preserving the original path in the URL
+      // React Router will then see the pathname and route correctly
       var path = window.location.pathname;
-      var search = window.location.search;
-      var hash = window.location.hash;
       
-      // If we're already on index.html, don't redirect (avoid infinite loop)
-      if (!path.includes('/index.html')) {
-        // Redirect to index.html with the same path - React Router will handle it
-        // We use replace to avoid adding to history
-        window.location.replace('/nowassist/index.html' + search + hash);
+      // Only redirect if we're not already on index.html
+      if (path !== '/nowassist/index.html' && !path.endsWith('/index.html')) {
+        // Redirect to index.html - the URL will still show the original path
+        // which React Router can read from window.location.pathname
+        window.location.replace('/nowassist/index.html');
       }
     </script>
+  </head>
+  <body>
+    <div>Redirecting...</div>
   </body>
 </html>
