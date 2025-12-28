@@ -32,6 +32,7 @@ import { jwtDecode } from 'jwt-decode';
 import clsx from 'clsx';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import { ThemeProvider } from './contexts/ThemeContext';
 import './styles.css';
 import { 
   validateJWT, 
@@ -2132,10 +2133,12 @@ const JWTDecoder = () => {
   }
   
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
-      <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
-      {content}
-    </div>
+    <ThemeProvider>
+      <div className="flex h-screen bg-white dark:bg-gray-900 overflow-hidden">
+        <Navigation currentPageId="jwt" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+        {content}
+      </div>
+    </ThemeProvider>
   );
 };
 
@@ -2146,5 +2149,9 @@ export default JWTDecoderComponent;
 // Render directly if running as standalone (extension mode)
 if (typeof window !== 'undefined' && document.getElementById('root') && !window.__ROUTER_MODE__) {
   const root = ReactDOM.createRoot(document.getElementById('root'));
-  root.render(<JWTDecoder />);
+  root.render(
+    <ThemeProvider>
+      <JWTDecoder />
+    </ThemeProvider>
+  );
 }
