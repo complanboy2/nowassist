@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -16,7 +15,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,33 +28,34 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm cache clean --force || true
-          rm -rf node_modules package-lock.json || true
-          npm install --legacy-peer-deps
+        run: npm ci
 
-      - name: Build for web
+      - name: Build web app
         run: npm run build:web
         env:
           BUILD_TARGET: web
 
+      - name: Clean extension build files from dist
+        run: |
+          cd dist
+          # Remove all extension HTML files (keep only index.html and 404.html)
+          find . -name "*.html" ! -name "index.html" ! -name "404.html" -type f -delete
+          # Remove extension-specific files
+          rm -f manifest.json background.js content-script.js popup.html
+          rm -f devtools*.html devtools*.js
+          echo "Cleaned extension files from dist"
+
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/checkout@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
