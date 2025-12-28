@@ -101,23 +101,27 @@ const Home = () => {
 };
 
 const App = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   // Use basename for GitHub Pages subdirectory
   const basename = '/nowassist';
   
   return (
     <BrowserRouter basename={basename}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/jwt" element={<JWTDecoder />} />
-        <Route path="/jwt-encoder" element={<JWTEncoder />} />
-        <Route path="/saml" element={<SAMLInspector />} />
-        <Route path="/rest" element={<RestTester />} />
-        <Route path="/har" element={<HarAnalyzer />} />
-        <Route path="/json" element={<JsonUtility />} />
-        <Route path="/encoder-decoder" element={<EncoderDecoder />} />
-        <Route path="/about" element={<About />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <div className="flex h-screen bg-white overflow-hidden">
+        <Navigation currentPageId="home" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/jwt" element={<JWTDecoder />} />
+          <Route path="/jwt-encoder" element={<JWTEncoder />} />
+          <Route path="/saml" element={<SAMLInspector />} />
+          <Route path="/rest" element={<RestTester />} />
+          <Route path="/har" element={<HarAnalyzer />} />
+          <Route path="/json" element={<JsonUtility />} />
+          <Route path="/encoder-decoder" element={<EncoderDecoder />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 };
