@@ -31,12 +31,14 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          echo "Verifying installation..."
+          npm list vite || echo "WARNING: vite not found in node_modules"
+          npx vite --version || echo "WARNING: npx vite failed"
 
       - name: Build web app
-        run: |
-          echo "Building web app..."
-          npm run build:web
+        run: npm run build:web
         env:
           BUILD_TARGET: web
 
