@@ -269,12 +269,12 @@ const CodeSection = ({ title, content, description, onCopy, theme }) => {
 
   return (
     <div className="rounded-xl border-2 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm flex flex-col h-full overflow-hidden">
-      <div className="flex items-center justify-between border-b-2 border-slate-200 bg-slate-50/50 px-4 py-2 rounded-t-xl flex-shrink-0">
+      <div className="flex items-center justify-between border-b-2 border-slate-200 dark:border-gray-600 bg-slate-50/50 dark:bg-gray-700/50 px-4 py-2 rounded-t-xl flex-shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold leading-tight text-slate-900">{title}</h3>
-            {description && <p className="text-xs text-slate-500 leading-tight mt-0.5">{description}</p>}
+            <h3 className="text-sm font-semibold leading-tight text-slate-900 dark:text-white">{title}</h3>
+            {description && <p className="text-xs text-slate-500 dark:text-gray-400 leading-tight mt-0.5">{description}</p>}
           </div>
         </div>
         <button
@@ -286,23 +286,23 @@ const CodeSection = ({ title, content, description, onCopy, theme }) => {
             }
           }}
           className={clsx(
-            'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all duration-150 focus:outline-none border border-slate-200',
+            'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium transition-all duration-150 focus:outline-none border border-slate-200 dark:border-gray-600',
             copied 
-              ? 'bg-success/20 border-success text-success' 
-              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              ? 'bg-success/20 dark:bg-success/30 border-success dark:border-green-500 text-success dark:text-green-400' 
+              : 'text-slate-600 dark:text-white hover:bg-slate-100 dark:hover:bg-gray-600 hover:text-slate-900 dark:hover:text-white'
           )}
           tabIndex={0}
         >
-          {copied ? <CheckCircle2 className="h-3.5 w-3.5 dark:text-white" /> : <Copy className="h-3.5 w-3.5 dark:text-white" />}
+          {copied ? <CheckCircle2 className="h-3.5 w-3.5 dark:text-green-400" /> : <Copy className="h-3.5 w-3.5 dark:text-white" />}
           <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
         </button>
       </div>
       <div className="overflow-auto bg-white dark:bg-gray-800 rounded-b-xl" style={{ height: '300px' }}>
         <pre className="p-6 text-sm leading-relaxed">
-          <code className="font-mono text-slate-800">
+          <code className="font-mono text-slate-800 dark:text-white">
             {lines.map((line, index) => (
               <React.Fragment key={index}>
-                <span className="inline-block w-10 select-none text-right text-slate-400 pr-4">{index + 1}</span>
+                <span className="inline-block w-10 select-none text-right text-slate-400 dark:text-gray-500 pr-4">{index + 1}</span>
                 <span>{line || ' '}</span>
                 {'\n'}
               </React.Fragment>
