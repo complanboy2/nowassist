@@ -118,14 +118,14 @@ const VirtualizedHarTable = ({
     <div
       onClick={() => handleSort(column)}
       className={clsx(
-        'px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition select-none',
+        'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 transition select-none',
         className
       )}
     >
       <div className="flex items-center gap-2">
         <span>{children}</span>
         {sortBy === column && (
-          sortOrder === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />
+          sortOrder === 'asc' ? <ChevronUp className="h-3 w-3 dark:text-white" /> : <ChevronDown className="h-3 w-3 dark:text-white" />
         )}
       </div>
     </div>
@@ -140,7 +140,7 @@ const VirtualizedHarTable = ({
     if (item.type === 'group-header') {
       return (
         <div style={style} {...ariaAttributes}>
-          <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
+          <div className="px-4 py-3 bg-slate-50 dark:bg-gray-700 border-b border-slate-200 dark:border-gray-700">
             <button
               onClick={() => {
                 toggleGroup(item.groupKey);
@@ -152,13 +152,13 @@ const VirtualizedHarTable = ({
               }}
               className="w-full flex items-center justify-between"
             >
-              <span className="font-semibold text-slate-900">
+              <span className="font-semibold text-slate-900 dark:text-white">
                 {item.groupKey} ({item.groupEntries.length})
               </span>
               {item.isExpanded ? (
-                <ChevronUp className="h-4 w-4 text-slate-600" />
+                <ChevronUp className="h-4 w-4 text-slate-600 dark:text-gray-400" />
               ) : (
-                <ChevronDown className="h-4 w-4 text-slate-600" />
+                <ChevronDown className="h-4 w-4 text-slate-600 dark:text-gray-400" />
               )}
             </button>
           </div>
@@ -181,14 +181,14 @@ const VirtualizedHarTable = ({
         style={style}
         {...ariaAttributes}
         className={clsx(
-          'border-b border-slate-100 transition cursor-pointer',
-          isSelected ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-slate-50'
+          'border-b border-slate-100 dark:border-gray-700 transition cursor-pointer',
+          isSelected ? 'bg-blue-50 dark:bg-blue-900/30 border-l-4 border-l-blue-500 dark:border-l-blue-400' : 'hover:bg-slate-50 dark:hover:bg-gray-700'
         )}
         onClick={() => setSelectedEntryIndex(entryIndex)}
       >
         <div className="flex items-center h-full">
           <div className="w-[100px] px-4 py-2 flex-shrink-0">
-            <span className="text-xs font-mono font-semibold text-slate-700">{method}</span>
+            <span className="text-xs font-mono font-semibold text-slate-700 dark:text-white">{method}</span>
           </div>
           <div className="w-[100px] px-4 py-2 flex-shrink-0">
             {status ? (
@@ -196,24 +196,24 @@ const VirtualizedHarTable = ({
                 {status}
               </span>
             ) : (
-              <span className="text-xs text-slate-400">—</span>
+              <span className="text-xs text-slate-400 dark:text-gray-500">—</span>
             )}
           </div>
           <div className="flex-1 px-4 py-2 min-w-0">
-            <div className="text-xs text-slate-600 truncate" title={url}>
+            <div className="text-xs text-slate-600 dark:text-white truncate" title={url}>
               {highlightText(url, searchQuery)}
             </div>
           </div>
           <div className="w-[150px] px-4 py-2 flex-shrink-0">
-            <div className="text-xs text-slate-600 truncate" title={contentType}>
+            <div className="text-xs text-slate-600 dark:text-white truncate" title={contentType}>
               {highlightText(contentType.split(';')[0] || '—', searchQuery)}
             </div>
           </div>
           <div className="w-[120px] px-4 py-2 flex-shrink-0">
-            <span className="text-xs font-mono text-slate-600">{formatBytes(size)}</span>
+            <span className="text-xs font-mono text-slate-600 dark:text-white">{formatBytes(size)}</span>
           </div>
           <div className="w-[120px] px-4 py-2 flex-shrink-0">
-            <span className="text-xs font-mono text-slate-600">{formatTime(time)}</span>
+            <span className="text-xs font-mono text-slate-600 dark:text-white">{formatTime(time)}</span>
           </div>
         </div>
       </div>
@@ -225,7 +225,7 @@ const VirtualizedHarTable = ({
     return (
       <div className="w-full h-full flex items-center justify-center p-12">
         <div className="text-center">
-          <div className="text-slate-400 mb-4">No requests match your filters</div>
+          <div className="text-slate-400 dark:text-gray-400 mb-4">No requests match your filters</div>
         </div>
       </div>
     );
@@ -235,7 +235,7 @@ const VirtualizedHarTable = ({
     return (
       <div className="w-full h-full flex items-center justify-center p-12">
         <div className="text-center">
-          <div className="text-slate-400 mb-4">No requests to display</div>
+          <div className="text-slate-400 dark:text-gray-400 mb-4">No requests to display</div>
         </div>
       </div>
     );
@@ -244,12 +244,12 @@ const VirtualizedHarTable = ({
   return (
     <div ref={containerRef} className="w-full h-full flex flex-col">
       {/* Sortable Header */}
-      <div className="border-b-2 border-slate-300 bg-slate-50 sticky top-0 z-10 flex-shrink-0">
+      <div className="border-b-2 border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-700 sticky top-0 z-10 flex-shrink-0">
         <div className="flex items-center">
           <SortableHeader column="method" className="w-[100px]">Method</SortableHeader>
           <SortableHeader column="status" className="w-[100px]">Status</SortableHeader>
           <SortableHeader column="url" className="flex-1">URL</SortableHeader>
-          <div className="w-[150px] px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Type</div>
+          <div className="w-[150px] px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider">Type</div>
           <SortableHeader column="size" className="w-[120px]">Size</SortableHeader>
           <SortableHeader column="time" className="w-[120px]">Time</SortableHeader>
         </div>
