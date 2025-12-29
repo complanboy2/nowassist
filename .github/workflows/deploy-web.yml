@@ -32,9 +32,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          npm ci || npm install
           echo "Verifying vite installation..."
-          npm list vite 2>/dev/null | head -2 || echo "WARNING: vite check failed"
+          npm list vite || echo "ERROR: vite not found"
+          test -f node_modules/.bin/vite && echo "✓ vite binary exists" || echo "ERROR: vite binary missing"
+          npx vite --version || echo "ERROR: npx vite failed"
 
       - name: Build web app
         run: npm run build:web
