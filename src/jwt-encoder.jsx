@@ -268,7 +268,7 @@ const CodeSection = ({ title, content, description, onCopy, theme }) => {
   };
 
   return (
-    <div className="rounded-xl border-2 border-slate-200 bg-white shadow-sm flex flex-col h-full overflow-hidden">
+    <div className="rounded-xl border-2 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm flex flex-col h-full overflow-hidden">
       <div className="flex items-center justify-between border-b-2 border-slate-200 bg-slate-50/50 px-4 py-2 rounded-t-xl flex-shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
@@ -293,11 +293,11 @@ const CodeSection = ({ title, content, description, onCopy, theme }) => {
           )}
           tabIndex={0}
         >
-          {copied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+          {copied ? <CheckCircle2 className="h-3.5 w-3.5 dark:text-white" /> : <Copy className="h-3.5 w-3.5 dark:text-white" />}
           <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
         </button>
       </div>
-      <div className="overflow-auto bg-white rounded-b-xl" style={{ height: '300px' }}>
+      <div className="overflow-auto bg-white dark:bg-gray-800 rounded-b-xl" style={{ height: '300px' }}>
         <pre className="p-6 text-sm leading-relaxed">
           <code className="font-mono text-slate-800">
             {lines.map((line, index) => (
@@ -529,17 +529,17 @@ const JWTEncoder = () => {
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
             <div className="space-y-4 sm:space-y-6">
           {/* Professional Header with Border */}
-          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
+          <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="space-y-1 sm:space-y-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">JWT Encoder</h1>
-                <p className="text-sm sm:text-base text-gray-600">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">JWT Encoder</h1>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 dark:text-gray-400">
                   Create and sign JSON Web Tokens. All processing happens in your browser—data never leaves your device.
                 </p>
               </div>
               <div className="relative" ref={companyMenuRef}>
                 <button
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border-[0.5px] border-gray-300 rounded-lg hover:border-gray-500 hover:bg-gray-50 focus:outline-none shadow-sm"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-white dark:text-white hover:text-gray-900 dark:hover:text-white border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-500 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none shadow-sm bg-white dark:bg-gray-800"
                   onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -552,18 +552,18 @@ const JWTEncoder = () => {
                   aria-expanded={companyMenuOpen}
                 >
                   <span className="whitespace-nowrap">{theme.name}</span>
-                  <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200', companyMenuOpen && 'rotate-180')} />
+                  <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 dark:text-gray-400 transition-transform duration-200', companyMenuOpen && 'rotate-180')} />
                 </button>
                 {companyMenuOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setCompanyMenuOpen(false)} />
-                    <div className="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
+                    <div className="absolute right-0 top-full mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden">
                       <button
                         onClick={() => {
                           setSelectedCompany('servicenow');
                           setCompanyMenuOpen(false);
                         }}
-                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 last:border-b-0 focus:outline-none', currentCompany === 'servicenow' ? 'bg-sky-50 text-sky-700 font-semibold' : 'text-gray-700 hover:bg-gray-50')}
+                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 dark:border-gray-700 dark:border-gray-700 last:border-b-0 focus:outline-none', currentCompany === 'servicenow' ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 font-semibold' : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700')}
                         tabIndex={0}
                       >
                         ServiceNow
@@ -573,7 +573,7 @@ const JWTEncoder = () => {
                           setSelectedCompany('salesforce');
                           setCompanyMenuOpen(false);
                         }}
-                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 last:border-b-0 focus:outline-none', currentCompany === 'salesforce' ? 'bg-sky-50 text-sky-700 font-semibold' : 'text-gray-700 hover:bg-gray-50')}
+                        className={clsx('w-full px-4 py-2.5 text-left text-sm transition-colors border-b border-gray-100 dark:border-gray-700 dark:border-gray-700 last:border-b-0 focus:outline-none', currentCompany === 'salesforce' ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 font-semibold' : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700')}
                         tabIndex={0}
                       >
                         Salesforce
@@ -590,11 +590,11 @@ const JWTEncoder = () => {
             {/* Left Column: Header + Payload */}
             <div className="flex flex-col gap-4 sm:gap-6">
               {/* Header Input */}
-              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
-                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col flex-1">
+                <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
-                    <label htmlFor="header-input" className="text-sm sm:text-base font-semibold text-gray-900">
+                    <label htmlFor="header-input" className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                       JWT Header
                     </label>
                   </div>
@@ -607,12 +607,12 @@ const JWTEncoder = () => {
                     className={clsx(
                       'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
                       headerCopied 
-                        ? 'bg-green-50 border-green-400 text-green-700' 
-                        : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                        ? 'bg-green-50 dark:bg-green-900/30 border-green-400 dark:border-green-500 text-green-700 dark:text-green-400' 
+                        : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow'
                     )}
                     tabIndex={0}
                   >
-                    {headerCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    {headerCopied ? <CheckCircle2 className="h-3.5 w-3.5 dark:text-white" /> : <Copy className="h-3.5 w-3.5 dark:text-white" />}
                     <span className="hidden sm:inline">{headerCopied ? 'Copied!' : 'Copy'}</span>
                   </button>
                 </div>
@@ -622,17 +622,17 @@ const JWTEncoder = () => {
                   value={headerJson}
                   onChange={(e) => setHeaderJson(e.target.value)}
                   placeholder="Enter JWT header as JSON"
-                  className="w-full flex-1 min-h-[160px] resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
+                  className="w-full flex-1 min-h-[160px] resize-none border-0 bg-white dark:bg-gray-800 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-gray-400 focus:outline-none focus:bg-sky-50/30 dark:focus:bg-sky-900/20"
                   tabIndex={0}
                 />
               </div>
 
               {/* Payload Input */}
-              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
-                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col flex-1">
+                <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
-                    <label htmlFor="payload-input" className="text-sm sm:text-base font-semibold text-gray-900">
+                    <label htmlFor="payload-input" className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                       JWT Payload
                     </label>
                   </div>
@@ -645,12 +645,12 @@ const JWTEncoder = () => {
                     className={clsx(
                       'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
                       payloadCopied 
-                        ? 'bg-green-50 border-green-400 text-green-700' 
-                        : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                        ? 'bg-green-50 dark:bg-green-900/30 border-green-400 dark:border-green-500 text-green-700 dark:text-green-400' 
+                        : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow'
                     )}
                     tabIndex={0}
                   >
-                    {payloadCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    {payloadCopied ? <CheckCircle2 className="h-3.5 w-3.5 dark:text-white" /> : <Copy className="h-3.5 w-3.5 dark:text-white" />}
                     <span className="hidden sm:inline">{payloadCopied ? 'Copied!' : 'Copy'}</span>
                   </button>
                 </div>
@@ -660,18 +660,18 @@ const JWTEncoder = () => {
                   value={payloadJson}
                   onChange={(e) => setPayloadJson(e.target.value)}
                   placeholder="Enter JWT payload as JSON"
-                  className="w-full flex-1 min-h-[200px] resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
+                  className="w-full flex-1 min-h-[200px] resize-none border-0 bg-white dark:bg-gray-800 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-gray-400 focus:outline-none focus:bg-sky-50/30 dark:focus:bg-sky-900/20"
                   tabIndex={0}
                 />
               </div>
             </div>
 
             {/* Right Column: Signing Configuration */}
-            <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
-            <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+            <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col flex-1">
+            <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
-                <label className="text-sm sm:text-base font-semibold text-gray-900">
+                <label className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                   Signing Configuration
                 </label>
               </div>
@@ -685,7 +685,7 @@ const JWTEncoder = () => {
                         setShowExampleMenu(!showExampleMenu);
                       }
                     }}
-                    className="px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none shadow-sm hover:shadow inline-flex items-center gap-2"
+                    className="px-4 py-2 text-xs font-semibold text-gray-700 dark:text-white dark:text-white bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none shadow-sm hover:shadow inline-flex items-center gap-2"
                     tabIndex={0}
                   >
                     <RefreshCw className="h-3.5 w-3.5" />
@@ -695,7 +695,7 @@ const JWTEncoder = () => {
                   {showExampleMenu && (
                     <>
                       <div className="fixed inset-0 z-40" onClick={() => setShowExampleMenu(false)} />
-                      <div className="absolute right-0 top-full mt-2 w-40 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-y-auto max-h-64">
+                      <div className="absolute right-0 top-full mt-2 w-40 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto max-h-64">
                         {['none', 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512'].map((alg) => (
                           <button
                             key={alg}
@@ -724,8 +724,8 @@ const JWTEncoder = () => {
                             className={clsx(
                               'w-full px-3 py-2 text-left text-sm transition-colors active:scale-[0.98] focus:outline-none',
                               exampleAlgorithm === alg 
-                                ? 'bg-gray-100 font-medium text-gray-900' 
-                                : 'text-gray-700 hover:bg-gray-50'
+                                ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                             )}
                             tabIndex={0}
                           >
@@ -742,7 +742,7 @@ const JWTEncoder = () => {
               <div className="flex-1 space-y-4">
                 <div className="grid grid-cols-1 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                       Algorithm
                     </label>
                     <div className="relative" ref={algorithmMenuRef}>
@@ -755,19 +755,19 @@ const JWTEncoder = () => {
                             setAlgorithmMenuOpen(!algorithmMenuOpen);
                           }
                         }}
-                        className="w-full text-left border-[0.5px] border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
+                        className="w-full text-left border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
                         tabIndex={0}
                         aria-expanded={algorithmMenuOpen}
                       >
                         <span>{algorithm === 'none' ? 'none (Unsecured)' : algorithm}</span>
-                        <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0', algorithmMenuOpen && 'rotate-180')} />
+                        <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 flex-shrink-0', algorithmMenuOpen && 'rotate-180')} />
                       </button>
                       {algorithmMenuOpen && (
                         <>
                           <div className="fixed inset-0 z-40" onClick={() => setAlgorithmMenuOpen(false)} />
-                          <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-y-auto max-h-64">
+                          <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto max-h-64">
                             <div className="py-1">
-                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Unsigned</div>
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Unsigned</div>
                               <button
                                 onClick={() => {
                                   setAlgorithm('none');
@@ -779,8 +779,8 @@ const JWTEncoder = () => {
                                 className={clsx(
                                   'w-full px-3 py-2 text-left text-sm transition-colors',
                                   algorithm === 'none' 
-                                    ? 'bg-gray-100 font-medium text-gray-900' 
-                                    : 'text-gray-700 hover:bg-gray-50'
+                                    ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                    : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                 )}
                                 tabIndex={0}
                               >
@@ -788,7 +788,7 @@ const JWTEncoder = () => {
                               </button>
                             </div>
                             <div className="py-1 border-t border-gray-100">
-                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">HMAC</div>
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">HMAC</div>
                               {['HS256', 'HS384', 'HS512'].map((alg) => (
                                 <button
                                   key={alg}
@@ -802,8 +802,8 @@ const JWTEncoder = () => {
                                   className={clsx(
                                     'w-full px-3 py-2 text-left text-sm transition-colors',
                                     algorithm === alg 
-                                      ? 'bg-gray-100 font-medium text-gray-900' 
-                                      : 'text-gray-700 hover:bg-gray-50'
+                                      ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                      : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                   )}
                                   tabIndex={0}
                                 >
@@ -812,7 +812,7 @@ const JWTEncoder = () => {
                               ))}
                             </div>
                             <div className="py-1 border-t border-gray-100">
-                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">RSA</div>
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">RSA</div>
                               {['RS256', 'RS384', 'RS512'].map((alg) => (
                                 <button
                                   key={alg}
@@ -826,8 +826,8 @@ const JWTEncoder = () => {
                                   className={clsx(
                                     'w-full px-3 py-2 text-left text-sm transition-colors',
                                     algorithm === alg 
-                                      ? 'bg-gray-100 font-medium text-gray-900' 
-                                      : 'text-gray-700 hover:bg-gray-50'
+                                      ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                      : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                   )}
                                   tabIndex={0}
                                 >
@@ -836,7 +836,7 @@ const JWTEncoder = () => {
                               ))}
                             </div>
                             <div className="py-1 border-t border-gray-100">
-                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">ECDSA</div>
+                              <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">ECDSA</div>
                               {['ES256', 'ES384', 'ES512'].map((alg) => (
                                 <button
                                   key={alg}
@@ -850,8 +850,8 @@ const JWTEncoder = () => {
                                   className={clsx(
                                     'w-full px-3 py-2 text-left text-sm transition-colors',
                                     algorithm === alg 
-                                      ? 'bg-gray-100 font-medium text-gray-900' 
-                                      : 'text-gray-700 hover:bg-gray-50'
+                                      ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                      : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                   )}
                                   tabIndex={0}
                                 >
@@ -866,7 +866,7 @@ const JWTEncoder = () => {
                   </div>
                   {!isHMAC && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
                         Key Format
                       </label>
                       <div className="relative" ref={keyFormatMenuRef}>
@@ -879,17 +879,17 @@ const JWTEncoder = () => {
                               setKeyFormatMenuOpen(!keyFormatMenuOpen);
                             }
                           }}
-                          className="w-full text-left border-[0.5px] border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
+                          className="w-full text-left border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
                           tabIndex={0}
                           aria-expanded={keyFormatMenuOpen}
                         >
                           <span>{keyFormat}</span>
-                          <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0', keyFormatMenuOpen && 'rotate-180')} />
+                          <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 flex-shrink-0', keyFormatMenuOpen && 'rotate-180')} />
                         </button>
                         {keyFormatMenuOpen && (
                           <>
                             <div className="fixed inset-0 z-40" onClick={() => setKeyFormatMenuOpen(false)} />
-                            <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-hidden">
+                            <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg z-50 overflow-hidden">
                               {['PEM', 'JWK'].map((format) => (
                                 <button
                                   key={format}
@@ -902,8 +902,8 @@ const JWTEncoder = () => {
                                   className={clsx(
                                     'w-full px-3 py-2 text-left text-sm transition-colors',
                                     keyFormat === format 
-                                      ? 'bg-gray-100 font-medium text-gray-900' 
-                                      : 'text-gray-700 hover:bg-gray-50'
+                                      ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                      : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                   )}
                                   tabIndex={0}
                                 >
@@ -921,7 +921,7 @@ const JWTEncoder = () => {
                 {!isNone && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-white">
                         {isHMAC ? 'Secret' : 'Private Key'}
                       </label>
                       {key.trim() && (
@@ -934,12 +934,12 @@ const JWTEncoder = () => {
                           className={clsx(
                             'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
                             keyCopied 
-                              ? 'bg-green-50 border-green-400 text-green-700' 
-                              : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                              ? 'bg-green-50 dark:bg-green-900/30 border-green-400 dark:border-green-500 text-green-700 dark:text-green-400' 
+                              : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow'
                           )}
                           tabIndex={0}
                         >
-                          {keyCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                          {keyCopied ? <CheckCircle2 className="h-3.5 w-3.5 dark:text-white" /> : <Copy className="h-3.5 w-3.5 dark:text-white" />}
                           <span className="hidden sm:inline">{keyCopied ? 'Copied!' : 'Copy'}</span>
                         </button>
                       )}
@@ -956,12 +956,12 @@ const JWTEncoder = () => {
                         : keyFormat === 'PEM' 
                           ? '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC...\n-----END PRIVATE KEY-----'
                           : '{\n  "kty": "RSA",\n  "n": "...",\n  "e": "AQAB",\n  "d": "...",\n  ...\n}'}
-                      className="w-full min-h-[180px] resize-none border-[0.5px] border-gray-300 rounded-lg bg-white px-3 sm:px-4 py-2 sm:py-2.5 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60 mb-2"
+                      className="w-full min-h-[180px] resize-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 px-3 sm:px-4 py-2 sm:py-2.5 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 mb-2"
                       tabIndex={0}
                     />
                     {!isHMAC && (
-                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 cursor-pointer focus-within:outline-none shadow-sm">
-                        <Upload className="h-3.5 w-3.5" />
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-white dark:text-white bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 cursor-pointer focus-within:outline-none shadow-sm">
+                        <Upload className="h-3.5 w-3.5 dark:text-white" />
                         Upload
                         <input type="file" accept=".pem,.key,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
                       </label>
@@ -973,7 +973,7 @@ const JWTEncoder = () => {
               <button
                 onClick={handleGenerate}
                 disabled={!header || !payload || (!isNone && !isHMAC && !key.trim()) || (!isNone && isHMAC && !key.trim()) || isEncoding}
-                className="w-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 shadow-sm hover:shadow flex items-center justify-center gap-2 mt-4"
+                className="w-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-all disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:text-gray-500 dark:disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-300 dark:disabled:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-700 focus:ring-offset-2 shadow-sm hover:shadow flex items-center justify-center gap-2 mt-4"
                 tabIndex={0}
               >
                 {isEncoding ? (
@@ -993,20 +993,20 @@ const JWTEncoder = () => {
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl px-4 sm:px-6 py-3 sm:py-4">
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-red-700 font-medium">
-                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+            <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl px-4 sm:px-6 py-3 sm:py-4">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-red-700 dark:text-red-400 font-medium">
+                <AlertCircle className="h-4 w-4 flex-shrink-0 dark:text-red-400" />
                 <span>{error}</span>
               </div>
             </div>
           )}
 
           {/* Encoded Token Output */}
-          <div ref={encodedTokenRef} className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+          <div ref={encodedTokenRef} className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: theme.primary }} />
-                <label className="text-sm sm:text-base font-semibold text-gray-900">
+                <label className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                   Encoded JWT Token
                 </label>
               </div>
@@ -1020,12 +1020,12 @@ const JWTEncoder = () => {
                   className={clsx(
                     'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm',
                     tokenCopied 
-                      ? 'bg-green-50 border-green-400 text-green-700' 
-                      : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                      ? 'bg-green-50 dark:bg-green-900/30 border-green-400 dark:border-green-500 text-green-700 dark:text-green-400' 
+                      : 'text-gray-700 dark:text-white dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow'
                   )}
                   tabIndex={0}
                 >
-                  {tokenCopied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                  {tokenCopied ? <CheckCircle2 className="h-3.5 w-3.5 dark:text-white" /> : <Copy className="h-3.5 w-3.5 dark:text-white" />}
                   <span className="hidden sm:inline">{tokenCopied ? 'Copied!' : 'Copy'}</span>
                 </button>
               )}
@@ -1035,7 +1035,7 @@ const JWTEncoder = () => {
                 value={encodedToken || ''}
                 readOnly
                 placeholder={encodedToken ? '' : 'Generated JWT token will appear here...'}
-                className="w-full min-h-[120px] resize-none border-0 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none"
+                className="w-full min-h-[120px] resize-none border-0 bg-white dark:bg-gray-800 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none"
                 style={encodedToken ? { color: 'transparent', caretColor: 'transparent' } : {}}
                 tabIndex={0}
               />
@@ -1044,15 +1044,15 @@ const JWTEncoder = () => {
                   <pre className="whitespace-pre-wrap break-all">
                     {(() => {
                       const parts = encodedToken.split('.');
-                      if (parts.length < 2) return <span className="text-gray-700">{encodedToken}</span>;
+                      if (parts.length < 2) return <span className="text-gray-700 dark:text-white dark:text-white">{encodedToken}</span>;
                       return (
                         <>
                           <span className="text-blue-400">{parts[0]}</span>
-                          <span className="text-gray-300">.</span>
+                          <span className="text-gray-300 dark:text-gray-400">.</span>
                           <span className="text-purple-400">{parts[1]}</span>
                           {parts[2] && (
                             <>
-                              <span className="text-gray-300">.</span>
+                              <span className="text-gray-300 dark:text-gray-400">.</span>
                               <span className="text-emerald-400">{parts[2]}</span>
                             </>
                           )}
@@ -1063,10 +1063,10 @@ const JWTEncoder = () => {
                 </div>
               )}
             </div>
-              <div className={clsx('border-t border-gray-200 bg-gray-50 px-4 sm:px-6 py-3 sm:py-4', !encodedToken && 'opacity-0 pointer-events-none')}>
+              <div className={clsx('border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4', !encodedToken && 'opacity-0 pointer-events-none')}>
                 <div className="flex items-center gap-2 text-xs sm:text-sm">
-                  <CheckCircle2 className="h-4 w-4 text-green-600" />
-                  <span className="font-medium text-gray-900">JWT generated successfully</span>
+                  <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <span className="font-medium text-gray-900 dark:text-white">JWT generated successfully</span>
                 </div>
               </div>
             </div>
@@ -1082,7 +1082,7 @@ const JWTEncoder = () => {
   }
   
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-screen bg-slate-50 dark:bg-gray-900 overflow-hidden">
       <Navigation currentPageId="jwt-encoder" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
       {content}
     </div>
