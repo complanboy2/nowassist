@@ -234,11 +234,11 @@ const EnhancedJsonEditor = ({
             color: rgb(31, 41, 55);
             background-color: transparent;
             cursor: text !important;
-            caret-color: rgb(31, 41, 55);
+            caret-color: rgb(31, 41, 55) !important;
           }
           .dark .json-editor-textarea {
             color: rgb(255, 255, 255);
-            caret-color: rgb(255, 255, 255);
+            caret-color: rgb(255, 255, 255) !important;
           }
           .json-editor-textarea::placeholder {
             color: rgb(156, 163, 175);

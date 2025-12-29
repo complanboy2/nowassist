@@ -1038,8 +1038,8 @@ const JWTEncoder = () => {
                 value={encodedToken || ''}
                 readOnly
                 placeholder={encodedToken ? '' : 'Generated JWT token will appear here...'}
-                className="w-full min-h-[120px] resize-none border-0 bg-white dark:bg-gray-800 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none"
-                style={encodedToken ? { color: 'transparent', caretColor: 'transparent' } : {}}
+                className="w-full min-h-[120px] resize-none border-0 bg-white dark:bg-gray-800 px-4 sm:px-5 lg:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none token-input-textarea"
+                style={encodedToken ? { color: 'transparent' } : {}}
                 tabIndex={0}
               />
               {encodedToken && (

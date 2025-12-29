@@ -88,10 +88,10 @@ const SimpleJsonEditor = ({
           overflow-x: auto;
           white-space: pre;
           cursor: text !important;
-          caret-color: rgb(31, 41, 55);
+          caret-color: rgb(31, 41, 55) !important;
         }
         .dark .json-editor-textarea {
-          caret-color: rgb(255, 255, 255);
+          caret-color: rgb(255, 255, 255) !important;
         }
         .json-editor-textarea:focus {
           outline: none;

@@ -36,7 +36,24 @@ textarea:focus,
 [contenteditable="true"]:focus,
 [contenteditable=""]:focus {
   cursor: text !important;
-  caret-color: currentColor;
+}
+
+/* Dark mode focus - white caret */
+.dark input:focus:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="image"]):not([type="range"]),
+.dark input[type="text"]:focus,
+.dark input[type="url"]:focus,
+.dark input[type="password"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="number"]:focus,
+.dark input[type="search"]:focus,
+.dark input[type="datetime-local"]:focus,
+.dark input[type="date"]:focus,
+.dark input[type="time"]:focus,
+.dark input[type="tel"]:focus,
+.dark textarea:focus,
+.dark [contenteditable="true"]:focus,
+.dark [contenteditable=""]:focus {
+  caret-color: rgb(255, 255, 255) !important;
 }
 
 /* Ensure input elements are not set to cursor: none or cursor: default */
@@ -45,7 +62,7 @@ textarea {
   cursor: text !important;
 }
 
-/* Dark mode caret color */
+/* Dark mode caret color - white for all inputs */
 .dark input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="image"]):not([type="range"]),
 .dark input[type="text"],
 .dark input[type="url"],
@@ -60,7 +77,25 @@ textarea {
 .dark textarea,
 .dark [contenteditable="true"],
 .dark [contenteditable=""] {
-  caret-color: rgb(255, 255, 255);
+  caret-color: rgb(255, 255, 255) !important;
+}
+
+/* Ensure all inputs in dark mode have white caret - comprehensive override */
+html.dark input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="image"]):not([type="range"]),
+html.dark input[type="text"],
+html.dark input[type="url"],
+html.dark input[type="password"],
+html.dark input[type="email"],
+html.dark input[type="number"],
+html.dark input[type="search"],
+html.dark input[type="datetime-local"],
+html.dark input[type="date"],
+html.dark input[type="time"],
+html.dark input[type="tel"],
+html.dark textarea,
+html.dark [contenteditable="true"],
+html.dark [contenteditable=""] {
+  caret-color: rgb(255, 255, 255) !important;
 }
 
 /* Light mode caret color */
