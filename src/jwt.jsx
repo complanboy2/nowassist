@@ -1447,7 +1447,7 @@ const JWTDecoder = () => {
                                   {issue.severity}
                                 </span>
                               </div>
-                              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{issue.message}</p>
+                              <p className="text-sm text-gray-700 dark:text-white mb-2">{issue.message}</p>
                               {issue.recommendation && (
                                 <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                                   <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Recommendation:</p>
@@ -1476,7 +1476,7 @@ const JWTDecoder = () => {
                       <div className="flex items-center gap-0.5 bg-white dark:bg-gray-700 p-0.5 border border-gray-300 dark:border-gray-600 rounded-md">
                         <button
                           onClick={() => setPayloadViewMode('json')}
-                          className={clsx('px-2 py-1 text-xs font-medium transition-colors rounded', payloadViewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600')}
+                          className={clsx('px-2 py-1 text-xs font-medium transition-colors rounded', payloadViewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600')}
                           tabIndex={0}
                         >
                           JSON
@@ -1581,7 +1581,7 @@ const JWTDecoder = () => {
                                               }
                                               position="right"
                                             >
-                                              <Info className="h-3.5 w-3.5 text-gray-500 hover:text-sky-600 cursor-help flex-shrink-0 transition-colors" />
+                                              <Info className="h-3.5 w-3.5 text-gray-500 dark:text-gray-400 hover:text-sky-600 dark:hover:text-sky-400 cursor-help flex-shrink-0 transition-colors" />
                                             </Tooltip>
                                           )}
                                         </div>
@@ -1635,7 +1635,7 @@ const JWTDecoder = () => {
                                           }
                                           position="right"
                                         >
-                                          <Info className="h-3.5 w-3.5 text-gray-500 hover:text-sky-600 cursor-help flex-shrink-0 transition-colors" />
+                                          <Info className="h-3.5 w-3.5 text-gray-500 dark:text-gray-400 hover:text-sky-600 dark:hover:text-sky-400 cursor-help flex-shrink-0 transition-colors" />
                                         </Tooltip>
                                       )}
                                     </div>
