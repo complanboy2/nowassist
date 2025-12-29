@@ -30,7 +30,11 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm ci --no-audit
+        run: |
+          npm install --no-audit --no-fund
+          echo "Checking vite installation..."
+          ls -la node_modules/.bin/vite || echo "ERROR: vite binary not found"
+          npm list vite || echo "ERROR: vite not in node_modules"
 
       - name: Build web app
         run: npm run build:web
