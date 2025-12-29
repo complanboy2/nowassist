@@ -601,14 +601,14 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
             <div className="flex items-center gap-0.5 bg-white dark:bg-gray-700 p-0.5 border border-gray-300 dark:border-gray-600 rounded-md">
               <button
                 onClick={() => onViewModeChange('json')}
-                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded', viewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-500')}
+                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded', viewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500')}
                 tabIndex={0}
               >
                 JSON
               </button>
               <button
                 onClick={() => onViewModeChange('table')}
-                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded inline-flex items-center gap-1', viewMode === 'table' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-500')}
+                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded inline-flex items-center gap-1', viewMode === 'table' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500')}
                 tabIndex={0}
               >
                 <Table className="h-2.5 sm:h-3 w-2.5 sm:w-3" />
@@ -1180,7 +1180,7 @@ const JWTDecoder = () => {
               </div>
               <div className="relative" ref={companyMenuRef}>
                 <button
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-500 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:outline-none bg-white dark:bg-gray-800"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-white transition-all border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-500 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:outline-none bg-white dark:bg-gray-800"
                   onClick={() => setCompanyMenuOpen(!companyMenuOpen)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -1193,7 +1193,7 @@ const JWTDecoder = () => {
                   aria-expanded={companyMenuOpen}
                 >
                   <span className="whitespace-nowrap">{theme.name}</span>
-                  <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200', companyMenuOpen && 'rotate-180')} />
+                  <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200', companyMenuOpen && 'rotate-180')} />
                 </button>
                 {companyMenuOpen && (
                   <>
@@ -1242,7 +1242,7 @@ const JWTDecoder = () => {
                           setShowExampleMenu(!showExampleMenu);
                         }
                       }}
-                      className="px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow inline-flex items-center gap-2"
+                      className="px-4 py-2 text-xs font-semibold text-gray-700 dark:text-white bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow inline-flex items-center gap-2"
                       tabIndex={0}
                     >
                       <RefreshCw className="h-3.5 w-3.5" />
@@ -1295,10 +1295,10 @@ const JWTDecoder = () => {
                         copyText(token);
                       }
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 dark:text-white bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow"
                     tabIndex={0}
                   >
-                    <Copy className="h-4 w-4" />
+                    <Copy className="h-4 w-4 text-gray-600 dark:text-white" />
                     Copy
                   </button>
                   <button
