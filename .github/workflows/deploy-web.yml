@@ -28,17 +28,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-
-      - name: Update npm
-        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: |
-          set -e
-          npm install || (echo "npm install failed, retrying..." && npm install || exit 1)
-          test -f node_modules/.bin/vite || (echo "vite not installed" && exit 1)
-          echo "Dependencies installed successfully"
+          npm cache clean --force
+          npm install --legacy-peer-deps
+          if [ ! -f node_modules/.bin/vite ]; then
+            echo "ERROR: vite binary not found"
+            exit 1
+          fi
 
       - name: Build web app
         run: npm run build:web
