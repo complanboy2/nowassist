@@ -1856,7 +1856,7 @@ const JWTDecoder = () => {
                     )}
                     {jwks && jwks.keys && jwks.keys.length > 0 && (
                       <div className="space-y-3">
-                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Select Key:</label>
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-white">Select Key:</label>
                         <select
                           value={selectedKeyId}
                           onChange={(e) => setSelectedKeyId(e.target.value)}
@@ -1912,7 +1912,7 @@ const JWTDecoder = () => {
                   {showTimePanelExpanded && (
                   <div className="p-6 space-y-4 bg-white dark:bg-gray-800">
                     <div className="flex items-center gap-4 flex-wrap">
-                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">Current Time:</label>
+                      <label className="text-sm font-medium text-gray-700 dark:text-white whitespace-nowrap">Current Time:</label>
                       <input
                         type="datetime-local"
                         value={simulatedTime ? new Date(simulatedTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)}
@@ -2009,7 +2009,7 @@ const JWTDecoder = () => {
                     </div>
                     {redactedToken && (
                       <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Redacted Token:</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">Redacted Token:</label>
                         <textarea
                           value={redactedToken}
                           readOnly
