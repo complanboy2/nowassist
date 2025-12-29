@@ -660,16 +660,16 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
               <div className="p-3 sm:p-4 lg:p-5 w-full overflow-x-auto">
             <table className="w-full text-xs sm:text-sm">
               <thead>
-                <tr className="border-b-2 border-gray-200">
-                  <th className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-left font-semibold text-gray-900">Claim</th>
-                  <th className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-left font-semibold text-gray-900">Value</th>
+                <tr className="border-b-2 border-gray-200 dark:border-gray-600">
+                  <th className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-left font-semibold text-gray-900 dark:text-white">Claim</th>
+                  <th className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-left font-semibold text-gray-900 dark:text-white">Value</th>
                 </tr>
               </thead>
               <tbody>
                 {Object.entries(parsedPayload).map(([key, value]) => (
-                  <tr key={key} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 font-mono text-gray-700 text-xs sm:text-sm">{key}</td>
-                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-gray-900 text-xs sm:text-sm break-words">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</td>
+                  <tr key={key} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 font-mono text-gray-700 dark:text-gray-300 text-xs sm:text-sm">{key}</td>
+                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-gray-900 dark:text-gray-200 text-xs sm:text-sm break-words">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -689,7 +689,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
           ) : (
             <div className="p-3 sm:p-4">
               <pre className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">
-                <code className="font-mono text-gray-800">
+                <code className="font-mono text-gray-800 dark:text-gray-200">
                   {content || '—'}
                 </code>
               </pre>
