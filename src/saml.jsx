@@ -577,7 +577,7 @@ const CertificateSection = ({ certificate }) => {
                 setShowPem(!showPem);
               }
             }}
-            className="w-full text-left rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-700 hover:bg-gray-100 hover:border-gray-300 transition flex items-center justify-between active:scale-[0.98] focus:outline-none focus:ring-2 focus:outline-none300"
+            className="w-full text-left rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-3 py-2 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 hover:border-gray-300 dark:hover:border-gray-500 transition flex items-center justify-between active:scale-[0.98] focus:outline-none focus:ring-2 focus:outline-none300"
             tabIndex={0}
           >
             <span>Pem</span>
@@ -626,8 +626,8 @@ const XmlViewer = ({ xml, onCopy }) => {
   };
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-      <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 sm:px-6 py-3 sm:py-4">
+    <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+      <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center gap-2.5">
           <div className="h-1.5 w-1.5 rounded-full bg-gray-400" />
           <h3 className="text-sm font-semibold text-gray-900">DECODED</h3>
@@ -858,11 +858,11 @@ const SAMLInspector = () => {
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
             <div className="space-y-4 sm:space-y-6">
           {/* Professional Header with Border */}
-          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
+          <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="space-y-1 sm:space-y-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">SAML Inspector</h1>
-                <p className="text-sm sm:text-base text-gray-600">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">SAML Inspector</h1>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                   Decode base64 responses, inspect assertions, and automatically trace SAML requests/responses from your browser.
                 </p>
               </div>
@@ -871,7 +871,7 @@ const SAMLInspector = () => {
 
           {/* View Mode Toggle */}
           <div className="flex items-center gap-4 flex-wrap">
-            <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
+            <div className="flex items-center gap-0.5 bg-white dark:bg-gray-700 p-0.5 border border-gray-300 dark:border-gray-600 rounded-md">
               <button
                 onClick={() => {
                   setViewMode('manual');
@@ -948,7 +948,7 @@ const SAMLInspector = () => {
                       clearMessages();
                     }
                   }}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 hover:text-red-600 focus:outline-none shadow-sm hover:shadow transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 hover:text-red-600 dark:hover:text-red-400 focus:outline-none shadow-sm hover:shadow transition-all"
                   tabIndex={0}
                 >
                   <Trash2 className="h-4 w-4" />

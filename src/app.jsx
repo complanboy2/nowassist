@@ -76,11 +76,11 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col">
+    <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 flex flex-col">
       <div className="flex-1 flex flex-col">
         <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
           <div className="space-y-6">
-            <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-6 py-8">
+            <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-6 py-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-3">NowAssist</h1>
               <p className="text-base text-gray-600">
                 Professional developer toolkit for ServiceNow engineers and developers. 
@@ -111,12 +111,12 @@ const Home = () => {
               })}
             </div>
 
-            <div className="bg-gradient-to-r from-sky-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 border border-sky-200 dark:border-gray-700 rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <Info className="h-6 w-6 text-sky-600 dark:text-sky-400" />
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">100% Local Processing</h2>
-              </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+                <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Info className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">100% Local Processing</h2>
+                  </div>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                 All operations happen locally in your browser. No data is sent to external servers. 
                 REST API Tester and JWKS fetcher require internet, but all other tools work completely offline.
               </p>

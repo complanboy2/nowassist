@@ -141,7 +141,7 @@ const About = () => {
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
             <div className="space-y-3 sm:space-y-4">
             {/* Header */}
-            <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
+            <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">About NowAssist</h1>
             </header>
 
@@ -164,17 +164,17 @@ const About = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                     <Lock className="h-6 w-6 text-gray-700 mb-2" />
                     <h3 className="font-semibold text-gray-900 mb-1">100% Private</h3>
                     <p className="text-sm text-gray-600">All data stays in your browser. No cloud processing, no external servers.</p>
                   </div>
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                     <Zap className="h-6 w-6 text-gray-700 mb-2" />
                     <h3 className="font-semibold text-gray-900 mb-1">Lightning Fast</h3>
                     <p className="text-sm text-gray-600">Instant results with no network latency. Process data in real-time.</p>
                   </div>
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                     <Globe className="h-6 w-6 text-gray-700 mb-2" />
                     <h3 className="font-semibold text-gray-900 mb-1">Works Offline</h3>
                     <p className="text-sm text-gray-600">No internet connection required. Perfect for local development and debugging.</p>
@@ -184,8 +184,8 @@ const About = () => {
             </div>
 
             {/* Features Section */}
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-              <div className="bg-gray-50 px-4 sm:px-6 py-4 border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
+              <div className="bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-600">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Features</h2>
                 <p className="text-sm text-gray-600 mt-1">Comprehensive developer tools at your fingertips</p>
               </div>
@@ -249,7 +249,7 @@ const About = () => {
             </div>
 
             {/* Legal Information Section */}
-            <div className="border border-gray-200 rounded-xl bg-white shadow-sm p-6 sm:p-8">
+            <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm p-6 sm:p-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Legal Information</h2>
               <div className="space-y-4 text-sm text-gray-700">
                 <div>
