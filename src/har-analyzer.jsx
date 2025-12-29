@@ -632,7 +632,7 @@ const HarAnalyzer = () => {
       <div className="flex items-center gap-2">
         <span>{children}</span>
         {sortBy === column && (
-          sortOrder === 'asc' ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />
+          sortOrder === 'asc' ? <ChevronUp className="h-3 w-3 dark:text-white" /> : <ChevronDown className="h-3 w-3 dark:text-white" />
         )}
       </div>
     </th>
