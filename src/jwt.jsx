@@ -2072,26 +2072,26 @@ const JWTDecoder = () => {
                     <button
                       onClick={handleCompareTokens}
                       disabled={!token || !comparisonToken}
-                              className="px-4 py-2 text-sm font-medium text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1"
+                              className="px-4 py-2 text-sm font-medium text-white bg-sky-500 hover:bg-sky-600 rounded-lg transition-colors disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:text-gray-500 dark:disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-300 dark:disabled:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-1"
                     >
                       Compare Tokens
                     </button>
                     {comparisonResult && (
-                      <div className="pt-3 border-t border-gray-100 space-y-3">
-                        <div className="bg-gray-50 px-3 py-2 rounded">
-                          <p className="text-sm font-medium text-gray-900 mb-1">Summary:</p>
-                          <p className="text-sm text-gray-700">{comparisonResult ? getDiffSummary(comparisonResult) : ''}</p>
+                      <div className="pt-3 border-t border-gray-100 dark:border-gray-700 space-y-3">
+                        <div className="bg-gray-50 dark:bg-gray-700 px-3 py-2 rounded">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">Summary:</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-300">{comparisonResult ? getDiffSummary(comparisonResult) : ''}</p>
                         </div>
                         {comparisonResult.valid && (
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <p className="text-sm font-medium text-gray-900 mb-2">Header Changes:</p>
+                              <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">Header Changes:</p>
                               <div className="space-y-1 text-xs">
                                 {comparisonResult.headerDiff.added.length > 0 && (
-                                  <div className="text-green-700">+ {comparisonResult.headerDiff.added.length} added</div>
+                                  <div className="text-green-700 dark:text-green-400">+ {comparisonResult.headerDiff.added.length} added</div>
                                 )}
                                 {comparisonResult.headerDiff.removed.length > 0 && (
-                                  <div className="text-red-700">- {comparisonResult.headerDiff.removed.length} removed</div>
+                                  <div className="text-red-700 dark:text-red-400">- {comparisonResult.headerDiff.removed.length} removed</div>
                                 )}
                                 {comparisonResult.headerDiff.changed.length > 0 && (
                                   <div className="text-yellow-700 dark:text-yellow-400">~ {comparisonResult.headerDiff.changed.length} changed</div>
@@ -2099,10 +2099,10 @@ const JWTDecoder = () => {
                               </div>
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-gray-900 mb-2">Payload Changes:</p>
+                              <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">Payload Changes:</p>
                               <div className="space-y-1 text-xs">
                                 {comparisonResult.payloadDiff.added.length > 0 && (
-                                  <div className="text-green-700">+ {comparisonResult.payloadDiff.added.length} added</div>
+                                  <div className="text-green-700 dark:text-green-400">+ {comparisonResult.payloadDiff.added.length} added</div>
                                 )}
                                 {comparisonResult.payloadDiff.removed.length > 0 && (
                                   <div className="text-red-700 dark:text-red-400">- {comparisonResult.payloadDiff.removed.length} removed</div>
