@@ -20,13 +20,9 @@ const Footer = () => {
                 alt="NowAssist" 
                 className="h-5 w-5"
                 style={{ 
+                  display: 'block',
                   imageRendering: 'crisp-edges',
-                  backgroundColor: 'transparent',
-                  filter: 'drop-shadow(0 0 0 transparent)'
-                }}
-                onError={(e) => {
-                  // Fallback: hide if image fails to load
-                  e.target.style.display = 'none';
+                  backgroundColor: 'transparent'
                 }}
               />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
