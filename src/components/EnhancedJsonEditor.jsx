@@ -139,7 +139,17 @@ const EnhancedJsonEditor = ({
         </div>
 
         {/* Editor */}
-        <div ref={editorRef} className="flex-1 relative overflow-hidden bg-white dark:bg-gray-800">
+        <div 
+          ref={editorRef} 
+          className="flex-1 relative overflow-hidden bg-white dark:bg-gray-800 cursor-text"
+          onClick={(e) => {
+            // Ensure textarea gets focus when clicking in the editor area
+            const textarea = editorRef.current?.querySelector('textarea');
+            if (textarea && !readOnly) {
+              textarea.focus();
+            }
+          }}
+        >
           <Editor
             value={value}
             onValueChange={(code) => {
@@ -179,6 +189,7 @@ const EnhancedJsonEditor = ({
               backgroundColor: 'transparent',
               minHeight: '100%',
               width: '100%',
+              cursor: 'text',
               ...style
             }}
             textareaClassName="json-editor-textarea"
@@ -213,7 +224,7 @@ const EnhancedJsonEditor = ({
             -moz-tab-size: 2;
           }
           .json-editor-textarea {
-            outline: none;
+            outline: none !important;
             resize: none;
             border: none;
             overflow-wrap: normal;
@@ -222,10 +233,12 @@ const EnhancedJsonEditor = ({
             padding-left: 0 !important;
             color: rgb(31, 41, 55);
             background-color: transparent;
-            cursor: text;
+            cursor: text !important;
+            caret-color: rgb(31, 41, 55);
           }
           .dark .json-editor-textarea {
             color: rgb(255, 255, 255);
+            caret-color: rgb(255, 255, 255);
           }
           .json-editor-textarea::placeholder {
             color: rgb(156, 163, 175);
@@ -234,11 +247,16 @@ const EnhancedJsonEditor = ({
             color: rgb(107, 114, 128);
           }
           .json-editor-textarea:focus {
-            outline: none;
+            outline: none !important;
+            cursor: text !important;
           }
           .json-editor-pre {
             pointer-events: none;
             padding-left: 0 !important;
+            cursor: default;
+          }
+          .json-editor-textarea:not([readonly]) {
+            cursor: text !important;
           }
           .error-line-text {
             background-color: rgba(239, 68, 68, 0.25) !important;
