@@ -32,9 +32,11 @@ jobs:
       - name: Install dependencies
         run: |
           npm install --no-audit --no-fund
-          echo "Checking vite installation..."
-          ls -la node_modules/.bin/vite || echo "ERROR: vite binary not found"
-          npm list vite || echo "ERROR: vite not in node_modules"
+          if [ ! -f node_modules/.bin/vite ]; then
+            echo "ERROR: vite binary not found after install"
+            exit 1
+          fi
+          echo "✓ vite installed successfully"
 
       - name: Build web app
         run: npm run build:web
