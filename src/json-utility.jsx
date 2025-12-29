@@ -515,7 +515,7 @@ const JsonUtility = () => {
             )}
 
             {activeTab === 'diff' && (
-              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
                 <div className="h-full overflow-auto">
                   <JsonDiff onOutputUpdate={(output) => setOutputJson(output)} />
                 </div>
@@ -523,7 +523,7 @@ const JsonUtility = () => {
             )}
 
             {activeTab === 'convert' && isValidJson && (
-              <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
                 <div className="h-full overflow-auto">
                   <JsonConvert
                     inputJson={inputJson}
