@@ -625,7 +625,7 @@ const HarAnalyzer = () => {
     <th 
       onClick={() => handleSort(column)}
       className={clsx(
-        'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white dark:text-white uppercase tracking-wider cursor-pointer hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 dark:hover:bg-gray-700 transition select-none sticky top-0 bg-white dark:bg-gray-800 z-10',
+        'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition select-none sticky top-0 bg-white dark:bg-gray-800 z-10',
         className
       )}
     >
@@ -647,7 +647,7 @@ const HarAnalyzer = () => {
           {/* Clean Header */}
           <header className="pb-4 border-b border-gray-200 dark:border-gray-700 mb-4">
             <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-1">HAR Analyzer</h1>
-            <p className="text-sm text-slate-600 dark:text-gray-400 dark:text-gray-400 mt-1">Analyze HTTP Archive (HAR) files with filtering, sanitization, comparison, and powerful insights</p>
+            <p className="text-sm text-slate-600 dark:text-gray-400 mt-1">Analyze HTTP Archive (HAR) files with filtering, sanitization, comparison, and powerful insights</p>
           </header>
 
           <div className="flex-1 overflow-y-auto min-h-0 space-y-6">
@@ -656,8 +656,8 @@ const HarAnalyzer = () => {
           {!harData && (
             <div className="rounded-xl border-2 border-dashed border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-12 text-center">
               <Upload className="h-16 w-16 mx-auto mb-4 text-slate-400 dark:text-gray-500" />
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white dark:text-white mb-2">Upload HAR File</h3>
-              <p className="text-sm text-slate-600 dark:text-gray-400 dark:text-gray-400 mb-6 max-w-md mx-auto">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Upload HAR File</h3>
+              <p className="text-sm text-slate-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
                 Upload a HAR file exported from Chrome DevTools, Firefox, or any HAR-compatible tool to analyze network requests, responses, and performance metrics.
               </p>
               <input
@@ -673,7 +673,7 @@ const HarAnalyzer = () => {
               >
                 Choose HAR File
               </button>
-              <div className="mt-6 text-xs text-slate-500 dark:text-gray-400 dark:text-gray-400">
+              <div className="mt-6 text-xs text-slate-500 dark:text-gray-400">
                 <p className="mb-2 font-semibold">How to export HAR file:</p>
                 <ol className="list-decimal list-inside space-y-1 max-w-md mx-auto text-left">
                   <li>Open Chrome DevTools (F12)</li>
@@ -697,7 +697,7 @@ const HarAnalyzer = () => {
                       'px-4 py-2 rounded-lg font-medium transition',
                       viewMode === 'single' 
                         ? 'bg-primary text-white' 
-                        : 'bg-white dark:bg-gray-700 text-slate-700 dark:text-white dark:text-white border border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:bg-gray-600'
+                        : 'bg-white dark:bg-gray-700 text-slate-700 dark:text-white border border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:bg-gray-600'
                     )}
                   >
                     Single File
@@ -708,7 +708,7 @@ const HarAnalyzer = () => {
                       'px-4 py-2 rounded-lg font-medium transition',
                       viewMode === 'compare' 
                         ? 'bg-primary text-white' 
-                        : 'bg-white dark:bg-gray-700 text-slate-700 dark:text-white dark:text-white border border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:bg-gray-600'
+                        : 'bg-white dark:bg-gray-700 text-slate-700 dark:text-white border border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:bg-gray-600'
                     )}
                   >
                     <GitCompare className="h-4 w-4 inline mr-2" />
@@ -720,9 +720,9 @@ const HarAnalyzer = () => {
 
               {/* Help Section */}
               {showHelp && (
-                <div className="mb-6 rounded-xl border-2 border-blue-200 bg-blue-50 p-6">
+                <div className="mb-6 rounded-xl border-2 border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/30 p-6">
                   <div className="flex items-start justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-blue-900 flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-300 flex items-center gap-2">
                       <Info className="h-5 w-5" />
                       HAR Analyzer Guide
                     </h3>
@@ -784,8 +784,8 @@ const HarAnalyzer = () => {
                     }}
                     className="rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition cursor-pointer text-left"
                   >
-                  <div className="text-xs text-slate-500 dark:text-gray-400 dark:text-gray-400 mb-0.5">Total Requests</div>
-                  <div className="text-lg font-bold text-slate-900 dark:text-white dark:text-white">{stats.totalRequests}</div>
+                  <div className="text-xs text-slate-500 dark:text-gray-400 mb-0.5">Total Requests</div>
+                  <div className="text-lg font-bold text-slate-900 dark:text-white">{stats.totalRequests}</div>
                   </button>
                   <button
                     onClick={() => {
@@ -807,25 +807,25 @@ const HarAnalyzer = () => {
                     <div className="text-xs text-orange-600 dark:text-orange-400 mb-0.5">Slow (&gt;1s)</div>
                     <div className="text-lg font-bold text-orange-700 dark:text-orange-400">{stats.slow}</div>
                   </button>
-                  <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
-                    <div className="text-xs text-blue-600 mb-0.5">Avg Time</div>
-                    <div className="text-lg font-bold text-blue-700">{formatTime(stats.avgTime)}</div>
+                  <div className="rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/30 p-3">
+                    <div className="text-xs text-blue-600 dark:text-blue-400 mb-0.5">Avg Time</div>
+                    <div className="text-lg font-bold text-blue-700 dark:text-blue-400">{formatTime(stats.avgTime)}</div>
                   </div>
-                  <div className="rounded-lg border border-purple-200 bg-purple-50 p-3">
-                    <div className="text-xs text-purple-600 mb-0.5">Total Size</div>
-                    <div className="text-lg font-bold text-purple-700">{formatBytes(stats.totalSize)}</div>
+                  <div className="rounded-lg border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/30 p-3">
+                    <div className="text-xs text-purple-600 dark:text-purple-400 mb-0.5">Total Size</div>
+                    <div className="text-lg font-bold text-purple-700 dark:text-purple-400">{formatBytes(stats.totalSize)}</div>
                   </div>
-                  <div className="rounded-lg border border-green-200 bg-green-50 p-3">
-                    <div className="text-xs text-green-600 mb-0.5">Domains</div>
-                    <div className="text-lg font-bold text-green-700">{stats.domains}</div>
+                  <div className="rounded-lg border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/30 p-3">
+                    <div className="text-xs text-green-600 dark:text-green-400 mb-0.5">Domains</div>
+                    <div className="text-lg font-bold text-green-700 dark:text-green-400">{stats.domains}</div>
                   </div>
-                  <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-3">
-                    <div className="text-xs text-indigo-600 mb-0.5">Methods</div>
-                    <div className="text-lg font-bold text-indigo-700">{stats.methods}</div>
+                  <div className="rounded-lg border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/30 p-3">
+                    <div className="text-xs text-indigo-600 dark:text-indigo-400 mb-0.5">Methods</div>
+                    <div className="text-lg font-bold text-indigo-700 dark:text-indigo-400">{stats.methods}</div>
                   </div>
-                  <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
-                    <div className="text-xs text-yellow-600 mb-0.5">Total Time</div>
-                    <div className="text-lg font-bold text-yellow-700">{formatTime(stats.totalTime)}</div>
+                  <div className="rounded-lg border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/30 p-3">
+                    <div className="text-xs text-yellow-600 dark:text-yellow-400 mb-0.5">Total Time</div>
+                    <div className="text-lg font-bold text-yellow-700 dark:text-yellow-400">{formatTime(stats.totalTime)}</div>
                   </div>
                 </div>
               )}
@@ -833,7 +833,7 @@ const HarAnalyzer = () => {
               {/* Comparison Mode - Second File Upload */}
               {viewMode === 'compare' && !harData2 && (
                 <div className="mb-6 rounded-xl border-2 border-dashed border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-8 text-center">
-                  <GitCompare className="h-12 w-12 mx-auto mb-3 text-slate-400" />
+                  <GitCompare className="h-12 w-12 mx-auto mb-3 text-slate-400 dark:text-gray-500" />
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Upload Second HAR File</h3>
                   <p className="text-sm text-slate-600 dark:text-gray-400 mb-4">Upload another HAR file to compare with the first one</p>
                   <input
@@ -864,18 +864,18 @@ const HarAnalyzer = () => {
                         className="text-xs text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1"
                         title="Show search syntax help"
                       >
-                        <Lightbulb className="h-3.5 w-3.5" />
+                        <Lightbulb className="h-3.5 w-3.5 dark:text-white" />
                         Advanced
                       </button>
                     </div>
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-gray-500" />
                       <input
                         type="text"
                         placeholder='Search all fields, or use: URL="api", Status=400, Response="error"'
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full rounded-lg border-2 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 pl-10 pr-10 py-2 text-sm text-slate-900 dark:text-white dark:text-white placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:border-primary focus:outline-none"
+                        className="w-full rounded-lg border-2 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 pl-10 pr-10 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:border-primary focus:outline-none"
                       />
                       {searchQuery && (
                         <button
@@ -883,15 +883,15 @@ const HarAnalyzer = () => {
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-gray-400 transition p-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700"
                           title="Clear search"
                         >
-                          <X className="h-4 w-4" />
+                          <X className="h-4 w-4 dark:text-white" />
                         </button>
                       )}
                     </div>
                     {showSearchHelp && (
-                      <div className="mt-2 p-3 rounded-lg bg-blue-50 border border-blue-200 text-xs text-blue-900">
+                      <div className="mt-2 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-xs text-blue-900 dark:text-blue-300">
                         <p className="font-semibold mb-2">Advanced Search Syntax:</p>
                         <ul className="space-y-1.5 list-disc list-inside">
-                          <li><code className="bg-blue-100 px-1 rounded">URL="api"</code> or <code className="bg-blue-100 px-1 rounded">url:api</code> - Search only in URLs</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">URL="api"</code> or <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">url:api</code> - Search only in URLs</li>
                           <li><code className="bg-blue-100 px-1 rounded">Status=400</code> - Filter by status code</li>
                           <li><code className="bg-blue-100 px-1 rounded">Response="error"</code> - Search only in response bodies</li>
                           <li><code className="bg-blue-100 px-1 rounded">Request="data"</code> - Search only in request bodies</li>
@@ -974,7 +974,7 @@ const HarAnalyzer = () => {
                       </button>
                       <div>
                         <div className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                          {sanitizeEnabled ? <Lock className="h-4 w-4 text-green-600" /> : <Unlock className="h-4 w-4 text-slate-400" />}
+                            {sanitizeEnabled ? <Lock className="h-4 w-4 text-green-600 dark:text-green-400" /> : <Unlock className="h-4 w-4 text-slate-400 dark:text-gray-500" />}
                           Sanitize Sensitive Data
                         </div>
                         <div className="text-xs text-slate-500 dark:text-gray-400">Remove cookies, tokens, and sensitive headers before export</div>
@@ -985,14 +985,14 @@ const HarAnalyzer = () => {
                         onClick={() => setShowHelp(!showHelp)}
                         className="px-4 py-2 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-white hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-2 text-sm"
                       >
-                        <HelpCircle className="h-4 w-4" />
-                        Help
-                      </button>
-                      <button
-                        onClick={() => exportHAR(harData, 'har-analysis.json')}
-                        className="px-4 py-2 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-white hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-2 text-sm"
-                      >
-                        <Download className="h-4 w-4" />
+                          <HelpCircle className="h-4 w-4 dark:text-white" />
+                          Help
+                        </button>
+                        <button
+                          onClick={() => exportHAR(harData, 'har-analysis.json')}
+                          className="px-4 py-2 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-white hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-2 text-sm"
+                        >
+                          <Download className="h-4 w-4 dark:text-white" />
                         Export
                       </button>
                       <button
@@ -1029,7 +1029,7 @@ const HarAnalyzer = () => {
                     {filteredEntries.length === 0 && entries.length > 0 ? (
                       <div className="p-12 text-center h-full flex items-center justify-center">
                         <div>
-                          <Filter className="h-16 w-16 mx-auto mb-4 text-slate-300" />
+                          <Filter className="h-16 w-16 mx-auto mb-4 text-slate-300 dark:text-gray-600" />
                           <h3 className="text-lg font-semibold text-slate-700 dark:text-white mb-2">No Requests Match Your Filters</h3>
                           <p className="text-sm text-slate-500 dark:text-gray-400 mb-4">
                             We have <span className="font-semibold text-slate-700 dark:text-white">{entries.length}</span> request{entries.length !== 1 ? 's' : ''} total, but none match your current filter settings.
@@ -1121,7 +1121,7 @@ const HarAnalyzer = () => {
   }
   
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-gray-700 dark:bg-gray-900 overflow-hidden">
+    <div className="flex h-screen bg-slate-50 dark:bg-gray-900 overflow-hidden">
       <Navigation currentPageId="har" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
       {content}
     </div>
@@ -1656,7 +1656,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                 Copy
               </button>
             </div>
-            <div className="bg-white rounded-lg border border-slate-200 p-3 text-sm font-mono break-all">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-3 text-sm font-mono break-all text-slate-900 dark:text-white">
               {highlightText(request.url || '—', searchQuery)}
             </div>
           </div>
@@ -1682,7 +1682,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                   </button>
                 </div>
               </div>
-              <pre className="bg-white rounded-lg border border-slate-200 p-3 text-sm font-mono whitespace-pre-wrap">
+              <pre className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-3 text-sm font-mono whitespace-pre-wrap text-slate-900 dark:text-white">
                 {highlightText(getBodyText('request'), searchQuery)}
               </pre>
             </div>
@@ -1690,9 +1690,9 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           {request.cookies && request.cookies.length > 0 && (
             <div>
               <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Cookies</h4>
-              <div className="bg-white rounded-lg border border-slate-200 p-3">
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-3">
                 {request.cookies.map((c, i) => (
-                  <div key={i} className="text-sm font-mono mb-2 py-1 border-b border-slate-100 last:border-0">
+                  <div key={i} className="text-sm font-mono mb-2 py-1 border-b border-slate-100 dark:border-gray-700 last:border-0">
                     <span className="font-semibold text-slate-700 dark:text-white">{highlightText(c.name, searchQuery)}</span> = <span className="text-slate-900 dark:text-white">{highlightText(c.value, searchQuery)}</span>
                   </div>
                 ))}
@@ -1726,7 +1726,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                   </button>
                 </div>
               </div>
-              <pre className="bg-white rounded-lg border border-slate-200 p-3 text-sm font-mono whitespace-pre-wrap">
+              <pre className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-3 text-sm font-mono whitespace-pre-wrap text-slate-900 dark:text-white">
                 {highlightText(getBodyText('response'), searchQuery)}
               </pre>
             </div>
@@ -1734,9 +1734,9 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           {response.cookies && response.cookies.length > 0 && (
             <div>
               <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Response Cookies</h4>
-              <div className="bg-white rounded-lg border border-slate-200 p-3">
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-3">
                 {response.cookies.map((c, i) => (
-                  <div key={i} className="text-sm font-mono mb-2 py-1 border-b border-slate-100 last:border-0">
+                  <div key={i} className="text-sm font-mono mb-2 py-1 border-b border-slate-100 dark:border-gray-700 last:border-0">
                     <span className="font-semibold text-slate-700 dark:text-white">{highlightText(c.name, searchQuery)}</span> = <span className="text-slate-900 dark:text-white">{highlightText(c.value, searchQuery)}</span>
                   </div>
                 ))}
@@ -1751,16 +1751,16 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           {/* Summary - First */}
           <div>
             <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Summary</h4>
-            <div className="bg-white rounded-lg border border-slate-200 p-3 space-y-2">
-              <div className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-3 space-y-2">
+              <div className="flex justify-between text-sm py-1 border-b border-slate-100 dark:border-gray-700 last:border-0">
                 <span className="text-slate-600 dark:text-gray-400 font-medium">Total Time:</span>
                 <span className="font-mono text-slate-900 dark:text-white font-semibold">{entry.time || 0} ms</span>
               </div>
-              <div className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
+              <div className="flex justify-between text-sm py-1 border-b border-slate-100 dark:border-gray-700 last:border-0">
                 <span className="text-slate-600 dark:text-gray-400 font-medium">Size:</span>
                 <span className="font-mono text-slate-900 dark:text-white font-semibold">{formatBytes(response.content?.size || 0)}</span>
               </div>
-              <div className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
+              <div className="flex justify-between text-sm py-1 border-b border-slate-100 dark:border-gray-700 last:border-0">
                 <span className="text-slate-600 dark:text-gray-400 font-medium">Status:</span>
                 <span className="font-mono text-slate-900 dark:text-white font-semibold">{response.status || 0} {response.statusText || ''}</span>
               </div>
@@ -1769,9 +1769,9 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           {/* Request Timing - Second */}
           <div>
             <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Request Timing</h4>
-            <div className="bg-white rounded-lg border border-slate-200 p-3 space-y-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700 p-3 space-y-2">
               {entry.timings && Object.entries(entry.timings).map(([key, value]) => (
-                <div key={key} className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
+                <div key={key} className="flex justify-between text-sm py-1 border-b border-slate-100 dark:border-gray-700 last:border-0">
                   <span className="text-slate-600 dark:text-gray-400 capitalize font-medium">{key}:</span>
                   <span className="font-mono text-slate-900 dark:text-white font-semibold">{value !== -1 ? `${value} ms` : '—'}</span>
                 </div>
