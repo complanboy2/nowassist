@@ -36,7 +36,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile || pnpm install
+          pnpm install
           if [ ! -f node_modules/.bin/vite ]; then
             echo "ERROR: vite binary not found"
             exit 1
