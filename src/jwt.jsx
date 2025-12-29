@@ -1869,7 +1869,7 @@ const JWTDecoder = () => {
                             </option>
                           ))}
                         </select>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           Found {jwks.keys.length} key(s). {selectedKeyId ? 'Key selected for verification.' : 'Select a key to use for verification.'}
                         </p>
                       </div>
@@ -1910,9 +1910,9 @@ const JWTDecoder = () => {
                     </div>
                   </div>
                   {showTimePanelExpanded && (
-                  <div className="p-6 space-y-4">
+                  <div className="p-6 space-y-4 bg-white dark:bg-gray-800">
                     <div className="flex items-center gap-4 flex-wrap">
-                      <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Current Time:</label>
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">Current Time:</label>
                       <input
                         type="datetime-local"
                         value={simulatedTime ? new Date(simulatedTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)}
@@ -1920,7 +1920,7 @@ const JWTDecoder = () => {
                           const time = new Date(e.target.value).getTime();
                           setSimulatedTime(time);
                         }}
-                        className="border-[0.5px] border-gray-300 rounded bg-white px-3 py-1.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60"
+                        className="border-[0.5px] border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                       />
                       <button
                         onClick={() => {
@@ -1930,13 +1930,13 @@ const JWTDecoder = () => {
                             setSimulatedTime(now + (parseFloat(hoursOffset) * 60 * 60 * 1000));
                           }
                         }}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors focus:outline-none"
+                        className="px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
                       >
                         Fast Forward
                       </button>
                       <button
                         onClick={() => setSimulatedTime(null)}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors focus:outline-none"
+                        className="px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
                       >
                         Reset
                       </button>
@@ -1965,10 +1965,10 @@ const JWTDecoder = () => {
                     onClick={() => setShowRedactionExpanded(!showRedactionExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
-                      <Lock className="h-5 w-5 text-slate-600" />
-                      <span className="text-base font-semibold text-slate-900">Redact Sensitive Claims</span>
+                      <Lock className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                      <span className="text-base font-semibold text-slate-900 dark:text-white">Redact Sensitive Claims</span>
                       {!showRedactionExpanded && (
-                        <span className="text-xs text-slate-500 ml-2">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 ml-2">
                           • {redactedClaims.length} claim{redactedClaims.length !== 1 ? 's' : ''} selected{redactedToken ? ' • Redacted token ready' : ''}
                         </span>
                       )}
@@ -1989,7 +1989,7 @@ const JWTDecoder = () => {
                   {showRedactionExpanded && (
                   <div className="p-6 space-y-5">
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-slate-700">Select claims to redact:</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Select claims to redact:</label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto">
                         {Object.keys(payload).map((claim) => (
                           <label key={claim} className="flex items-center gap-2 p-2 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
@@ -2059,7 +2059,7 @@ const JWTDecoder = () => {
                     </button>
                   </div>
                   {showComparisonExpanded && (
-                  <div className="p-6 space-y-4">
+                  <div className="p-6 space-y-4 bg-white dark:bg-gray-800">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">Second Token:</label>
                       <textarea
