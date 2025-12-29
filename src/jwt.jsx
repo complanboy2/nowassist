@@ -1372,7 +1372,7 @@ const JWTDecoder = () => {
                   const itemStyles = toneStyles[item.status];
                   return (
                     <React.Fragment key={item.label}>
-                      {index > 0 && <span className="hidden sm:inline text-gray-300 mx-2">·</span>}
+                      {index > 0 && <span className="hidden sm:inline text-gray-300 dark:text-gray-600 mx-2">·</span>}
                       <div className="flex items-center gap-2">
                         <ItemIcon className={clsx('h-3.5 sm:h-4 w-3.5 sm:w-4 flex-shrink-0', itemStyles.text)} />
                         <span className={clsx('font-medium', itemStyles.text)}>
