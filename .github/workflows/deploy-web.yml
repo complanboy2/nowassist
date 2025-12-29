@@ -31,8 +31,11 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
-        continue-on-error: false
+        run: |
+          set -e
+          npm install || (echo "npm install failed" && exit 1)
+          test -f node_modules/.bin/vite || (echo "vite not installed" && exit 1)
+          echo "Dependencies installed successfully"
 
       - name: Build web app
         run: npm run build:web
