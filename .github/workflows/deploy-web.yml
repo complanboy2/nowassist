@@ -53,7 +53,8 @@ jobs:
           # Remove all extension HTML files (keep only index.html and 404.html)
           find . -name "*.html" ! -name "index.html" ! -name "404.html" -type f -delete
           # Remove extension-specific files
-          rm -f manifest.json background.js content-script.js popup.html
+          rm -f background.js content-script.js popup.html
+          # Keep manifest.json for PWA (but remove extension manifest if it exists)
           rm -f devtools*.html devtools*.js
           echo "Cleaned extension files from dist"
           ls -la *.html 2>/dev/null || echo "No HTML files found"
