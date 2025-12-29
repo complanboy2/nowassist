@@ -1365,7 +1365,7 @@ const JWTDecoder = () => {
               <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 lg:gap-6 text-xs sm:text-sm flex-wrap bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 px-3 sm:px-5 py-2.5 sm:py-3 rounded-lg">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                  <span className="font-medium text-gray-900">Valid JWT</span>
+                  <span className="font-medium text-gray-900 dark:text-white">Valid JWT</span>
                 </div>
                 {statusItems.map((item, index) => {
                   const ItemIcon = item.icon;
@@ -1376,7 +1376,7 @@ const JWTDecoder = () => {
                       <div className="flex items-center gap-2">
                         <ItemIcon className={clsx('h-3.5 sm:h-4 w-3.5 sm:w-4 flex-shrink-0', itemStyles.text)} />
                         <span className={clsx('font-medium', itemStyles.text)}>
-                          <span className="hidden sm:inline">{item.label}: </span><span className="text-gray-600">{item.message}</span>
+                          <span className="hidden sm:inline">{item.label}: </span><span className="text-gray-600 dark:text-gray-400">{item.message}</span>
                         </span>
                       </div>
                     </React.Fragment>
