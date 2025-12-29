@@ -31,7 +31,11 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: |
+          npm install --no-audit --no-fund 2>&1 | tee npm-install.log
+          echo "Checking installation..."
+          ls -la node_modules/.bin/vite || (echo "vite binary missing, showing log:" && tail -50 npm-install.log && exit 1)
+          npm list vite || exit 1
 
       - name: Build web app
         run: npm run build:web
