@@ -646,11 +646,11 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
               'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg focus:outline-none shadow-sm',
               copied 
                 ? 'bg-green-50 dark:bg-green-900/30 border-green-400 dark:border-green-500 text-green-700 dark:text-green-400' 
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow'
+                : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow'
             )}
             tabIndex={0}
           >
-            {copied ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            {copied ? <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" /> : <Copy className="h-3.5 w-3.5 text-gray-600 dark:text-white" />}
             <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
           </button>
         </div>
