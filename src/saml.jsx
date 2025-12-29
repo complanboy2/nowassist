@@ -861,7 +861,10 @@ const SAMLInspector = () => {
           <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="space-y-1 sm:space-y-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">SAML Inspector</h1>
+                <div className="flex items-center gap-3">
+                  <Key className="h-8 w-8 text-primary" />
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">SAML Inspector</h1>
+                </div>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
                   Decode base64 responses, inspect assertions, and automatically trace SAML requests/responses from your browser.
                 </p>

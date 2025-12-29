@@ -184,7 +184,10 @@ const JsonUtility = () => {
           <header className="bg-white border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6 bg-white dark:bg-gray-800">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="space-y-1 sm:space-y-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">JSON Utility</h1>
+                <div className="flex items-center gap-3">
+                  <FileJson className="h-8 w-8 text-primary" />
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">JSON Utility</h1>
+                </div>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                   Format, validate, transform, and analyze JSON data with ease
                 </p>

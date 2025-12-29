@@ -290,7 +290,10 @@ const EncoderDecoder = () => {
             <div className="space-y-3 sm:space-y-4">
             {/* Compact Header */}
             <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Encoder/Decoder</h1>
+              <div className="flex items-center gap-3">
+                <Code className="h-7 w-7 text-primary" />
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Encoder/Decoder</h1>
+              </div>
             </header>
 
             {/* Encoding Type and Mode Selection */}
