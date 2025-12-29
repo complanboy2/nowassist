@@ -1390,7 +1390,7 @@ const JWTDecoder = () => {
             <>
               {/* Security Validation Panel */}
               {securityValidation && securityValidation.issues.length > 0 && (
-                <div className="mb-4 sm:mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-4 sm:mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
                   <div 
                     className="flex items-start sm:items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                     onClick={() => setShowSecurityPanel(!showSecurityPanel)}
