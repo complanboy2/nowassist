@@ -1276,8 +1276,8 @@ const JWTDecoder = () => {
                             className={clsx(
                               'w-full px-3 py-2 text-left text-sm transition-colors active:scale-[0.98] focus:outline-none',
                               exampleAlgorithm === alg 
-                                ? 'bg-slate-100 font-medium text-slate-900' 
-                                : 'text-slate-700 hover:bg-slate-50'
+                                ? 'bg-slate-100 dark:bg-gray-700 font-medium text-slate-900 dark:text-white' 
+                                : 'text-slate-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-700'
                             )}
                             tabIndex={0}
                           >
