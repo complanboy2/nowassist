@@ -955,19 +955,19 @@ const HarAnalyzer = () => {
                 </div>
 
                 {/* Sanitization Toggle */}
-                <div className="mt-4 pt-4 border-t border-slate-200">
+                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-gray-700">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => setSanitizeEnabled(!sanitizeEnabled)}
                         className={clsx(
                           'relative inline-flex h-6 w-11 items-center rounded-full transition',
-                          sanitizeEnabled ? 'bg-green-500' : 'bg-slate-300'
+                          sanitizeEnabled ? 'bg-green-500 dark:bg-green-600' : 'bg-slate-300 dark:bg-gray-600'
                         )}
                       >
                         <span
                           className={clsx(
-                            'inline-block h-4 w-4 transform rounded-full bg-white transition',
+                            'inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-300 transition',
                             sanitizeEnabled ? 'translate-x-6' : 'translate-x-1'
                           )}
                         />
@@ -1007,7 +1007,7 @@ const HarAnalyzer = () => {
                         }}
                         className="px-4 py-2 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-white hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-2 text-sm"
                       >
-                        <X className="h-4 w-4" />
+                        <X className="h-4 w-4 dark:text-white" />
                         Clear
                       </button>
                     </div>
