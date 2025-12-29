@@ -1334,8 +1334,8 @@ const JWTDecoder = () => {
                   e.target.style.height = `${newHeight}px`;
                 }}
                 placeholder="Paste a JWT token here..."
-                className="min-h-[100px] sm:min-h-[120px] max-h-[300px] sm:max-h-[400px] w-full resize-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 px-3 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 overflow-y-auto shadow-sm"
-                style={{ color: 'transparent', caretColor: '#111827', height: 'auto' }}
+                className="min-h-[100px] sm:min-h-[120px] max-h-[300px] sm:max-h-[400px] w-full resize-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 px-3 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 overflow-y-auto shadow-sm token-input-textarea"
+                style={{ color: 'transparent', height: 'auto' }}
                 tabIndex={0}
               />
               {token && (

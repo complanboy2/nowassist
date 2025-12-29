@@ -81,6 +81,18 @@ textarea:not(.dark),
   caret-color: rgb(31, 41, 55);
 }
 
+/* Token input textarea - ensure cursor is visible even with transparent text */
+#token-input.token-input-textarea,
+textarea.token-input-textarea {
+  cursor: text !important;
+  caret-color: rgb(31, 41, 55) !important;
+}
+
+.dark #token-input.token-input-textarea,
+.dark textarea.token-input-textarea {
+  caret-color: rgb(255, 255, 255) !important;
+}
+
 :root {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   background-color: #f9fafb;
