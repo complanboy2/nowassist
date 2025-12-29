@@ -33,10 +33,10 @@ jobs:
       - name: Install dependencies
         run: |
           npm cache clean --force || true
-          npm install --include=optional --legacy-peer-deps
+          npm install
           echo "Verifying installation..."
           npm list vite 2>/dev/null | head -2 || echo "WARNING: vite check failed"
-          npx vite --version || echo "WARNING: npx vite failed"
+          ./node_modules/.bin/vite --version || npx vite --version || echo "WARNING: vite version check failed"
 
       - name: Build web app
         run: npm run build:web

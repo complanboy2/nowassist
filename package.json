@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:web": "BUILD_TARGET=web vite build",
+    "build:web": "BUILD_TARGET=web npx vite build",
     "build:extension": "vite build",
     "preview": "vite preview",
     "preview:web": "vite preview --base /nowassist/",
