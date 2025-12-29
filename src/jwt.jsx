@@ -1693,9 +1693,9 @@ const JWTDecoder = () => {
                         />
                       </div>
                       {/* Bottom Banner with Options - Attached */}
-                      <div className="flex items-center justify-between bg-gray-50 border-t border-gray-200 px-3 sm:px-4 py-2 sm:py-2.5">
+                      <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 px-3 sm:px-4 py-2 sm:py-2.5">
                         <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                          <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                          <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-white">
                             {isHMAC ? 'Secret' : 'Public Key'} Format
                           </label>
                           {!isHMAC && (
@@ -1703,7 +1703,7 @@ const JWTDecoder = () => {
                               <button
                                 type="button"
                                 onClick={() => setKeyFormatMenuOpen(!keyFormatMenuOpen)}
-                                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none transition-all shadow-sm"
+                                className="inline-flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none transition-all shadow-sm"
                                 tabIndex={0}
                               >
                                 <span>{keyFormat}</span>
@@ -1887,10 +1887,10 @@ const JWTDecoder = () => {
                     onClick={() => setShowTimePanelExpanded(!showTimePanelExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
-                      <Clock className="h-4 w-4 text-gray-600" />
-                      <span className="text-sm font-medium text-gray-900">Time Simulation</span>
+                      <Clock className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">Time Simulation</span>
                       {!showTimePanelExpanded && (
-                        <span className="text-xs text-gray-500 ml-2">
+                        <span className="text-xs text-gray-500 dark:text-white ml-2">
                           {simulatedTime ? `Simulated: ${new Date(simulatedTime).toLocaleString()}` : 'Real time'}
                           {payload?.exp && ` • Token ${payload.exp * 1000 < currentTime ? 'expired' : 'valid'}`}
                         </span>
@@ -1959,16 +1959,16 @@ const JWTDecoder = () => {
 
               {/* Redaction Panel */}
               {showRedaction && payload && (
-                <div className="mb-4 sm:mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-4 sm:mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                     onClick={() => setShowRedactionExpanded(!showRedactionExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
                       <Lock className="h-5 w-5 text-slate-600 dark:text-slate-400" />
                       <span className="text-base font-semibold text-slate-900 dark:text-white">Redact Sensitive Claims</span>
                       {!showRedactionExpanded && (
-                        <span className="text-xs text-slate-500 dark:text-slate-400 ml-2">
+                        <span className="text-xs text-slate-500 dark:text-white ml-2">
                           • {redactedClaims.length} claim{redactedClaims.length !== 1 ? 's' : ''} selected{redactedToken ? ' • Redacted token ready' : ''}
                         </span>
                       )}
@@ -1979,10 +1979,10 @@ const JWTDecoder = () => {
                           e.stopPropagation();
                           setShowRedactionExpanded(!showRedactionExpanded);
                         }}
-                        className="p-1.5 hover:bg-slate-200 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300"
+                        className="p-1.5 hover:bg-slate-200 dark:hover:bg-gray-600 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-gray-500"
                         tabIndex={0}
                       >
-                        {showRedactionExpanded ? <ChevronUp className="h-4 w-4 text-slate-600" /> : <ChevronDown className="h-4 w-4 text-slate-600" />}
+                        {showRedactionExpanded ? <ChevronUp className="h-4 w-4 text-slate-600 dark:text-gray-400" /> : <ChevronDown className="h-4 w-4 text-slate-600 dark:text-gray-400" />}
                       </button>
                     </div>
                   </div>
@@ -1999,9 +1999,9 @@ const JWTDecoder = () => {
                               onChange={() => handleToggleRedaction(claim)}
                               className="rounded"
                             />
-                            <span className={clsx('text-sm', isSensitiveClaim(claim) ? 'font-semibold text-red-700' : 'text-slate-700')}>
+                            <span className={clsx('text-sm', isSensitiveClaim(claim) ? 'font-semibold text-red-700 dark:text-red-400' : 'text-slate-700 dark:text-white')}>
                               {claim}
-                              {isSensitiveClaim(claim) && <span className="ml-1 text-xs text-red-500">(sensitive)</span>}
+                              {isSensitiveClaim(claim) && <span className="ml-1 text-xs text-red-500 dark:text-red-400">(sensitive)</span>}
                             </span>
                           </label>
                         ))}
@@ -2037,10 +2037,10 @@ const JWTDecoder = () => {
                     onClick={() => setShowComparisonExpanded(!showComparisonExpanded)}
                   >
                     <div className="flex items-center gap-2 flex-1">
-                      <GitCompare className="h-4 w-4 text-gray-600" />
-                      <span className="text-sm font-medium text-gray-900">Compare Tokens</span>
+                      <GitCompare className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">Compare Tokens</span>
                       {!showComparisonExpanded && (
-                        <span className="text-xs text-gray-500 ml-2">
+                        <span className="text-xs text-gray-500 dark:text-white ml-2">
                           {comparisonResult 
                             ? `${comparisonResult.summary.headerChanges + comparisonResult.summary.payloadChanges} difference${comparisonResult.summary.headerChanges + comparisonResult.summary.payloadChanges !== 1 ? 's' : ''}`
                             : 'Paste second token to compare'}
