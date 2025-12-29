@@ -1404,7 +1404,7 @@ const JWTDecoder = () => {
                         </span>
                       </div>
                       {!showSecurityPanel && (
-                        <span className="text-xs text-slate-500">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
                           • {securityValidation.issues.filter(i => i.severity === SECURITY_SEVERITY.CRITICAL).length > 0 && `${securityValidation.issues.filter(i => i.severity === SECURITY_SEVERITY.CRITICAL).length} Critical`}
                           {securityValidation.issues.filter(i => i.severity === SECURITY_SEVERITY.HIGH).length > 0 && `, ${securityValidation.issues.filter(i => i.severity === SECURITY_SEVERITY.HIGH).length} High`}
                           {securityValidation.issues.filter(i => i.severity === SECURITY_SEVERITY.MEDIUM).length > 0 && `, ${securityValidation.issues.filter(i => i.severity === SECURITY_SEVERITY.MEDIUM).length} Medium`}
