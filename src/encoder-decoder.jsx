@@ -291,7 +291,7 @@ const EncoderDecoder = () => {
             {/* Compact Header */}
             <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
               <div className="flex items-center gap-3">
-                <Code className="h-7 w-7 text-primary" />
+                <Code className="h-7 w-7 text-gray-900 dark:text-white" />
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Encoder/Decoder</h1>
               </div>
             </header>

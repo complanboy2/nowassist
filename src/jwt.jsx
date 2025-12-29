@@ -1174,7 +1174,7 @@ const JWTDecoder = () => {
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="space-y-1 sm:space-y-2">
                 <div className="flex items-center gap-3">
-                  <ShieldCheck className="h-8 w-8 text-primary" />
+                  <ShieldCheck className="h-8 w-8 text-gray-900 dark:text-white" />
                   <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">JWT Debugger</h1>
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
