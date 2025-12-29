@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:web": "BUILD_TARGET=web npx vite build",
+    "build:web": "BUILD_TARGET=web vite build",
     "build:extension": "vite build",
     "preview": "vite preview",
     "preview:web": "vite preview --base /nowassist/",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@vitejs/plugin-react": "^5.1.1",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.22",
     "clsx": "^2.1.1",
     "eslint": "^9.39.1",
