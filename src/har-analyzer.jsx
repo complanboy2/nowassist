@@ -625,7 +625,7 @@ const HarAnalyzer = () => {
     <th 
       onClick={() => handleSort(column)}
       className={clsx(
-        'px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition select-none sticky top-0 bg-white z-10',
+        'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white dark:text-white uppercase tracking-wider cursor-pointer hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 dark:hover:bg-gray-700 transition select-none sticky top-0 bg-white dark:bg-gray-800 z-10',
         className
       )}
     >
@@ -645,19 +645,19 @@ const HarAnalyzer = () => {
         <div className="flex-1 flex flex-col">
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
           {/* Clean Header */}
-          <header className="pb-4 border-b border-gray-200 mb-4">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-1">HAR Analyzer</h1>
-            <p className="text-sm text-slate-600 mt-1">Analyze HTTP Archive (HAR) files with filtering, sanitization, comparison, and powerful insights</p>
+          <header className="pb-4 border-b border-gray-200 dark:border-gray-700 mb-4">
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-1">HAR Analyzer</h1>
+            <p className="text-sm text-slate-600 dark:text-gray-400 dark:text-gray-400 mt-1">Analyze HTTP Archive (HAR) files with filtering, sanitization, comparison, and powerful insights</p>
           </header>
 
           <div className="flex-1 overflow-y-auto min-h-0 space-y-6">
 
           {/* Upload Section */}
           {!harData && (
-            <div className="rounded-xl border-2 border-dashed border-slate-300 bg-white p-12 text-center">
-              <Upload className="h-16 w-16 mx-auto mb-4 text-slate-400" />
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Upload HAR File</h3>
-              <p className="text-sm text-slate-600 mb-6 max-w-md mx-auto">
+            <div className="rounded-xl border-2 border-dashed border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-12 text-center">
+              <Upload className="h-16 w-16 mx-auto mb-4 text-slate-400 dark:text-gray-500" />
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white dark:text-white mb-2">Upload HAR File</h3>
+              <p className="text-sm text-slate-600 dark:text-gray-400 dark:text-gray-400 mb-6 max-w-md mx-auto">
                 Upload a HAR file exported from Chrome DevTools, Firefox, or any HAR-compatible tool to analyze network requests, responses, and performance metrics.
               </p>
               <input
@@ -673,7 +673,7 @@ const HarAnalyzer = () => {
               >
                 Choose HAR File
               </button>
-              <div className="mt-6 text-xs text-slate-500">
+              <div className="mt-6 text-xs text-slate-500 dark:text-gray-400 dark:text-gray-400">
                 <p className="mb-2 font-semibold">How to export HAR file:</p>
                 <ol className="list-decimal list-inside space-y-1 max-w-md mx-auto text-left">
                   <li>Open Chrome DevTools (F12)</li>
@@ -697,7 +697,7 @@ const HarAnalyzer = () => {
                       'px-4 py-2 rounded-lg font-medium transition',
                       viewMode === 'single' 
                         ? 'bg-primary text-white' 
-                        : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                        : 'bg-white dark:bg-gray-700 text-slate-700 dark:text-white dark:text-white border border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:bg-gray-600'
                     )}
                   >
                     Single File
@@ -708,7 +708,7 @@ const HarAnalyzer = () => {
                       'px-4 py-2 rounded-lg font-medium transition',
                       viewMode === 'compare' 
                         ? 'bg-primary text-white' 
-                        : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                        : 'bg-white dark:bg-gray-700 text-slate-700 dark:text-white dark:text-white border border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:bg-gray-600'
                     )}
                   >
                     <GitCompare className="h-4 w-4 inline mr-2" />
@@ -782,30 +782,30 @@ const HarAnalyzer = () => {
                       setFilterStatus('all');
                       setSearchQuery('');
                     }}
-                    className="rounded-lg border border-slate-200 bg-white p-3 hover:bg-slate-50 transition cursor-pointer text-left"
+                    className="rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition cursor-pointer text-left"
                   >
-                    <div className="text-xs text-slate-500 mb-0.5">Total Requests</div>
-                    <div className="text-lg font-bold text-slate-900">{stats.totalRequests}</div>
+                  <div className="text-xs text-slate-500 dark:text-gray-400 dark:text-gray-400 mb-0.5">Total Requests</div>
+                  <div className="text-lg font-bold text-slate-900 dark:text-white dark:text-white">{stats.totalRequests}</div>
                   </button>
                   <button
                     onClick={() => {
                       setFilterStatus('failed');
                       setSearchQuery('');
                     }}
-                    className="rounded-lg border border-red-200 bg-red-50 p-3 hover:bg-red-100 transition cursor-pointer text-left"
+                    className="rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 p-3 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer text-left"
                   >
-                    <div className="text-xs text-red-600 mb-0.5">Failed</div>
-                    <div className="text-lg font-bold text-red-700">{stats.failed}</div>
+                    <div className="text-xs text-red-600 dark:text-red-400 mb-0.5">Failed</div>
+                    <div className="text-lg font-bold text-red-700 dark:text-red-400">{stats.failed}</div>
                   </button>
                   <button
                     onClick={() => {
                       setFilterStatus('all');
                       setSearchQuery('time>1000');
                     }}
-                    className="rounded-lg border border-orange-200 bg-orange-50 p-3 hover:bg-orange-100 transition cursor-pointer text-left"
+                    className="rounded-lg border border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/30 p-3 hover:bg-orange-100 dark:hover:bg-orange-900/50 transition cursor-pointer text-left"
                   >
-                    <div className="text-xs text-orange-600 mb-0.5">Slow (&gt;1s)</div>
-                    <div className="text-lg font-bold text-orange-700">{stats.slow}</div>
+                    <div className="text-xs text-orange-600 dark:text-orange-400 mb-0.5">Slow (&gt;1s)</div>
+                    <div className="text-lg font-bold text-orange-700 dark:text-orange-400">{stats.slow}</div>
                   </button>
                   <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
                     <div className="text-xs text-blue-600 mb-0.5">Avg Time</div>
@@ -832,10 +832,10 @@ const HarAnalyzer = () => {
 
               {/* Comparison Mode - Second File Upload */}
               {viewMode === 'compare' && !harData2 && (
-                <div className="mb-6 rounded-xl border-2 border-dashed border-slate-300 bg-white p-8 text-center">
+                <div className="mb-6 rounded-xl border-2 border-dashed border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-8 text-center">
                   <GitCompare className="h-12 w-12 mx-auto mb-3 text-slate-400" />
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Upload Second HAR File</h3>
-                  <p className="text-sm text-slate-600 mb-4">Upload another HAR file to compare with the first one</p>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Upload Second HAR File</h3>
+                  <p className="text-sm text-slate-600 dark:text-gray-400 mb-4">Upload another HAR file to compare with the first one</p>
                   <input
                     ref={fileInputRef2}
                     type="file"
@@ -853,15 +853,15 @@ const HarAnalyzer = () => {
               )}
 
               {/* Filters */}
-              <div className="mb-6 rounded-xl border-2 border-slate-200 bg-white p-4">
+              <div className="mb-6 rounded-xl border-2 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                   {/* Search */}
                   <div className="lg:col-span-2">
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-semibold text-slate-700">Search</label>
+                      <label className="block text-xs font-semibold text-slate-700 dark:text-white">Search</label>
                       <button
                         onClick={() => setShowSearchHelp(!showSearchHelp)}
-                        className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1"
+                        className="text-xs text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1"
                         title="Show search syntax help"
                       >
                         <Lightbulb className="h-3.5 w-3.5" />
@@ -875,12 +875,12 @@ const HarAnalyzer = () => {
                         placeholder='Search all fields, or use: URL="api", Status=400, Response="error"'
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full rounded-lg border-2 border-slate-200 bg-white pl-10 pr-10 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none"
+                        className="w-full rounded-lg border-2 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 pl-10 pr-10 py-2 text-sm text-slate-900 dark:text-white dark:text-white placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:border-primary focus:outline-none"
                       />
                       {searchQuery && (
                         <button
                           onClick={() => setSearchQuery('')}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition p-1 rounded hover:bg-slate-100"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-gray-400 transition p-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700"
                           title="Clear search"
                         >
                           <X className="h-4 w-4" />
@@ -910,7 +910,7 @@ const HarAnalyzer = () => {
 
                   {/* Method Filter */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">Method</label>
+                    <label className="block text-xs font-semibold text-slate-700 dark:text-white mb-1.5">Method</label>
                     <CustomDropdown
                       options={[
                         { value: 'all', label: 'All Methods' },
@@ -924,7 +924,7 @@ const HarAnalyzer = () => {
 
                   {/* Status Filter */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">Status</label>
+                    <label className="block text-xs font-semibold text-slate-700 dark:text-white mb-1.5">Status</label>
                     <CustomDropdown
                       options={[
                         { value: 'all', label: 'All Status' },
@@ -941,7 +941,7 @@ const HarAnalyzer = () => {
 
                   {/* Domain Filter */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">Domain</label>
+                    <label className="block text-xs font-semibold text-slate-700 dark:text-white mb-1.5">Domain</label>
                     <CustomDropdown
                       options={[
                         { value: '', label: 'All Domains' },
@@ -973,24 +973,24 @@ const HarAnalyzer = () => {
                         />
                       </button>
                       <div>
-                        <div className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                        <div className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                           {sanitizeEnabled ? <Lock className="h-4 w-4 text-green-600" /> : <Unlock className="h-4 w-4 text-slate-400" />}
                           Sanitize Sensitive Data
                         </div>
-                        <div className="text-xs text-slate-500">Remove cookies, tokens, and sensitive headers before export</div>
+                        <div className="text-xs text-slate-500 dark:text-gray-400">Remove cookies, tokens, and sensitive headers before export</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setShowHelp(!showHelp)}
-                        className="px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition flex items-center gap-2 text-sm"
+                        className="px-4 py-2 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-white hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-2 text-sm"
                       >
                         <HelpCircle className="h-4 w-4" />
                         Help
                       </button>
                       <button
                         onClick={() => exportHAR(harData, 'har-analysis.json')}
-                        className="px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition flex items-center gap-2 text-sm"
+                        className="px-4 py-2 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-white hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-2 text-sm"
                       >
                         <Download className="h-4 w-4" />
                         Export
@@ -1005,7 +1005,7 @@ const HarAnalyzer = () => {
                           setFilterDomain('');
                           setSearchQuery('');
                         }}
-                        className="px-4 py-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition flex items-center gap-2 text-sm"
+                        className="px-4 py-2 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-white hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition flex items-center gap-2 text-sm"
                       >
                         <X className="h-4 w-4" />
                         Clear
@@ -1030,9 +1030,9 @@ const HarAnalyzer = () => {
                       <div className="p-12 text-center h-full flex items-center justify-center">
                         <div>
                           <Filter className="h-16 w-16 mx-auto mb-4 text-slate-300" />
-                          <h3 className="text-lg font-semibold text-slate-700 mb-2">No Requests Match Your Filters</h3>
-                          <p className="text-sm text-slate-500 mb-4">
-                            We have <span className="font-semibold text-slate-700">{entries.length}</span> request{entries.length !== 1 ? 's' : ''} total, but none match your current filter settings.
+                          <h3 className="text-lg font-semibold text-slate-700 dark:text-white mb-2">No Requests Match Your Filters</h3>
+                          <p className="text-sm text-slate-500 dark:text-gray-400 mb-4">
+                            We have <span className="font-semibold text-slate-700 dark:text-white">{entries.length}</span> request{entries.length !== 1 ? 's' : ''} total, but none match your current filter settings.
                           </p>
                           <button
                             onClick={() => {
@@ -1121,7 +1121,7 @@ const HarAnalyzer = () => {
   }
   
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-screen bg-slate-50 dark:bg-gray-700 dark:bg-gray-900 overflow-hidden">
       <Navigation currentPageId="har" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
       {content}
     </div>
@@ -1141,12 +1141,12 @@ const HarEntryRow = ({ entry, index, isSelected, onSelect, getStatusColor, forma
     <tr 
       className={clsx(
         'border-b border-slate-100 transition cursor-pointer',
-        isSelected ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-slate-50'
+        isSelected ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600'
       )}
       onClick={onSelect}
     >
       <td className="px-4 py-2">
-        <span className="text-xs font-mono font-semibold text-slate-700">{method}</span>
+        <span className="text-xs font-mono font-semibold text-slate-700 dark:text-white">{method}</span>
       </td>
       <td className="px-4 py-2">
         {status ? (
@@ -1158,20 +1158,20 @@ const HarEntryRow = ({ entry, index, isSelected, onSelect, getStatusColor, forma
         )}
       </td>
       <td className="px-4 py-2 max-w-md">
-        <div className="text-xs font-mono text-slate-700 truncate" title={url}>
+        <div className="text-xs font-mono text-slate-700 dark:text-white truncate" title={url}>
           {highlightText(url, searchQuery)}
         </div>
       </td>
       <td className="px-4 py-2">
-        <div className="text-xs text-slate-600 truncate" title={contentType}>
+        <div className="text-xs text-slate-600 dark:text-gray-400 truncate" title={contentType}>
           {highlightText(contentType.split(';')[0] || '—', searchQuery)}
         </div>
       </td>
       <td className="px-4 py-2">
-        <span className="text-xs font-mono text-slate-600">{formatBytes(size)}</span>
+        <span className="text-xs font-mono text-slate-600 dark:text-gray-400">{formatBytes(size)}</span>
       </td>
       <td className="px-4 py-2">
-        <span className="text-xs font-mono text-slate-600">{formatTime(time)}</span>
+        <span className="text-xs font-mono text-slate-600 dark:text-gray-400">{formatTime(time)}</span>
       </td>
     </tr>
   );
@@ -1410,7 +1410,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
 
   if (!entry) {
     return (
-      <div className="p-6 text-center text-slate-500">
+      <div className="p-6 text-center text-slate-500 dark:text-gray-400">
         <p>No entry selected</p>
       </div>
     );
@@ -1458,12 +1458,12 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
   return (
     <div className="h-full flex flex-col">
       {/* Tabs as Header - Matching Left Table Header Style Exactly */}
-      <div className="border-b-2 border-slate-300 bg-slate-50">
+      <div className="border-b-2 border-slate-300 bg-slate-50 dark:bg-gray-700">
         <div className="flex items-center">
           {onClose && (
             <button
               onClick={onClose}
-              className="text-slate-500 hover:text-slate-700 transition p-2 rounded hover:bg-slate-100 ml-2 mr-1"
+              className="text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white transition p-2 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 ml-2 mr-1"
               title="Close details"
             >
               <X className="h-4 w-4" />
@@ -1472,8 +1472,8 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           <button
             onClick={() => setActiveTab('requestHeaders')}
             className={clsx(
-              'px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 cursor-pointer',
-              activeTab === 'requestHeaders' && 'bg-slate-100'
+              'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer',
+              activeTab === 'requestHeaders' && 'bg-slate-100 dark:bg-gray-700'
             )}
           >
             Request Headers {request.headers && `(${request.headers.length})`}
@@ -1484,8 +1484,8 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           <button
             onClick={() => setActiveTab('responseHeaders')}
             className={clsx(
-              'px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 cursor-pointer',
-              activeTab === 'responseHeaders' && 'bg-slate-100'
+              'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer',
+              activeTab === 'responseHeaders' && 'bg-slate-100 dark:bg-gray-700'
             )}
           >
             Response Headers {response.headers && `(${response.headers.length})`}
@@ -1496,8 +1496,8 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           <button
             onClick={() => setActiveTab('request')}
             className={clsx(
-              'px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 cursor-pointer',
-              activeTab === 'request' && 'bg-slate-100'
+              'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer',
+              activeTab === 'request' && 'bg-slate-100 dark:bg-gray-700'
             )}
           >
             Request
@@ -1508,8 +1508,8 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           <button
             onClick={() => setActiveTab('response')}
             className={clsx(
-              'px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 cursor-pointer',
-              activeTab === 'response' && 'bg-slate-100'
+              'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer',
+              activeTab === 'response' && 'bg-slate-100 dark:bg-gray-700'
             )}
           >
             Response
@@ -1520,8 +1520,8 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           <button
             onClick={() => setActiveTab('timing')}
             className={clsx(
-              'px-4 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 cursor-pointer',
-              activeTab === 'timing' && 'bg-slate-100'
+              'px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-white uppercase tracking-wider transition whitespace-nowrap relative hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer',
+              activeTab === 'timing' && 'bg-slate-100 dark:bg-gray-700'
             )}
           >
             Timing
@@ -1539,15 +1539,15 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
       {activeTab === 'requestHeaders' && (
         <div className="w-full h-full">
           <table className="w-full border-collapse h-full">
-            <thead className="bg-slate-50 sticky top-0 z-10">
+            <thead className="bg-slate-50 dark:bg-gray-700 sticky top-0 z-10">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 border-b border-slate-200">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-white border-b border-slate-200">
                     Header Name
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 border-b border-slate-200">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-white border-b border-slate-200">
                     Value
                   </th>
-                  <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 border-b border-slate-200 w-20">
+                  <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 dark:text-white border-b border-slate-200 w-20">
                     Actions
                   </th>
                 </tr>
@@ -1555,21 +1555,21 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
               <tbody>
                 {request.headers && request.headers.length > 0 ? (
                   request.headers.map((h, i) => (
-                    <tr key={i} className="border-b border-slate-100 hover:bg-slate-50 transition">
+                    <tr key={i} className="border-b border-slate-100 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition">
                       <td className="px-4 py-2.5">
-                        <span className="text-sm font-semibold text-slate-700 font-mono">
+                        <span className="text-sm font-semibold text-slate-700 dark:text-white font-mono">
                           {highlightText(h.name, searchQuery)}
                         </span>
                       </td>
                       <td className="px-4 py-2.5">
-                        <span className="text-sm text-slate-900 font-mono break-all">
+                        <span className="text-sm text-slate-900 dark:text-white font-mono break-all">
                           {highlightText(h.value || '—', searchQuery)}
                         </span>
                       </td>
                       <td className="px-4 py-2.5 text-right">
                         <button
                           onClick={() => copyToClipboard(h.value || '')}
-                          className="text-slate-500 hover:text-slate-700 transition p-1 rounded hover:bg-slate-100"
+                          className="text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white transition p-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700"
                           title="Copy value"
                         >
                           <Copy className="h-3.5 w-3.5" />
@@ -1579,7 +1579,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={3} className="px-4 py-8 text-center text-sm text-slate-500">
+                    <td colSpan={3} className="px-4 py-8 text-center text-sm text-slate-500 dark:text-gray-400">
                       No request headers available
                     </td>
                   </tr>
@@ -1593,15 +1593,15 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
       {activeTab === 'responseHeaders' && (
         <div className="w-full h-full">
           <table className="w-full border-collapse h-full">
-            <thead className="bg-slate-50 sticky top-0 z-10">
+            <thead className="bg-slate-50 dark:bg-gray-700 sticky top-0 z-10">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 border-b border-slate-200">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-white border-b border-slate-200">
                     Header Name
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 border-b border-slate-200">
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-white border-b border-slate-200">
                     Value
                   </th>
-                  <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 border-b border-slate-200 w-20">
+                  <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 dark:text-white border-b border-slate-200 w-20">
                     Actions
                   </th>
                 </tr>
@@ -1609,21 +1609,21 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
               <tbody>
                 {response.headers && response.headers.length > 0 ? (
                       response.headers.map((h, i) => (
-                        <tr key={i} className="border-b border-slate-100 hover:bg-slate-50 transition">
+                        <tr key={i} className="border-b border-slate-100 hover:bg-slate-50 dark:bg-gray-700 dark:hover:bg-gray-600 transition">
                           <td className="px-4 py-2.5">
-                            <span className="text-sm font-semibold text-slate-700 font-mono">
+                            <span className="text-sm font-semibold text-slate-700 dark:text-white font-mono">
                               {highlightText(h.name, searchQuery)}
                             </span>
                           </td>
                           <td className="px-4 py-2.5">
-                            <span className="text-sm text-slate-900 font-mono break-all">
+                            <span className="text-sm text-slate-900 dark:text-white font-mono break-all">
                               {highlightText(h.value || '—', searchQuery)}
                             </span>
                           </td>
                           <td className="px-4 py-2.5 text-right">
                             <button
                               onClick={() => copyToClipboard(h.value || '')}
-                              className="text-slate-500 hover:text-slate-700 transition p-1 rounded hover:bg-slate-100"
+                              className="text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white transition p-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700"
                               title="Copy value"
                             >
                               <Copy className="h-3.5 w-3.5" />
@@ -1633,7 +1633,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                       ))
                 ) : (
                   <tr>
-                    <td colSpan={3} className="px-4 py-8 text-center text-sm text-slate-500">
+                    <td colSpan={3} className="px-4 py-8 text-center text-sm text-slate-500 dark:text-gray-400">
                       No response headers available
                     </td>
                   </tr>
@@ -1647,10 +1647,10 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <h4 className="text-sm font-semibold text-slate-900">Request URL</h4>
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Request URL</h4>
               <button
                 onClick={() => copyToClipboard(request.url || '')}
-                className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 transition"
+                className="text-sm text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition"
               >
                 <Copy className="h-4 w-4" />
                 Copy
@@ -1663,11 +1663,11 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           {request.postData && (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-semibold text-slate-900">Request Body</h4>
+                <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Request Body</h4>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => toggleFormat('request')}
-                    className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 transition"
+                    className="text-sm text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition"
                     title={formattedBodies.request ? 'Show raw' : 'Format JSON'}
                   >
                     <Code className="h-4 w-4" />
@@ -1675,7 +1675,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                   </button>
                   <button
                     onClick={() => copyToClipboard(getBodyText('request'))}
-                    className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 transition"
+                    className="text-sm text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition"
                   >
                     <Copy className="h-4 w-4" />
                     Copy
@@ -1689,11 +1689,11 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           )}
           {request.cookies && request.cookies.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold text-slate-900 mb-2">Cookies</h4>
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Cookies</h4>
               <div className="bg-white rounded-lg border border-slate-200 p-3">
                 {request.cookies.map((c, i) => (
                   <div key={i} className="text-sm font-mono mb-2 py-1 border-b border-slate-100 last:border-0">
-                    <span className="font-semibold text-slate-700">{highlightText(c.name, searchQuery)}</span> = <span className="text-slate-900">{highlightText(c.value, searchQuery)}</span>
+                    <span className="font-semibold text-slate-700 dark:text-white">{highlightText(c.name, searchQuery)}</span> = <span className="text-slate-900 dark:text-white">{highlightText(c.value, searchQuery)}</span>
                   </div>
                 ))}
               </div>
@@ -1707,11 +1707,11 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           {response.content && (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-semibold text-slate-900">Response Body</h4>
+                <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Response Body</h4>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => toggleFormat('response')}
-                    className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 transition"
+                    className="text-sm text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition"
                     title={formattedBodies.response ? 'Show raw' : 'Format JSON'}
                   >
                     <Code className="h-4 w-4" />
@@ -1719,7 +1719,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                   </button>
                   <button
                     onClick={() => copyToClipboard(getBodyText('response'))}
-                    className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 transition"
+                    className="text-sm text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition"
                   >
                     <Copy className="h-4 w-4" />
                     Copy
@@ -1733,11 +1733,11 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
           )}
           {response.cookies && response.cookies.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold text-slate-900 mb-2">Response Cookies</h4>
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Response Cookies</h4>
               <div className="bg-white rounded-lg border border-slate-200 p-3">
                 {response.cookies.map((c, i) => (
                   <div key={i} className="text-sm font-mono mb-2 py-1 border-b border-slate-100 last:border-0">
-                    <span className="font-semibold text-slate-700">{highlightText(c.name, searchQuery)}</span> = <span className="text-slate-900">{highlightText(c.value, searchQuery)}</span>
+                    <span className="font-semibold text-slate-700 dark:text-white">{highlightText(c.name, searchQuery)}</span> = <span className="text-slate-900 dark:text-white">{highlightText(c.value, searchQuery)}</span>
                   </div>
                 ))}
               </div>
@@ -1750,30 +1750,30 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
         <div className="space-y-4">
           {/* Summary - First */}
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 mb-2">Summary</h4>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Summary</h4>
             <div className="bg-white rounded-lg border border-slate-200 p-3 space-y-2">
               <div className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
-                <span className="text-slate-600 font-medium">Total Time:</span>
-                <span className="font-mono text-slate-900 font-semibold">{entry.time || 0} ms</span>
+                <span className="text-slate-600 dark:text-gray-400 font-medium">Total Time:</span>
+                <span className="font-mono text-slate-900 dark:text-white font-semibold">{entry.time || 0} ms</span>
               </div>
               <div className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
-                <span className="text-slate-600 font-medium">Size:</span>
-                <span className="font-mono text-slate-900 font-semibold">{formatBytes(response.content?.size || 0)}</span>
+                <span className="text-slate-600 dark:text-gray-400 font-medium">Size:</span>
+                <span className="font-mono text-slate-900 dark:text-white font-semibold">{formatBytes(response.content?.size || 0)}</span>
               </div>
               <div className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
-                <span className="text-slate-600 font-medium">Status:</span>
-                <span className="font-mono text-slate-900 font-semibold">{response.status || 0} {response.statusText || ''}</span>
+                <span className="text-slate-600 dark:text-gray-400 font-medium">Status:</span>
+                <span className="font-mono text-slate-900 dark:text-white font-semibold">{response.status || 0} {response.statusText || ''}</span>
               </div>
             </div>
           </div>
           {/* Request Timing - Second */}
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 mb-2">Request Timing</h4>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">Request Timing</h4>
             <div className="bg-white rounded-lg border border-slate-200 p-3 space-y-2">
               {entry.timings && Object.entries(entry.timings).map(([key, value]) => (
                 <div key={key} className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
-                  <span className="text-slate-600 capitalize font-medium">{key}:</span>
-                  <span className="font-mono text-slate-900 font-semibold">{value !== -1 ? `${value} ms` : '—'}</span>
+                  <span className="text-slate-600 dark:text-gray-400 capitalize font-medium">{key}:</span>
+                  <span className="font-mono text-slate-900 dark:text-white font-semibold">{value !== -1 ? `${value} ms` : '—'}</span>
                 </div>
               ))}
             </div>
