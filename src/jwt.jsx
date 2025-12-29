@@ -587,13 +587,13 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
   const isTableMode = viewMode === 'table' && parsedPayload && title?.startsWith('Payload:');
 
   return (
-    <div className="border border-gray-200 rounded-xl bg-white flex flex-col overflow-hidden shadow-sm">
-      <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3.5 flex-shrink-0 border-b border-gray-200">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 flex flex-col overflow-hidden shadow-sm">
+      <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3.5 flex-shrink-0 border-b border-gray-200 dark:border-gray-600">
         <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
           <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0" style={{ backgroundColor: dotColor }} />
           <div className="min-w-0 flex-1">
-            <h3 className="text-xs sm:text-sm font-semibold text-gray-900 uppercase tracking-wide truncate">{title}</h3>
-            {description && <p className="hidden sm:block text-xs text-gray-600 leading-tight mt-1">{description}</p>}
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide truncate">{title}</h3>
+            {description && <p className="hidden sm:block text-xs text-gray-600 dark:text-gray-400 leading-tight mt-1">{description}</p>}
           </div>
         </div>
         <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
@@ -601,14 +601,14 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
             <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
               <button
                 onClick={() => onViewModeChange('json')}
-                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded', viewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 hover:bg-gray-50')}
+                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded', viewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-500')}
                 tabIndex={0}
               >
                 JSON
               </button>
               <button
                 onClick={() => onViewModeChange('table')}
-                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded inline-flex items-center gap-1', viewMode === 'table' ? 'bg-sky-500 text-white' : 'text-gray-700 hover:bg-gray-50')}
+                className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded inline-flex items-center gap-1', viewMode === 'table' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-500')}
                 tabIndex={0}
               >
                 <Table className="h-2.5 sm:h-3 w-2.5 sm:w-3" />
@@ -645,8 +645,8 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
             className={clsx(
               'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg focus:outline-none shadow-sm',
               copied 
-                ? 'bg-green-50 border-green-400 text-green-700' 
-                : 'text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white border-gray-300 hover:shadow'
+                ? 'bg-green-50 dark:bg-green-900/30 border-green-400 dark:border-green-500 text-green-700 dark:text-green-400' 
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow'
             )}
             tabIndex={0}
           >
@@ -655,7 +655,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
           </button>
         </div>
       </div>
-      <div className={clsx('bg-white', isHeader || isTableMode ? 'overflow-visible' : 'overflow-auto')} style={isHeader || isTableMode || title?.startsWith('Signature:') ? {} : { height: contentHeight, maxHeight: contentHeight }}>
+      <div className={clsx('bg-white dark:bg-gray-800', isHeader || isTableMode ? 'overflow-visible' : 'overflow-auto')} style={isHeader || isTableMode || title?.startsWith('Signature:') ? {} : { height: contentHeight, maxHeight: contentHeight }}>
         {viewMode === 'table' && parsedPayload ? (
               <div className="p-3 sm:p-4 lg:p-5 w-full overflow-x-auto">
             <table className="w-full text-xs sm:text-sm">
