@@ -51,9 +51,7 @@ jobs:
           rm -f manifest.json background.js content-script.js popup.html
           rm -f devtools*.html devtools*.js
           echo "Cleaned extension files from dist"
-
-      - name: Setup Pages
-        uses: actions/checkout@v4
+          ls -la *.html 2>/dev/null || echo "No HTML files found"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
