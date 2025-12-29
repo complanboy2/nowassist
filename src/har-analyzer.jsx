@@ -1652,7 +1652,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                 onClick={() => copyToClipboard(request.url || '')}
                 className="text-sm text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700 transition"
               >
-                <Copy className="h-4 w-4" />
+                <Copy className="h-4 w-4 dark:text-white" />
                 Copy
               </button>
             </div>
