@@ -892,17 +892,17 @@ const HarAnalyzer = () => {
                         <p className="font-semibold mb-2">Advanced Search Syntax:</p>
                         <ul className="space-y-1.5 list-disc list-inside">
                           <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">URL="api"</code> or <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">url:api</code> - Search only in URLs</li>
-                          <li><code className="bg-blue-100 px-1 rounded">Status=400</code> - Filter by status code</li>
-                          <li><code className="bg-blue-100 px-1 rounded">Response="error"</code> - Search only in response bodies</li>
-                          <li><code className="bg-blue-100 px-1 rounded">Request="data"</code> - Search only in request bodies</li>
-                          <li><code className="bg-blue-100 px-1 rounded">Method=POST</code> - Filter by HTTP method</li>
-                          <li><code className="bg-blue-100 px-1 rounded">Domain="example.com"</code> - Filter by domain</li>
-                          <li><code className="bg-blue-100 px-1 rounded">Header="authorization"</code> - Search in all headers (request + response)</li>
-                          <li><code className="bg-blue-100 px-1 rounded">RequestHeader="Content-Type"</code> - Search in request headers only</li>
-                          <li><code className="bg-blue-100 px-1 rounded">ResponseHeader="Set-Cookie"</code> - Search in response headers only</li>
-                          <li>Combine multiple: <code className="bg-blue-100 px-1 rounded">Status=400 URL="api" Header="bearer"</code></li>
-                          <li>General search without field: <code className="bg-blue-100 px-1 rounded">error</code> searches all fields</li>
-                          <li className="mt-2 text-blue-800"><strong>Note:</strong> All searches are case-insensitive and use "contains" matching. Search terms are highlighted in yellow in the results.</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">Status=400</code> - Filter by status code</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">Response="error"</code> - Search only in response bodies</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">Request="data"</code> - Search only in request bodies</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">Method=POST</code> - Filter by HTTP method</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">Domain="example.com"</code> - Filter by domain</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">Header="authorization"</code> - Search in all headers (request + response)</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">RequestHeader="Content-Type"</code> - Search in request headers only</li>
+                          <li><code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">ResponseHeader="Set-Cookie"</code> - Search in response headers only</li>
+                          <li>Combine multiple: <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">Status=400 URL="api" Header="bearer"</code></li>
+                          <li>General search without field: <code className="bg-blue-100 dark:bg-blue-900/50 px-1 rounded text-blue-900 dark:text-blue-300">error</code> searches all fields</li>
+                          <li className="mt-2 text-blue-800 dark:text-blue-300"><strong>Note:</strong> All searches are case-insensitive and use "contains" matching. Search terms are highlighted in yellow in the results.</li>
                         </ul>
                       </div>
                     )}
