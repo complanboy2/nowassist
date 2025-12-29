@@ -443,11 +443,11 @@ ${goHeaders}
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
             <div className="space-y-4 sm:space-y-6">
           {/* Professional Header with Border */}
-          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
+          <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="space-y-1 sm:space-y-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">REST API Tester</h1>
-                <p className="text-sm sm:text-base text-gray-600">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">REST API Tester</h1>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                   Test REST APIs with custom headers, authentication, and request bodies. All requests are made from your browser.
                 </p>
               </div>
@@ -456,11 +456,11 @@ ${goHeaders}
 
           <div className="space-y-4 sm:space-y-6">
             {/* Request Panel */}
-            <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
-                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+            <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
                   <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0 bg-gray-400" />
-                    <h2 className="text-sm sm:text-base font-semibold text-gray-900">Request</h2>
+                    <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0 bg-gray-400 dark:bg-gray-500" />
+                    <h2 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">Request</h2>
                   </div>
                 </div>
                 <div className="p-4 sm:p-6 space-y-4">
@@ -469,14 +469,14 @@ ${goHeaders}
                       <button
                         type="button"
                         onClick={() => setHistoryOpen(!historyOpen)}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow"
+                        className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:shadow"
                         tabIndex={0}
                         title="Request History"
                       >
-                        <History className="h-3.5 w-3.5" />
+                        <History className="h-3.5 w-3.5 dark:text-white" />
                         <span className="hidden sm:inline">History</span>
                         {history.length > 0 && (
-                          <span className="px-1.5 py-0.5 text-xs font-medium bg-gray-200 text-gray-700 rounded">
+                          <span className="px-1.5 py-0.5 text-xs font-medium bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded">
                             {history.length}
                           </span>
                         )}
@@ -486,13 +486,13 @@ ${goHeaders}
                       {historyOpen && (
                         <div className="relative" ref={historyMenuRef}>
                           <div className="fixed inset-0 z-40" onClick={() => setHistoryOpen(false)} />
-                          <div className="absolute left-0 top-full mt-2 w-full sm:w-96 max-w-[calc(100vw-2rem)] border border-gray-200 rounded-lg bg-white shadow-2xl z-50 max-h-[600px] flex flex-col">
-                            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+                          <div className="absolute left-0 top-full mt-2 w-full sm:w-96 max-w-[calc(100vw-2rem)] border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-2xl z-50 max-h-[600px] flex flex-col">
+                            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
                               <div className="flex items-center gap-2">
-                                <History className="h-4 w-4 text-gray-600" />
-                                <h3 className="text-sm font-semibold text-gray-900">Request History</h3>
+                                <History className="h-4 w-4 text-gray-600 dark:text-white" />
+                                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Request History</h3>
                                 {history.length > 0 && (
-                                  <span className="px-2 py-0.5 text-xs font-medium bg-gray-200 text-gray-700 rounded">
+                                  <span className="px-2 py-0.5 text-xs font-medium bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white rounded">
                                     {history.length}
                                   </span>
                                 )}
@@ -500,58 +500,58 @@ ${goHeaders}
                               {history.length > 0 && (
                                 <button
                                   onClick={clearHistory}
-                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                  className="inline-flex items-center gap-1 px-2 py-1 text-xs text-gray-600 dark:text-white hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded transition-colors"
                                   title="Clear all history"
                                 >
-                                  <Trash2 className="h-3.5 w-3.5" />
+                                  <Trash2 className="h-3.5 w-3.5 dark:text-white" />
                                   <span className="hidden sm:inline">Clear</span>
                                 </button>
                               )}
                             </div>
                             {history.length === 0 ? (
-                              <div className="px-4 py-12 text-center text-gray-500">
-                                <History className="h-10 w-10 mx-auto mb-3 text-gray-300" />
-                                <p className="text-sm">No request history yet</p>
-                                <p className="text-xs mt-1">Your requests will appear here</p>
+                              <div className="px-4 py-12 text-center text-gray-500 dark:text-gray-400">
+                                <History className="h-10 w-10 mx-auto mb-3 text-gray-300 dark:text-gray-500" />
+                                <p className="text-sm dark:text-white">No request history yet</p>
+                                <p className="text-xs mt-1 dark:text-gray-400">Your requests will appear here</p>
                               </div>
                             ) : (
                               <>
-                                <div className="px-4 py-2 border-b border-gray-200">
+                                <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                                   <div className="relative">
-                                    <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+                                    <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-gray-400 dark:text-gray-500" />
                                     <input
                                       type="text"
                                       value={historySearchQuery}
                                       onChange={(e) => setHistorySearchQuery(e.target.value)}
                                       placeholder="Search history..."
-                                      className="w-full pl-8 pr-3 py-1.5 text-xs border-[0.5px] border-gray-300 rounded-lg focus:outline-none focus:border-sky-400/60"
+                                      className="w-full pl-8 pr-3 py-1.5 text-xs border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-lg focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                                     />
                                   </div>
                                 </div>
                                 <div className="overflow-y-auto flex-1">
                                   {filteredHistory.length === 0 ? (
-                                    <div className="px-4 py-8 text-center text-gray-500 text-sm">
+                                    <div className="px-4 py-8 text-center text-gray-500 dark:text-gray-400 text-sm dark:text-white">
                                       No results found
                                     </div>
                                   ) : (
-                                    <div className="divide-y divide-gray-100">
+                                    <div className="divide-y divide-gray-100 dark:divide-gray-700">
                                       {filteredHistory.map((item) => (
                                         <button
                                           key={item.id}
                                           onClick={() => loadFromHistory(item)}
-                                          className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors group"
+                                          className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
                                         >
                                           <div className="flex items-start justify-between gap-2">
                                             <div className="flex-1 min-w-0">
                                               <div className="flex items-center gap-2 mb-1">
-                                                <span className="px-2 py-0.5 text-xs font-semibold rounded bg-gray-100 text-gray-700">
+                                                <span className="px-2 py-0.5 text-xs font-semibold rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white">
                                                   {item.method || 'GET'}
                                                 </span>
-                                                <span className="text-xs text-gray-500 truncate flex-1">
+                                                <span className="text-xs text-gray-500 dark:text-gray-400 truncate flex-1">
                                                   {new Date(item.timestamp).toLocaleString()}
                                                 </span>
                                               </div>
-                                              <div className="text-xs text-gray-700 truncate mb-1">
+                                              <div className="text-xs text-gray-700 dark:text-white truncate mb-1">
                                                 {item.url || 'No URL'}
                                               </div>
                                               {item.response && (
@@ -561,22 +561,22 @@ ${goHeaders}
                                                       <span className={clsx(
                                                         'text-xs font-medium',
                                                         item.response.status >= 200 && item.response.status < 300
-                                                          ? 'text-green-600'
+                                                          ? 'text-green-600 dark:text-green-400'
                                                           : item.response.status >= 300 && item.response.status < 400
-                                                          ? 'text-yellow-600'
-                                                          : 'text-red-600'
+                                                          ? 'text-yellow-600 dark:text-yellow-400'
+                                                          : 'text-red-600 dark:text-red-400'
                                                       )}>
                                                         {item.response.status}
                                                       </span>
                                                       {item.response.latency && (
-                                                        <span className="text-xs text-gray-500 flex items-center gap-0.5">
-                                                          <Clock className="h-3 w-3" />
+                                                        <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-0.5">
+                                                          <Clock className="h-3 w-3 dark:text-gray-400" />
                                                           {item.response.latency}ms
                                                         </span>
                                                       )}
                                                     </>
                                                   ) : (
-                                                    <span className="text-xs text-red-600">Error</span>
+                                                    <span className="text-xs text-red-600 dark:text-red-400">Error</span>
                                                   )}
                                                 </div>
                                               )}
@@ -603,17 +603,17 @@ ${goHeaders}
                               setMethodMenuOpen(!methodMenuOpen);
                             }
                           }}
-                          className="rounded-lg border-[0.5px] border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between min-w-[100px]"
+                          className="rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-white focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 flex items-center justify-between min-w-[100px]"
                           tabIndex={0}
                           aria-expanded={methodMenuOpen}
                         >
                           <span>{method}</span>
-                          <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0 ml-2', methodMenuOpen && 'rotate-180')} />
+                          <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2', methodMenuOpen && 'rotate-180')} />
                         </button>
                         {methodMenuOpen && (
                           <>
                             <div className="fixed inset-0 z-40" onClick={() => setMethodMenuOpen(false)} />
-                            <div className="absolute left-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-hidden min-w-[100px]">
+                            <div className="absolute left-0 top-full mt-1 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg z-50 overflow-hidden min-w-[100px]">
                               {HTTP_METHODS.map((m) => (
                                 <button
                                   key={m}
@@ -631,8 +631,8 @@ ${goHeaders}
                                   className={clsx(
                                     'w-full px-3 py-2 text-left text-sm transition-colors',
                                     method === m 
-                                      ? 'bg-gray-100 font-medium text-gray-900' 
-                                      : 'text-gray-700 hover:bg-gray-50'
+                                      ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                      : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                   )}
                                   tabIndex={0}
                                 >
@@ -648,7 +648,7 @@ ${goHeaders}
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         placeholder="https://your-instance.service-now.com/api/now/table/incident"
-                        className="flex-1 rounded-lg border-[0.5px] border-gray-300 bg-white px-3 sm:px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60"
+                        className="flex-1 rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 sm:px-4 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                         tabIndex={0}
                       />
                     </div>
@@ -656,10 +656,10 @@ ${goHeaders}
 
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-medium text-gray-700">Headers</label>
+                      <label className="text-sm font-medium text-gray-700 dark:text-white">Headers</label>
                       <button
                         onClick={addHeader}
-                        className="text-xs text-gray-600 hover:text-gray-900 transition active:scale-95"
+                        className="text-xs text-gray-600 dark:text-white hover:text-gray-900 dark:hover:text-gray-300 transition active:scale-95"
                         tabIndex={0}
                       >
                         + Add Header
@@ -673,7 +673,7 @@ ${goHeaders}
                             value={header.key}
                             onChange={(e) => updateHeader(index, 'key', e.target.value)}
                             placeholder="Header name"
-                            className="flex-1 rounded-lg border-[0.5px] border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60"
+                            className="flex-1 rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                             tabIndex={0}
                           />
                           <input
@@ -681,13 +681,13 @@ ${goHeaders}
                             value={header.value}
                             onChange={(e) => updateHeader(index, 'value', e.target.value)}
                             placeholder="Header value"
-                            className="flex-1 rounded-lg border-[0.5px] border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60"
+                            className="flex-1 rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                             tabIndex={0}
                           />
                           {headers.length > 1 && (
                             <button
                               onClick={() => removeHeader(index)}
-                              className="rounded-lg px-2 text-gray-600 hover:bg-gray-100 transition active:scale-95"
+                              className="rounded-lg px-2 text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 transition active:scale-95"
                               tabIndex={0}
                             >
                               ×
@@ -699,7 +699,7 @@ ${goHeaders}
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">Authentication</label>
+                    <label className="text-sm font-medium text-gray-700 dark:text-white mb-2 block">Authentication</label>
                     <div className="space-y-2">
                       <div className="relative" ref={authTypeMenuRef}>
                         <button
@@ -711,17 +711,17 @@ ${goHeaders}
                               setAuthTypeMenuOpen(!authTypeMenuOpen);
                             }
                           }}
-                          className="w-full text-left rounded-lg border-[0.5px] border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
+                          className="w-full text-left rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-white focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 flex items-center justify-between"
                           tabIndex={0}
                           aria-expanded={authTypeMenuOpen}
                         >
                           <span>{authType}</span>
-                          <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0', authTypeMenuOpen && 'rotate-180')} />
+                          <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 flex-shrink-0', authTypeMenuOpen && 'rotate-180')} />
                         </button>
                         {authTypeMenuOpen && (
                           <>
                             <div className="fixed inset-0 z-40" onClick={() => setAuthTypeMenuOpen(false)} />
-                            <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-hidden">
+                            <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg z-50 overflow-hidden">
                               {AUTH_TYPES.map((type) => (
                                 <button
                                   key={type}
@@ -739,8 +739,8 @@ ${goHeaders}
                                   className={clsx(
                                     'w-full px-3 py-2 text-left text-sm transition-colors',
                                     authType === type 
-                                      ? 'bg-gray-100 font-medium text-gray-900' 
-                                      : 'text-gray-700 hover:bg-gray-50'
+                                      ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                      : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                   )}
                                   tabIndex={0}
                                 >
@@ -757,7 +757,7 @@ ${goHeaders}
                           value={authValue}
                           onChange={(e) => setAuthValue(e.target.value)}
                           placeholder={authType === 'Basic' ? 'username:password' : 'Token or key'}
-                          className="w-full rounded-lg border-[0.5px] border-gray-300 bg-white px-3 sm:px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60"
+                          className="w-full rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 sm:px-4 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                           tabIndex={0}
                         />
                       )}
@@ -766,12 +766,12 @@ ${goHeaders}
 
                   {method !== 'GET' && (
                     <div>
-                      <label className="text-sm font-medium text-gray-700 mb-2 block">Request Body</label>
+                      <label className="text-sm font-medium text-gray-700 dark:text-white mb-2 block">Request Body</label>
                       <textarea
                         value={body}
                         onChange={(e) => setBody(e.target.value)}
                         placeholder='{"key": "value"}'
-                        className="w-full min-h-[120px] rounded-lg border-[0.5px] border-gray-300 bg-white px-3 sm:px-4 py-2 sm:py-3 font-mono text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60 focus:bg-sky-50/30 resize-none"
+                        className="w-full min-h-[120px] rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 sm:px-4 py-2 sm:py-3 font-mono text-sm leading-relaxed text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 focus:bg-sky-50/30 dark:focus:bg-sky-900/20 resize-none"
                         tabIndex={0}
                       />
                     </div>
@@ -780,39 +780,39 @@ ${goHeaders}
                   <button
                     onClick={sendRequest}
                     disabled={loading || !url.trim()}
-                    className="w-full rounded-lg px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 focus:outline-none shadow-sm hover:shadow flex items-center justify-center gap-2"
+                    className="w-full rounded-lg px-4 sm:px-5 py-2 text-xs sm:text-sm font-semibold text-white bg-sky-500 hover:bg-sky-600 transition-all disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:text-gray-500 dark:disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-300 dark:disabled:hover:bg-gray-600 focus:outline-none shadow-sm hover:shadow flex items-center justify-center gap-2"
                     tabIndex={0}
                   >
-                    <Play className="h-4 w-4" />
+                    <Play className="h-4 w-4 dark:text-white" />
                     {loading ? 'Sending...' : 'Send Request'}
                   </button>
 
                   {/* Code Generation Section */}
-                  <div className="border border-gray-200 rounded-lg bg-white">
-                    <div className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors rounded-lg">
+                  <div className="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
+                    <div className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors rounded-lg">
                       <button
                         onClick={() => setCodeGenOpen(!codeGenOpen)}
                         className="flex items-center gap-2 flex-1"
                         tabIndex={0}
                       >
-                        <FileCode className="h-4 w-4 text-gray-600" />
-                        <span className="text-sm font-semibold text-gray-900">Generate Code</span>
-                        <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 ml-auto', codeGenOpen && 'rotate-180')} />
+                        <FileCode className="h-4 w-4 text-gray-600 dark:text-white" />
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">Generate Code</span>
+                        <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ml-auto', codeGenOpen && 'rotate-180')} />
                       </button>
                       {codeGenOpen && (
                         <button
                           onClick={() => copyText(generateCode(selectedLanguage))}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow ml-2"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:shadow ml-2"
                           tabIndex={0}
                           title="Copy Code"
                         >
-                          <Copy className="h-3.5 w-3.5" />
+                          <Copy className="h-3.5 w-3.5 dark:text-white" />
                           <span className="hidden sm:inline">Copy</span>
                         </button>
                       )}
                     </div>
                     {codeGenOpen && (
-                      <div className="border-t border-gray-200 p-4 space-y-3">
+                      <div className="border-t border-gray-200 dark:border-gray-700 p-4 space-y-3">
                         <div className="relative" ref={codeLangMenuRef}>
                           <button
                             type="button"
@@ -823,7 +823,7 @@ ${goHeaders}
                                 setCodeLangMenuOpen(!codeLangMenuOpen);
                               }
                             }}
-                            className="w-full text-left rounded-lg border-[0.5px] border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50 flex items-center justify-between"
+                            className="w-full text-left rounded-lg border-[0.5px] border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-white focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 flex items-center justify-between"
                             tabIndex={0}
                             aria-expanded={codeLangMenuOpen}
                           >
@@ -834,12 +834,12 @@ ${goHeaders}
                               {selectedLanguage === 'curl' && 'cURL'}
                               {selectedLanguage === 'go' && 'Go'}
                             </span>
-                            <ChevronDown className={clsx('h-4 w-4 text-gray-500 transition-transform duration-200 flex-shrink-0', codeLangMenuOpen && 'rotate-180')} />
+                            <ChevronDown className={clsx('h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 flex-shrink-0', codeLangMenuOpen && 'rotate-180')} />
                           </button>
                           {codeLangMenuOpen && (
                             <>
                               <div className="fixed inset-0 z-40" onClick={() => setCodeLangMenuOpen(false)} />
-                              <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-hidden">
+                              <div className="absolute left-0 right-0 top-full mt-1 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg z-50 overflow-hidden">
                                 {[
                                   { value: 'javascript-fetch', label: 'JavaScript (fetch)' },
                                   { value: 'javascript-axios', label: 'JavaScript (axios)' },
@@ -863,8 +863,8 @@ ${goHeaders}
                                     className={clsx(
                                       'w-full px-3 py-2 text-left text-sm transition-colors',
                                       selectedLanguage === lang.value 
-                                        ? 'bg-gray-100 font-medium text-gray-900' 
-                                        : 'text-gray-700 hover:bg-gray-50'
+                                        ? 'bg-gray-100 dark:bg-gray-700 font-medium text-gray-900 dark:text-white' 
+                                        : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                                     )}
                                     tabIndex={0}
                                   >
@@ -875,8 +875,8 @@ ${goHeaders}
                             </>
                           )}
                         </div>
-                        <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4 max-h-96 overflow-auto">
-                          <pre className="text-sm font-mono text-gray-900 whitespace-pre-wrap leading-relaxed">
+                        <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 max-h-96 overflow-auto">
+                          <pre className="text-sm font-mono text-gray-900 dark:text-white whitespace-pre-wrap leading-relaxed">
                             <code>{generateCode(selectedLanguage)}</code>
                           </pre>
                         </div>
@@ -888,11 +888,11 @@ ${goHeaders}
             </div>
 
             {/* Response Panel */}
-            <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
-                <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+            <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0 bg-gray-400" />
-                    <h2 className="text-sm sm:text-base font-semibold text-gray-900">Response</h2>
+                    <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full flex-shrink-0 bg-gray-400 dark:bg-gray-500" />
+                    <h2 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">Response</h2>
                     {response && !loading && (
                       <>
                         {(() => {
@@ -906,11 +906,11 @@ ${goHeaders}
                             {response.status || 'Error'}
                           </span>
                           {response.statusText && (
-                            <span className="text-xs sm:text-sm text-gray-600 hidden sm:inline">{response.statusText}</span>
+                            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 hidden sm:inline">{response.statusText}</span>
                           )}
                           {response.latency && (
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
-                              <Clock className="h-3 w-3" />
+                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                              <Clock className="h-3 w-3 dark:text-gray-400" />
                               <span>{response.latency}ms</span>
                             </div>
                           )}
@@ -921,21 +921,21 @@ ${goHeaders}
                 </div>
                 <div className="p-4 sm:p-6">
                   {!response && !loading && (
-                    <div className="text-center py-12 text-gray-500">
-                      <Network className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                      <p className="text-sm">Send a request to see the response here</p>
+                    <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                      <Network className="h-12 w-12 mx-auto mb-3 text-gray-300 dark:text-gray-500" />
+                      <p className="text-sm dark:text-white">Send a request to see the response here</p>
                     </div>
                   )}
                   {loading && (
                     <div className="text-center py-12">
-                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                      <p className="mt-3 text-sm text-gray-600">Sending request...</p>
+                      <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+                      <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">Sending request...</p>
                     </div>
                   )}
                   {response && !loading && (
                     <div className="space-y-4">
                       {response.error ? (
-                        <div className="rounded-lg border border-error/20 bg-error/5 p-4 text-sm text-error">
+                        <div className="rounded-lg border border-error/20 dark:border-error/40 bg-error/5 dark:bg-error/20 p-4 text-sm text-error dark:text-red-400">
                           {response.error}
                         </div>
                       ) : (
@@ -943,18 +943,18 @@ ${goHeaders}
                           {response.headers && (
                             <div>
                               <div className="flex items-center justify-between mb-2">
-                                <h3 className="text-xs font-semibold text-gray-700">Response Headers</h3>
+                                <h3 className="text-xs font-semibold text-gray-700 dark:text-white">Response Headers</h3>
                                 <button
                                   onClick={() => copyText(JSON.stringify(response.headers, null, 2))}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:shadow"
                                   tabIndex={0}
                                 >
-                                  <Copy className="h-3.5 w-3.5" />
+                                  <Copy className="h-3.5 w-3.5 dark:text-white" />
                                   Copy
                                 </button>
                               </div>
-                              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4 max-h-96 overflow-auto">
-                                <pre className="text-sm font-mono text-gray-700 leading-relaxed">
+                              <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 max-h-96 overflow-auto">
+                                <pre className="text-sm font-mono text-gray-700 dark:text-white leading-relaxed">
                                   {JSON.stringify(response.headers, null, 2)}
                                 </pre>
                               </div>
@@ -962,18 +962,18 @@ ${goHeaders}
                           )}
                           <div>
                             <div className="flex items-center justify-between mb-2">
-                              <h3 className="text-xs font-semibold text-gray-700">Response Body</h3>
+                              <h3 className="text-xs font-semibold text-gray-700 dark:text-white">Response Body</h3>
                               <button
                                 onClick={() => copyText(typeof response.body === 'string' ? response.body : JSON.stringify(response.body, null, 2))}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:shadow"
                                 tabIndex={0}
                               >
-                                <Copy className="h-3.5 w-3.5" />
+                                <Copy className="h-3.5 w-3.5 dark:text-white" />
                                 Copy
                               </button>
                             </div>
-                            <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:p-4 max-h-96 overflow-auto">
-                              <pre className="text-sm font-mono text-gray-700 leading-relaxed">
+                            <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 max-h-96 overflow-auto">
+                              <pre className="text-sm font-mono text-gray-700 dark:text-white leading-relaxed">
                                 {typeof response.body === 'string' ? response.body : JSON.stringify(response.body, null, 2)}
                               </pre>
                             </div>
@@ -996,7 +996,7 @@ ${goHeaders}
   }
   
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-white dark:bg-gray-900 overflow-hidden">
       <Navigation currentPageId="rest" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
       {content}
     </div>
