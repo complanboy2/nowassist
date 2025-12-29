@@ -1989,7 +1989,7 @@ const JWTDecoder = () => {
                   {showRedactionExpanded && (
                   <div className="p-6 space-y-5 bg-white dark:bg-gray-800">
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Select claims to redact:</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-white">Select claims to redact:</label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto">
                         {Object.keys(payload).map((claim) => (
                           <label key={claim} className="flex items-center gap-2 p-2 rounded border border-slate-200 dark:border-gray-600 hover:bg-slate-50 dark:hover:bg-gray-700 cursor-pointer bg-white dark:bg-gray-800">
@@ -2061,7 +2061,7 @@ const JWTDecoder = () => {
                   {showComparisonExpanded && (
                   <div className="p-6 space-y-4 bg-white dark:bg-gray-800">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Second Token:</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-white mb-2">Second Token:</label>
                       <textarea
                         value={comparisonToken}
                         onChange={(e) => setComparisonToken(e.target.value)}
