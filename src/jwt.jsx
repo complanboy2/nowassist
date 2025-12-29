@@ -1331,7 +1331,7 @@ const JWTDecoder = () => {
                   e.target.style.height = `${newHeight}px`;
                 }}
                 placeholder="Paste a JWT token here..."
-                className="min-h-[100px] sm:min-h-[120px] max-h-[300px] sm:max-h-[400px] w-full resize-none border-[0.5px] border-gray-300 rounded-xl bg-white px-3 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-sky-400/60 overflow-y-auto shadow-sm"
+                className="min-h-[100px] sm:min-h-[120px] max-h-[300px] sm:max-h-[400px] w-full resize-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 px-3 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 overflow-y-auto shadow-sm"
                 style={{ color: 'transparent', caretColor: '#111827', height: 'auto' }}
                 tabIndex={0}
               />
@@ -1468,12 +1468,12 @@ const JWTDecoder = () => {
               <div className={clsx('grid gap-4 sm:gap-6 mb-4 sm:mb-6 items-stretch', hasSignature ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1')}>
                 {/* Left Column: Unified Token Structure */}
                 <div className={clsx('flex flex-col h-full', !hasSignature && 'lg:col-span-1')}>
-                  <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col flex-1">
+                  <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col flex-1">
                   {/* Main Header */}
-                  <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
-                    <h3 className="text-sm sm:text-base font-semibold text-gray-900">JWT Token Structure</h3>
+                  <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">JWT Token Structure</h3>
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
+                      <div className="flex items-center gap-0.5 bg-white dark:bg-gray-700 p-0.5 border border-gray-300 dark:border-gray-600 rounded-md">
                         <button
                           onClick={() => setPayloadViewMode('json')}
                           className={clsx('px-2 py-1 text-xs font-medium transition-colors rounded', payloadViewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 hover:bg-gray-50')}
@@ -1513,7 +1513,7 @@ const JWTDecoder = () => {
                             <span className="hidden sm:inline">Copy</span>
                           </button>
                         </div>
-                        <div className="font-mono text-gray-800 whitespace-pre-wrap break-words">
+                        <div className="font-mono text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
                           {pretty(headerRaw)}
                         </div>
                       </div>
@@ -1594,7 +1594,7 @@ const JWTDecoder = () => {
                             </table>
                           </div>
                         ) : (
-                          <div className="font-mono text-gray-800 whitespace-pre-wrap break-words">
+                          <div className="font-mono text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
                             {pretty(payloadRaw).split('\n').map((line, index) => {
                               const claimMatch = line.match(/^\s*"([^"]+)":\s*(.+)/);
                               let claimInfo = null;
@@ -1669,7 +1669,7 @@ const JWTDecoder = () => {
                     </div>
                     
                     {/* Signature Verification - Using CodeSection Pattern */}
-                    <div className="mt-4 sm:mt-6 flex flex-col flex-1 min-h-0 border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+                    <div className="mt-4 sm:mt-6 flex flex-col flex-1 min-h-0 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
                       <div className="flex-1 min-h-0 [&>div]:border-0 [&>div]:rounded-none [&>div]:shadow-none">
                         <CodeSection
                           title={`Verify Signature: ${isHMAC ? 'Secret Key' : 'Public Key'}`}
