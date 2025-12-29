@@ -1626,7 +1626,7 @@ const HarEntryDetails = ({ entry, formatBytes, formatTime, onClose, searchQuery 
                               className="text-slate-500 dark:text-gray-400 hover:text-slate-700 dark:text-white transition p-1 rounded hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-700"
                               title="Copy value"
                             >
-                              <Copy className="h-3.5 w-3.5" />
+                              <Copy className="h-3.5 w-3.5 dark:text-white" />
                             </button>
                           </td>
                         </tr>
