@@ -1022,7 +1022,7 @@ const HarAnalyzer = () => {
               )}>
                 {/* Left Panel: Requests Table */}
                 <div 
-                  className="rounded-l-xl border-2 border-r-0 border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col transition-all"
+                  className="rounded-l-xl border-2 border-r-0 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col transition-all"
                   style={{ width: selectedEntryIndex !== null ? `${panelWidth}%` : '100%' }}
                 >
                   <div className="flex-1 overflow-hidden">
@@ -1094,7 +1094,7 @@ const HarAnalyzer = () => {
                 {/* Right Panel: Entry Details - Only show when entry is selected */}
                 {selectedEntryIndex !== null && filteredEntries[selectedEntryIndex] && (
                   <div 
-                    className="rounded-r-xl border-2 border-l-0 border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col transition-all"
+                    className="rounded-r-xl border-2 border-l-0 border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col transition-all"
                     style={{ width: `${100 - panelWidth}%` }}
                   >
                     <HarEntryDetails 
