@@ -682,7 +682,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
                 value={content || ''}
                 onChange={(e) => onContentChange?.(e.target.value)}
                 placeholder={placeholder || ''}
-                className="w-full h-full min-h-[180px] resize-none border-0 bg-transparent px-0 py-0 font-mono text-xs sm:text-sm leading-relaxed text-gray-800 placeholder:text-gray-400 focus:outline-none focus:bg-sky-50/30"
+                className="w-full h-full min-h-[180px] resize-none border-0 bg-transparent px-0 py-0 font-mono text-xs sm:text-sm leading-relaxed text-gray-800 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:bg-sky-50/30 dark:focus:bg-sky-900/20"
                 tabIndex={0}
               />
             </div>
@@ -755,7 +755,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
                   }
                   
                   return (
-                    <div key={index} className="text-slate-900 whitespace-pre" style={{ minHeight: '22.4px' }}>
+                    <div key={index} className="text-slate-900 dark:text-white whitespace-pre" style={{ minHeight: '22.4px' }}>
                       {line || ' '}
                     </div>
                   );
@@ -1506,10 +1506,10 @@ const JWTDecoder = () => {
                             onClick={async () => {
                               await copyText(pretty(headerRaw));
                             }}
-                            className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none shadow-sm"
+                            className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none shadow-sm"
                             tabIndex={0}
                           >
-                            <Copy className="h-3 w-3" />
+                            <Copy className="h-3 w-3 text-gray-600 dark:text-white" />
                             <span className="hidden sm:inline">Copy</span>
                           </button>
                         </div>
@@ -1532,10 +1532,10 @@ const JWTDecoder = () => {
                             onClick={async () => {
                               await copyText(pretty(payloadRaw));
                             }}
-                            className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none shadow-sm"
+                            className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none shadow-sm"
                             tabIndex={0}
                           >
-                            <Copy className="h-3 w-3" />
+                            <Copy className="h-3 w-3 text-gray-600 dark:text-white" />
                             <span className="hidden sm:inline">Copy</span>
                           </button>
                         </div>
@@ -2017,9 +2017,9 @@ const JWTDecoder = () => {
                         />
                         <button
                           onClick={() => copyText(redactedToken)}
-                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
+                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
                         >
-                          <Copy className="h-3.5 w-3.5" />
+                          <Copy className="h-3.5 w-3.5 text-gray-600 dark:text-white" />
                           Copy Redacted Token
                         </button>
                       </div>
