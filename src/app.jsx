@@ -58,6 +58,7 @@ import HarAnalyzer from './har-analyzer';
 import JsonUtility from './json-utility';
 import EncoderDecoder from './encoder-decoder';
 import About from './about';
+import HelpSupport from './help-support';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import { getExtensionURL } from './utils/chrome-polyfill';
@@ -149,6 +150,7 @@ const App = () => {
           <Route path="/json" element={<JsonUtility />} />
           <Route path="/encoder-decoder" element={<EncoderDecoder />} />
           <Route path="/about" element={<About />} />
+          <Route path="/help-support" element={<HelpSupport />} />
           <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

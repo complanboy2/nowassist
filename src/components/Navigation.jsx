@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info, Home, Moon, Sun } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info, Home, Moon, Sun, HelpCircle } from 'lucide-react';
 import clsx from 'clsx';
 import { getExtensionURL } from '../utils/chrome-polyfill';
 import { useTheme } from '../contexts/ThemeContext';
@@ -213,7 +213,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
               
               {/* About Link */}
               <div className="border-t border-gray-200 dark:border-gray-700 my-4 lg:my-6"></div>
-              <div>
+              <div className="space-y-1">
                 {isExtension ? (
                   <a
                     href={getExtensionURL('about.html')}
@@ -249,6 +249,45 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                   >
                     <Info className={clsx('h-4 w-4 flex-shrink-0', location.pathname === '/about' ? 'dark:text-sky-300' : '')} />
                     <span className={location.pathname === '/about' ? 'text-primary dark:text-sky-300' : ''}>About</span>
+                  </Link>
+                )}
+                
+                {/* Help & Support Link */}
+                {isExtension ? (
+                  <a
+                    href={getExtensionURL('help-support.html')}
+                    onClick={() => {
+                      if (window.innerWidth < 1024) {
+                        setSidebarOpen(false);
+                      }
+                    }}
+                    className={clsx(
+                      'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                      currentPageId === 'help-support'
+                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-300'
+                        : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
+                    )}
+                  >
+                    <HelpCircle className={clsx('h-4 w-4 flex-shrink-0', currentPageId === 'help-support' ? 'dark:text-sky-300' : '')} />
+                    <span className={currentPageId === 'help-support' ? 'text-primary dark:text-sky-300' : ''}>Help & Support</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/help-support"
+                    onClick={() => {
+                      if (window.innerWidth < 1024) {
+                        setSidebarOpen(false);
+                      }
+                    }}
+                    className={clsx(
+                      'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
+                      location.pathname === '/help-support'
+                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-300'
+                        : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
+                    )}
+                  >
+                    <HelpCircle className={clsx('h-4 w-4 flex-shrink-0', location.pathname === '/help-support' ? 'dark:text-sky-300' : '')} />
+                    <span className={location.pathname === '/help-support' ? 'text-primary dark:text-sky-300' : ''}>Help & Support</span>
                   </Link>
                 )}
               </div>
