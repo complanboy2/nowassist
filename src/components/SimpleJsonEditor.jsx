@@ -24,38 +24,53 @@ const SimpleJsonEditor = ({
     }
   }, [value]);
 
+  const editorRef = React.useRef(null);
+
   return (
-    <div className="w-full h-full relative" style={style}>
-      <Editor
-        value={value}
-        onValueChange={(code) => {
-          if (onChange && !readOnly) {
-            onChange(code);
-          }
-        }}
-        highlight={(code) => {
-          try {
-            return highlight(code, languages.json, 'json');
-          } catch (e) {
-            return code;
-          }
-        }}
-        padding={16}
-        style={{
-          fontFamily: '"Fira Code", "Fira Mono", "Consolas", "Monaco", "Courier New", monospace',
-          fontSize: 14,
-          lineHeight: 1.6,
-          outline: 0,
-          backgroundColor: '#ffffff',
-          minHeight: '100%',
-          width: '100%',
-          ...style
-        }}
-        textareaClassName="json-editor-textarea"
-        preClassName="json-editor-pre"
-        readOnly={readOnly}
-        placeholder={placeholder}
-      />
+    <div 
+      className="w-full h-full relative cursor-text" 
+      style={style}
+      onClick={(e) => {
+        // Ensure textarea gets focus when clicking in the editor area
+        const textarea = editorRef.current?.querySelector('textarea');
+        if (textarea && !readOnly) {
+          textarea.focus();
+        }
+      }}
+    >
+      <div ref={editorRef} className="w-full h-full">
+        <Editor
+          value={value}
+          onValueChange={(code) => {
+            if (onChange && !readOnly) {
+              onChange(code);
+            }
+          }}
+          highlight={(code) => {
+            try {
+              return highlight(code, languages.json, 'json');
+            } catch (e) {
+              return code;
+            }
+          }}
+          padding={16}
+          style={{
+            fontFamily: '"Fira Code", "Fira Mono", "Consolas", "Monaco", "Courier New", monospace',
+            fontSize: 14,
+            lineHeight: 1.6,
+            outline: 0,
+            backgroundColor: 'transparent',
+            minHeight: '100%',
+            width: '100%',
+            cursor: 'text',
+            ...style
+          }}
+          textareaClassName="json-editor-textarea"
+          preClassName="json-editor-pre"
+          readOnly={readOnly}
+          placeholder={placeholder}
+        />
+      </div>
       <style>{`
         .json-editor-textarea,
         .json-editor-pre {
