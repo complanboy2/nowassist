@@ -1309,10 +1309,10 @@ const JWTDecoder = () => {
                         setToken('');
                       }
                     }}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-gray-700 dark:text-white bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none focus:outline-none transition-all shadow-sm hover:shadow"
                     tabIndex={0}
                   >
-                    <X className="h-3.5 w-3.5" />
+                    <X className="h-3.5 w-3.5 text-gray-600 dark:text-white" />
                     Clear
                   </button>
                 </div>
