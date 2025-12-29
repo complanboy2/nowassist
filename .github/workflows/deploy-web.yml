@@ -29,10 +29,14 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Enable corepack and setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
       - name: Install dependencies
         run: |
-          npm cache clean --force
-          npm install --legacy-peer-deps
+          pnpm install --frozen-lockfile || pnpm install
           if [ ! -f node_modules/.bin/vite ]; then
             echo "ERROR: vite binary not found"
             exit 1
