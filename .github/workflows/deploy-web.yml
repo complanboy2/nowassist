@@ -28,14 +28,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm install
-          echo "Verifying installation..."
-          npm list vite || echo "ERROR: vite not in node_modules"
-          test -f node_modules/.bin/vite && echo "✓ vite binary exists" || echo "ERROR: vite binary missing"
+        run: npm ci --no-audit
 
       - name: Build web app
         run: npm run build:web
