@@ -1476,7 +1476,7 @@ const JWTDecoder = () => {
                       <div className="flex items-center gap-0.5 bg-white dark:bg-gray-700 p-0.5 border border-gray-300 dark:border-gray-600 rounded-md">
                         <button
                           onClick={() => setPayloadViewMode('json')}
-                          className={clsx('px-2 py-1 text-xs font-medium transition-colors rounded', payloadViewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 hover:bg-gray-50')}
+                          className={clsx('px-2 py-1 text-xs font-medium transition-colors rounded', payloadViewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600')}
                           tabIndex={0}
                         >
                           JSON
@@ -2008,16 +2008,16 @@ const JWTDecoder = () => {
                       </div>
                     </div>
                     {redactedToken && (
-                      <div className="pt-3 border-t border-gray-100">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Redacted Token:</label>
+                      <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Redacted Token:</label>
                         <textarea
                           value={redactedToken}
                           readOnly
-                          className="w-full h-24 resize-none border-[0.5px] border-gray-300 rounded bg-gray-50 px-3 py-2 font-mono text-xs text-gray-700 focus:outline-none focus:border-sky-400/60"
+                          className="w-full h-24 resize-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-700 px-3 py-2 font-mono text-xs text-gray-700 dark:text-gray-300 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                         />
                         <button
                           onClick={() => copyText(redactedToken)}
-                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors focus:outline-none"
+                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
                         >
                           <Copy className="h-3.5 w-3.5" />
                           Copy Redacted Token
@@ -2094,7 +2094,7 @@ const JWTDecoder = () => {
                                   <div className="text-red-700">- {comparisonResult.headerDiff.removed.length} removed</div>
                                 )}
                                 {comparisonResult.headerDiff.changed.length > 0 && (
-                                  <div className="text-yellow-700">~ {comparisonResult.headerDiff.changed.length} changed</div>
+                                  <div className="text-yellow-700 dark:text-yellow-400">~ {comparisonResult.headerDiff.changed.length} changed</div>
                                 )}
                               </div>
                             </div>
@@ -2108,7 +2108,7 @@ const JWTDecoder = () => {
                                   <div className="text-red-700 dark:text-red-400">- {comparisonResult.payloadDiff.removed.length} removed</div>
                                 )}
                                 {comparisonResult.payloadDiff.changed.length > 0 && (
-                                  <div className="text-yellow-700">~ {comparisonResult.payloadDiff.changed.length} changed</div>
+                                  <div className="text-yellow-700 dark:text-yellow-400">~ {comparisonResult.payloadDiff.changed.length} changed</div>
                                 )}
                               </div>
                             </div>
