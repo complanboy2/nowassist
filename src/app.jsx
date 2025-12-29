@@ -81,8 +81,8 @@ const Home = () => {
         <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
           <div className="space-y-6">
             <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-6 py-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-3">NowAssist</h1>
-              <p className="text-base text-gray-600">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">NowAssist</h1>
+              <p className="text-base text-gray-600 dark:text-gray-300">
                 Professional developer toolkit for ServiceNow engineers and developers. 
                 Everything runs locally in your browser - your data never leaves your device.
               </p>
