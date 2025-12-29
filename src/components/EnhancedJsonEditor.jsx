@@ -99,7 +99,7 @@ const EnhancedJsonEditor = ({
         {/* Line Numbers */}
         <div
           ref={lineNumbersRef}
-          className="flex-shrink-0 bg-slate-50 border-r border-slate-200 text-right pr-2 py-4"
+          className="flex-shrink-0 bg-slate-50 dark:bg-gray-800 border-r border-slate-200 dark:border-gray-700 text-right pr-2 py-4"
           style={{ 
             width: '50px',
             fontFamily: '"Fira Code", "Fira Mono", "Consolas", "Monaco", "Courier New", monospace',
@@ -118,7 +118,7 @@ const EnhancedJsonEditor = ({
                 key={i}
                 className={`
                   relative flex items-center justify-end gap-1
-                  ${isErrorLine ? 'bg-red-100 text-red-600 font-semibold' : ''}
+                  ${isErrorLine ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 font-semibold' : 'dark:text-gray-400'}
                 `}
                 style={{ minHeight: '22.4px' }}
               >
@@ -129,7 +129,7 @@ const EnhancedJsonEditor = ({
                     onMouseLeave={handleMouseLeave}
                     className="relative z-50"
                   >
-                    <Info className="h-3.5 w-3.5 text-red-600 cursor-help flex-shrink-0" />
+                    <Info className="h-3.5 w-3.5 text-red-600 dark:text-red-400 cursor-help flex-shrink-0" />
                   </div>
                 )}
                 <span>{lineNum}</span>
@@ -139,7 +139,7 @@ const EnhancedJsonEditor = ({
         </div>
 
         {/* Editor */}
-        <div ref={editorRef} className="flex-1 relative overflow-hidden">
+        <div ref={editorRef} className="flex-1 relative overflow-hidden bg-white dark:bg-gray-800">
           <Editor
             value={value}
             onValueChange={(code) => {
@@ -176,7 +176,7 @@ const EnhancedJsonEditor = ({
               fontSize: 14,
               lineHeight: 1.6,
               outline: 0,
-              backgroundColor: '#ffffff',
+              backgroundColor: 'transparent',
               minHeight: '100%',
               width: '100%',
               ...style
@@ -220,6 +220,17 @@ const EnhancedJsonEditor = ({
             overflow-x: auto;
             white-space: pre;
             padding-left: 0 !important;
+            color: rgb(31, 41, 55);
+            background-color: transparent;
+          }
+          .dark .json-editor-textarea {
+            color: rgb(255, 255, 255);
+          }
+          .json-editor-textarea::placeholder {
+            color: rgb(156, 163, 175);
+          }
+          .dark .json-editor-textarea::placeholder {
+            color: rgb(107, 114, 128);
           }
           .json-editor-textarea:focus {
             outline: none;
@@ -230,6 +241,9 @@ const EnhancedJsonEditor = ({
           }
           .error-line-text {
             background-color: rgba(239, 68, 68, 0.25) !important;
+          }
+          .dark .error-line-text {
+            background-color: rgba(239, 68, 68, 0.3) !important;
           }
         `}</style>
       </div>

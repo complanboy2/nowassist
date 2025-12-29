@@ -391,14 +391,14 @@ const JsonUtility = () => {
                       {inputJson && (
                         <div className="flex items-center gap-2 ml-2">
                           {jsonError ? (
-                            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-red-100 border border-red-300 rounded text-xs">
-                              <AlertCircle className="h-3 w-3 text-red-600" />
-                              <span className="font-semibold text-red-900">Invalid</span>
+                            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-800 rounded text-xs">
+                              <AlertCircle className="h-3 w-3 text-red-600 dark:text-red-400" />
+                              <span className="font-semibold text-red-900 dark:text-red-300">Invalid</span>
                             </div>
                           ) : (
-                            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-green-100 border border-green-300 rounded text-xs">
-                              <CheckCircle2 className="h-3 w-3 text-green-600" />
-                              <span className="font-semibold text-green-900">Valid</span>
+                            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-800 rounded text-xs">
+                              <CheckCircle2 className="h-3 w-3 text-green-600 dark:text-green-400" />
+                              <span className="font-semibold text-green-900 dark:text-green-300">Valid</span>
                             </div>
                           )}
                         </div>
@@ -411,7 +411,7 @@ const JsonUtility = () => {
                     >
                       {copied.input ? (
                         <>
-                          <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                          <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                           <span className="hidden sm:inline">Copied!</span>
                         </>
                       ) : (
@@ -452,7 +452,7 @@ const JsonUtility = () => {
                       >
                         {copied.output ? (
                           <>
-                            <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
+                            <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                             <span className="hidden sm:inline">Copied!</span>
                           </>
                         ) : (
@@ -489,7 +489,7 @@ const JsonUtility = () => {
                               <div className="p-12 text-center">
                                 <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-400" />
                                 <div className="text-red-600 font-semibold mb-2 text-lg">Invalid JSON</div>
-                                <div className="text-sm text-slate-600">Please fix errors to view tree.</div>
+                                <div className="text-sm text-slate-600 dark:text-gray-400">Please fix errors to view tree.</div>
                               </div>
                             );
                           }

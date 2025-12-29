@@ -300,11 +300,11 @@ export const validateJWT = (header, payload, signature, currentTime = Date.now()
  * Get risk level from score
  */
 export const getRiskLevel = (riskScore) => {
-  if (riskScore >= 80) return { level: 'Critical', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/50', border: 'border-red-200 dark:border-red-800' };
-  if (riskScore >= 60) return { level: 'High', color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/50', border: 'border-orange-200 dark:border-orange-800' };
-  if (riskScore >= 40) return { level: 'Medium', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-50 dark:bg-yellow-900/50', border: 'border-yellow-200 dark:border-yellow-800' };
-  if (riskScore >= 20) return { level: 'Low', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/50', border: 'border-blue-200 dark:border-blue-800' };
-  return { level: 'Info', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-50 dark:bg-green-900/50', border: 'border-green-200 dark:border-green-800' };
+  if (riskScore >= 80) return { level: 'Critical', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/70', border: 'border-red-200 dark:border-red-800' };
+  if (riskScore >= 60) return { level: 'High', color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/70', border: 'border-orange-200 dark:border-orange-800' };
+  if (riskScore >= 40) return { level: 'Medium', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-50 dark:bg-yellow-900/70', border: 'border-yellow-200 dark:border-yellow-800' };
+  if (riskScore >= 20) return { level: 'Low', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/70', border: 'border-blue-200 dark:border-blue-800' };
+  return { level: 'Info', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-50 dark:bg-green-900/70', border: 'border-green-200 dark:border-green-800' };
 };
 
 /**

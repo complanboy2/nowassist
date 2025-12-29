@@ -321,19 +321,19 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
 
   const getTypeColor = (type) => {
     switch (type) {
-      case 'string': return 'text-green-600';
-      case 'number': return 'text-blue-600';
-      case 'boolean': return 'text-purple-600';
-      case 'null': return 'text-slate-400';
-      case 'object': return 'text-orange-600';
-      case 'array': return 'text-pink-600';
-      default: return 'text-slate-600';
+      case 'string': return 'text-green-600 dark:text-green-400';
+      case 'number': return 'text-blue-600 dark:text-blue-400';
+      case 'boolean': return 'text-purple-600 dark:text-purple-400';
+      case 'null': return 'text-slate-400 dark:text-gray-500';
+      case 'object': return 'text-orange-600 dark:text-orange-400';
+      case 'array': return 'text-pink-600 dark:text-pink-400';
+      default: return 'text-slate-600 dark:text-gray-400';
     }
   };
 
   if (!localJsonData) {
     return (
-      <div className="p-8 text-center text-slate-500">
+      <div className="p-8 text-center text-slate-500 dark:text-gray-400">
         No JSON data to display. Please load or paste JSON.
       </div>
     );
@@ -342,23 +342,23 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
   return (
     <div className="flex flex-col h-full">
       {/* Search Bar */}
-      <div className="border-b border-slate-200 bg-white p-3">
+      <div className="border-b border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Search keys, paths, or values..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none"
+            className="w-full rounded-lg border border-slate-200 dark:border-gray-600 bg-white dark:bg-gray-700 py-2 pl-9 pr-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-gray-500 focus:border-primary focus:outline-none"
           />
         </div>
       </div>
 
       {/* Tree View */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 bg-white dark:bg-gray-800">
         {filteredNodes.length === 0 ? (
-          <div className="text-center text-slate-500 py-8">
+          <div className="text-center text-slate-500 dark:text-gray-400 py-8">
             No matching nodes found
           </div>
         ) : (
@@ -375,9 +375,9 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                 <div
                   key={`${node.path}-${index}`}
                   className={clsx(
-                    'flex items-center gap-2 py-1 px-2 rounded hover:bg-slate-50 transition',
-                    isSelected && !isEditing && 'bg-blue-50 border-l-2 border-blue-500 cursor-pointer',
-                    isEditing && 'bg-yellow-50 border-l-2 border-yellow-500'
+                    'flex items-center gap-2 py-1 px-2 rounded hover:bg-slate-50 dark:hover:bg-gray-700 transition',
+                    isSelected && !isEditing && 'bg-blue-50 dark:bg-blue-900/30 border-l-2 border-blue-500 dark:border-blue-400 cursor-pointer',
+                    isEditing && 'bg-yellow-50 dark:bg-yellow-900/30 border-l-2 border-yellow-500 dark:border-yellow-400'
                   )}
                   style={{ marginLeft: `${indent}px` }}
                   onClick={(e) => {
@@ -418,18 +418,18 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                         e.stopPropagation();
                         toggleExpand(node.path);
                       }}
-                      className="p-0.5 hover:bg-slate-200 rounded transition"
+                      className="p-0.5 hover:bg-slate-200 dark:hover:bg-gray-600 rounded transition"
                     >
                       {isExpanded ? (
-                        <ChevronDown className="h-4 w-4 text-slate-600" />
+                        <ChevronDown className="h-4 w-4 text-slate-600 dark:text-gray-400" />
                       ) : (
-                        <ChevronRight className="h-4 w-4 text-slate-600" />
+                        <ChevronRight className="h-4 w-4 text-slate-600 dark:text-gray-400" />
                       )}
                     </button>
                   )}
                   {node.isLeaf && !isEditing && <div className="w-5" />}
 
-                  <span className="font-mono text-sm font-semibold text-slate-700">
+                  <span className="font-mono text-sm font-semibold text-slate-700 dark:text-white">
                     {node.key}:
                   </span>
 
@@ -450,7 +450,7 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                             }
                           }}
                           autoFocus
-                          className="flex-1 px-2 py-1 border border-blue-400 rounded bg-white text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="flex-1 px-2 py-1 border border-blue-400 dark:border-blue-500 rounded bg-white dark:bg-gray-700 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                           onClick={(e) => e.stopPropagation()}
                         />
                         <button
@@ -458,7 +458,7 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                             e.stopPropagation();
                             saveEditing();
                           }}
-                          className="p-1 hover:bg-green-200 rounded transition text-green-600"
+                          className="p-1 hover:bg-green-200 dark:hover:bg-green-900/50 rounded transition text-green-600 dark:text-green-400"
                           title="Save"
                         >
                           <Check className="h-4 w-4" />
@@ -468,7 +468,7 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                             e.stopPropagation();
                             cancelEditing();
                           }}
-                          className="p-1 hover:bg-red-200 rounded transition text-red-600"
+                          className="p-1 hover:bg-red-200 dark:hover:bg-red-900/50 rounded transition text-red-600 dark:text-red-400"
                           title="Cancel"
                         >
                           <X className="h-4 w-4" />
@@ -492,10 +492,10 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                         {editable && (
                           <button
                             onClick={(e) => startEditing(node, e)}
-                            className="p-1 hover:bg-blue-200 rounded transition opacity-70 hover:opacity-100"
+                            className="p-1 hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded transition opacity-70 hover:opacity-100"
                             title="Edit value"
                           >
-                            <Edit2 className="h-3 w-3 text-blue-500" />
+                            <Edit2 className="h-3 w-3 text-blue-500 dark:text-blue-400" />
                           </button>
                         )}
                         <button
@@ -503,16 +503,16 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                             e.stopPropagation();
                             copyValue(node.value);
                           }}
-                          className="p-1 hover:bg-slate-200 rounded transition opacity-70 hover:opacity-100"
+                          className="p-1 hover:bg-slate-200 dark:hover:bg-gray-600 rounded transition opacity-70 hover:opacity-100"
                           title="Copy value"
                         >
-                          <Copy className="h-3 w-3 text-slate-500" />
+                          <Copy className="h-3 w-3 text-slate-500 dark:text-gray-400" />
                         </button>
                       </>
                     )
                   ) : (
                     <>
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-slate-500 dark:text-gray-400">
                         {Array.isArray(node.value) 
                           ? `Array(${node.value.length})`
                           : `Object(${Object.keys(node.value).length})`}
@@ -523,10 +523,10 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
                           e.stopPropagation();
                           copyPath(node.path);
                         }}
-                        className="p-1 hover:bg-slate-200 rounded transition opacity-70 hover:opacity-100"
+                        className="p-1 hover:bg-slate-200 dark:hover:bg-gray-600 rounded transition opacity-70 hover:opacity-100"
                         title="Copy path"
                       >
-                        <Copy className="h-3 w-3 text-slate-500" />
+                        <Copy className="h-3 w-3 text-slate-500 dark:text-gray-400" />
                       </button>
                     </>
                   )}
@@ -539,13 +539,13 @@ const JsonTreeView = ({ jsonData, onPathSelect, onUpdate, editable = false }) =>
 
       {/* Selected Path Info */}
       {selectedPath && !editingPath && (
-        <div className="border-t border-slate-200 bg-slate-50 p-3">
-          <div className="text-xs text-slate-600 mb-1">Selected Path:</div>
-          <div className="font-mono text-sm text-slate-900 mb-2">{selectedPath}</div>
+        <div className="border-t border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-700 p-3">
+          <div className="text-xs text-slate-600 dark:text-gray-400 mb-1">Selected Path:</div>
+          <div className="font-mono text-sm text-slate-900 dark:text-white mb-2">{selectedPath}</div>
           <div className="flex gap-2">
             <button
               onClick={() => copyPath(selectedPath)}
-              className="text-xs px-2 py-1 bg-white border border-slate-200 rounded hover:bg-slate-50 transition flex items-center gap-1"
+              className="text-xs px-2 py-1 bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-600 rounded hover:bg-slate-50 dark:hover:bg-gray-600 transition flex items-center gap-1 text-slate-700 dark:text-white"
             >
               <Copy className="h-3 w-3" />
               Copy Path
