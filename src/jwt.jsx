@@ -1743,8 +1743,8 @@ const JWTDecoder = () => {
                             </div>
                           )}
                           {!isHMAC && (
-                            <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 cursor-pointer transition-all focus-within:outline-none shadow-sm">
-                              <Upload className="h-3.5 w-3.5" />
+                            <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-white bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 cursor-pointer transition-all focus-within:outline-none shadow-sm">
+                              <Upload className="h-3.5 w-3.5 text-gray-600 dark:text-white" />
                               Upload
                               <input type="file" accept=".pem,.key,.crt,.pub,.json" onChange={handleFileUpload} className="hidden" tabIndex={0} />
                             </label>
@@ -1824,7 +1824,7 @@ const JWTDecoder = () => {
                         value={jwksUrl}
                         onChange={(e) => setJwksUrl(e.target.value)}
                         placeholder="https://example.com/.well-known/jwks.json"
-                          className="flex-1 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
+                          className="flex-1 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             handleFetchJWKS();
@@ -1920,7 +1920,7 @@ const JWTDecoder = () => {
                           const time = new Date(e.target.value).getTime();
                           setSimulatedTime(time);
                         }}
-                        className="border-[0.5px] border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
+                        className="border-[0.5px] border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60"
                       />
                       <button
                         onClick={() => {
@@ -1930,13 +1930,13 @@ const JWTDecoder = () => {
                             setSimulatedTime(now + (parseFloat(hoursOffset) * 60 * 60 * 1000));
                           }
                         }}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
+                        className="px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
                       >
                         Fast Forward
                       </button>
                       <button
                         onClick={() => setSimulatedTime(null)}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
+                        className="px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-600"
                       >
                         Reset
                       </button>
