@@ -44,17 +44,40 @@ export default defineConfig({
               mkdirSync(iconsDest, { recursive: true });
             }
             const files = readdirSync(iconsSource);
+            let copiedCount = 0;
             files.forEach(file => {
               const sourcePath = resolve(iconsSource, file);
               const destPath = resolve(iconsDest, file);
-              if (statSync(sourcePath).isFile()) {
-                copyFileSync(sourcePath, destPath);
+              try {
+                if (statSync(sourcePath).isFile()) {
+                  copyFileSync(sourcePath, destPath);
+                  copiedCount++;
+                }
+              } catch (fileErr) {
+                console.warn(`Failed to copy icon ${file}:`, fileErr.message);
               }
             });
-            console.log('✓ Copied icons directory');
+            if (copiedCount > 0) {
+              console.log(`✓ Copied ${copiedCount} icon(s)`);
+            }
           }
         } catch (err) {
-          console.error('Failed to copy icons:', err);
+          console.error('Failed to copy icons:', err.message);
+        }
+        
+        // Copy favicon files (if they exist)
+        try {
+          const faviconFiles = ['favicon.ico', 'favicon.svg', 'apple-touch-icon.png'];
+          faviconFiles.forEach(file => {
+            const sourcePath = resolve(publicDir, file);
+            const destPath = resolve(distDir, file);
+            if (existsSync(sourcePath)) {
+              copyFileSync(sourcePath, destPath);
+              console.log(`✓ Copied ${file}`);
+            }
+          });
+        } catch (err) {
+          console.warn('No favicon files found or failed to copy:', err.message);
         }
         
         // CRITICAL: Remove ALL extension HTML files that conflict with SPA routing
