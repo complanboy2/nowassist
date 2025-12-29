@@ -32,11 +32,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm cache clean --force || true
-          npm install
-          echo "Verifying installation..."
+          npm ci
+          echo "Verifying vite installation..."
           npm list vite 2>/dev/null | head -2 || echo "WARNING: vite check failed"
-          ./node_modules/.bin/vite --version || npx vite --version || echo "WARNING: vite version check failed"
 
       - name: Build web app
         run: npm run build:web
