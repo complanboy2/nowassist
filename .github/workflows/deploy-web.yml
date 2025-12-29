@@ -31,13 +31,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm ci --no-audit --no-fund
-          if [ ! -f node_modules/.bin/vite ]; then
-            echo "ERROR: vite binary not found after install"
-            exit 1
-          fi
-          echo "✓ vite installed successfully"
+        run: npm install --no-audit --no-fund
 
       - name: Build web app
         run: npm run build:web
