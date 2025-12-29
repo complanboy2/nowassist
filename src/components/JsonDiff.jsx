@@ -537,7 +537,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
                 </div>
               )}
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden" style={{ minHeight: '400px' }}>
               <EnhancedJsonEditor
                 value={jsonA}
                 onChange={(value) => setJsonA(value || '')}
@@ -572,7 +572,7 @@ const JsonDiff = ({ onOutputUpdate }) => {
                 </div>
               )}
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden" style={{ minHeight: '400px' }}>
               <EnhancedJsonEditor
                 value={jsonB}
                 onChange={(value) => setJsonB(value || '')}
