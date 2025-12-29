@@ -18,10 +18,15 @@ const Footer = () => {
               <img 
                 src={getIconURL('icon32.png')} 
                 alt="NowAssist" 
-                className="h-5 w-5 dark:brightness-0 dark:invert"
+                className="h-5 w-5"
                 style={{ 
                   imageRendering: 'crisp-edges',
-                  backgroundColor: 'transparent'
+                  backgroundColor: 'transparent',
+                  filter: 'drop-shadow(0 0 0 transparent)'
+                }}
+                onError={(e) => {
+                  // Fallback: hide if image fails to load
+                  e.target.style.display = 'none';
                 }}
               />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
