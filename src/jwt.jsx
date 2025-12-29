@@ -1712,7 +1712,7 @@ const JWTDecoder = () => {
                               {keyFormatMenuOpen && (
                                 <>
                                   <div className="fixed inset-0 z-[49]" onClick={() => setKeyFormatMenuOpen(false)} />
-                                  <div className="absolute left-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-xl z-[100] overflow-hidden">
+                                  <div className="absolute left-0 top-full mt-1 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] overflow-hidden">
                                     <button
                                       onClick={() => {
                                         setKeyFormat('PEM');
@@ -1732,7 +1732,7 @@ const JWTDecoder = () => {
                                         setVerificationResult(null);
                                         setKeyFormatMenuOpen(false);
                                       }}
-                                      className={clsx('w-full px-3 py-2 text-left text-xs sm:text-sm transition-colors focus:outline-none border-b border-gray-100 last:border-b-0', keyFormat === 'JWK' ? 'bg-sky-50 text-sky-600 font-medium' : 'text-gray-700 hover:bg-gray-50')}
+                                      className={clsx('w-full px-3 py-2 text-left text-xs sm:text-sm transition-colors focus:outline-none border-b border-gray-100 dark:border-gray-700 last:border-b-0', keyFormat === 'JWK' ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-300 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700')}
                                       tabIndex={0}
                                     >
                                       JWK
@@ -1756,7 +1756,7 @@ const JWTDecoder = () => {
                                 setSecret('');
                                 setVerificationResult(null);
                               }}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 bg-white border-[0.5px] border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-500 focus:outline-none transition-all shadow-sm hover:shadow"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-500 dark:hover:border-gray-500 focus:outline-none transition-all shadow-sm hover:shadow"
                               tabIndex={0}
                             >
                               <X className="h-3.5 w-3.5" />
@@ -1796,14 +1796,14 @@ const JWTDecoder = () => {
 
               {/* JWKS Panel */}
               {!isHMAC && (
-                <div className="mb-4 sm:mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-4 sm:mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                     onClick={() => setShowJWKSExpanded(!showJWKSExpanded)}
                   >
                     <div className="flex items-center gap-2 sm:gap-3">
-                      <Key className="h-4 sm:h-5 w-4 sm:w-5 text-gray-600 flex-shrink-0" />
-                      <span className="text-sm sm:text-base font-semibold text-gray-900">JWKS (JSON Web Key Set)</span>
+                      <Key className="h-4 sm:h-5 w-4 sm:w-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">JWKS (JSON Web Key Set)</span>
                     </div>
                     <button
                       onClick={(e) => {
@@ -1856,11 +1856,11 @@ const JWTDecoder = () => {
                     )}
                     {jwks && jwks.keys && jwks.keys.length > 0 && (
                       <div className="space-y-3">
-                        <label className="block text-sm font-semibold text-gray-700">Select Key:</label>
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Select Key:</label>
                         <select
                           value={selectedKeyId}
                           onChange={(e) => setSelectedKeyId(e.target.value)}
-                          className="w-full border-[0.5px] border-gray-300 rounded-lg bg-white px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-sky-400/60 cursor-pointer hover:bg-gray-50"
+                          className="w-full border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:border-sky-400/60 dark:focus:border-sky-500/60 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                         >
                           <option value="">-- Select a key --</option>
                           {jwks.keys.map((key, index) => (
@@ -1881,9 +1881,9 @@ const JWTDecoder = () => {
 
               {/* Time Simulation Panel */}
               {showTimeSimulation && (
-                <div className="mb-4 sm:mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-4 sm:mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                     onClick={() => setShowTimePanelExpanded(!showTimePanelExpanded)}
                   >
                     <div className="flex items-center gap-3 flex-1">
@@ -2031,9 +2031,9 @@ const JWTDecoder = () => {
 
               {/* Comparison Panel */}
               {showComparison && (
-                <div className="mb-4 sm:mb-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="mb-4 sm:mb-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
                   <div 
-                    className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                     onClick={() => setShowComparisonExpanded(!showComparisonExpanded)}
                   >
                     <div className="flex items-center gap-2 flex-1">
