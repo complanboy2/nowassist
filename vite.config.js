@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
-import { copyFileSync, existsSync, unlinkSync, readdirSync, statSync } from 'fs';
+import { copyFileSync, existsSync, unlinkSync, readdirSync, statSync, mkdirSync } from 'fs';
 
 // Detect if building for web or extension
 const isWebBuild = process.env.BUILD_TARGET === 'web';
