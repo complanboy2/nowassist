@@ -18,8 +18,8 @@ if (typeof window !== 'undefined') {
   
   // Handle GitHub Pages 404.html redirect with path in query string
   // This MUST run synchronously before React Router initializes
-  // The 404.html redirects to: /nowassist/index.html?/jwt
-  // We need to restore it to: /nowassist/jwt
+  // The 404.html redirects to: /index.html?/jwt (for root domain)
+  // We need to restore it to: /jwt
   // Note: URLSearchParams doesn't parse ?/jwt correctly, so we extract it manually
   (function() {
     try {
@@ -34,8 +34,8 @@ if (typeof window !== 'undefined') {
           // Decode the path (replace ~& back to &, ~/ back to /)
           const decodedPath = pathFromQuery.replace(/~&/g, '&').replace(/~/g, '/');
           
-          // Build the correct path: /nowassist/[path]
-          const basePath = '/nowassist';
+          // Build the correct path: /[path] (root domain)
+          const basePath = '';
           const newPath = basePath + '/' + decodedPath;
           const newUrl = newPath + window.location.hash;
           
@@ -131,8 +131,8 @@ const Home = () => {
 
 const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  // Use basename for GitHub Pages subdirectory
-  const basename = '/nowassist';
+  // Use empty basename for root domain (nowassist.app)
+  const basename = '';
   
   return (
     <ThemeProvider>

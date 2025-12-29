@@ -9,7 +9,7 @@ const isWebBuild = process.env.BUILD_TARGET === 'web';
 
 export default defineConfig({
   // For GitHub Pages: use /nowassist/, for custom domain: use /
-  base: isWebBuild ? '/nowassist/' : '/',
+  base: isWebBuild ? '/' : '/',
   plugins: [
     react(),
     // For web builds: Copy only necessary files (404.html, icons) and clean up extension files
@@ -121,21 +121,21 @@ export default defineConfig({
           theme_color: '#0ea5e9',
           background_color: '#ffffff',
           display: 'standalone',
-          start_url: '/nowassist/',
+          start_url: '/',
           icons: [
             {
-              src: '/nowassist/icons/icon128.png',
+              src: '/icons/icon128.png',
               sizes: '128x128',
               type: 'image/png',
               purpose: 'any maskable'
             },
             {
-              src: '/nowassist/icons/icon48.png',
+              src: '/icons/icon48.png',
               sizes: '48x48',
               type: 'image/png'
             },
             {
-              src: '/nowassist/icons/icon16.png',
+              src: '/icons/icon16.png',
               sizes: '16x16',
               type: 'image/png'
             }

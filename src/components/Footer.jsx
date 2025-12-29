@@ -3,7 +3,7 @@ import { Heart } from 'lucide-react';
 
 const getIconURL = (filename) => {
   const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
-  return isExtension ? chrome.runtime.getURL(`icons/${filename}`) : `/nowassist/icons/${filename}`;
+  return isExtension ? chrome.runtime.getURL(`icons/${filename}`) : `/icons/${filename}`;
 };
 
 const Footer = () => {

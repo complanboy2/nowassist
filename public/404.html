@@ -11,15 +11,15 @@
       // Then our app.jsx will restore the path before React Router initializes
       
       (function() {
-        var segmentCount = 1; // For /nowassist/ subdirectory
+        var segmentCount = 0; // For root domain (nowassist.app)
         var l = window.location;
         var redirect;
         
         // Only redirect if we're not already on index.html
         if (!l.pathname.includes('/index.html')) {
           redirect = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/index.html?/' +
-            l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~&') +
+            '/index.html?/' +
+            l.pathname.slice(1).replace(/&/g, '~&') +
             (l.search ? '&' + l.search.slice(1).replace(/&/g, '~&') : '') +
             l.hash;
           
