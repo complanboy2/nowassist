@@ -142,21 +142,21 @@ const About = () => {
             <div className="space-y-3 sm:space-y-4">
             {/* Header */}
             <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">About NowAssist</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">About NowAssist</h1>
             </header>
 
             {/* Main Motto Section */}
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
               <div className="p-6 sm:p-8">
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-sky-100 rounded-xl">
-                    <Zap className="h-8 w-8 text-sky-600" />
+                  <div className="p-3 bg-sky-100 dark:bg-sky-900/30 rounded-xl">
+                    <Zap className="h-8 w-8 text-sky-600 dark:text-sky-400" />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
                       Everything Happens in Your Browser
                     </h2>
-                    <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                    <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                       NowAssist is a powerful Chrome extension designed for developers who value privacy, speed, and convenience. 
                       All processing happens locally in your browser—no data is sent to external servers, ensuring your sensitive 
                       tokens, API keys, and credentials remain completely private and secure.
@@ -165,19 +165,19 @@ const About = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                   <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                    <Lock className="h-6 w-6 text-gray-700 mb-2" />
-                    <h3 className="font-semibold text-gray-900 mb-1">100% Private</h3>
-                    <p className="text-sm text-gray-600">All data stays in your browser. No cloud processing, no external servers.</p>
+                    <Lock className="h-6 w-6 text-gray-700 dark:text-gray-300 mb-2" />
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">100% Private</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">All data stays in your browser. No cloud processing, no external servers.</p>
                   </div>
                   <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                    <Zap className="h-6 w-6 text-gray-700 mb-2" />
-                    <h3 className="font-semibold text-gray-900 mb-1">Lightning Fast</h3>
-                    <p className="text-sm text-gray-600">Instant results with no network latency. Process data in real-time.</p>
+                    <Zap className="h-6 w-6 text-gray-700 dark:text-gray-300 mb-2" />
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Lightning Fast</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Instant results with no network latency. Process data in real-time.</p>
                   </div>
                   <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                    <Globe className="h-6 w-6 text-gray-700 mb-2" />
-                    <h3 className="font-semibold text-gray-900 mb-1">Works Offline</h3>
-                    <p className="text-sm text-gray-600">No internet connection required. Perfect for local development and debugging.</p>
+                    <Globe className="h-6 w-6 text-gray-700 dark:text-gray-300 mb-2" />
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Works Offline</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">No internet connection required. Perfect for local development and debugging.</p>
                   </div>
                 </div>
               </div>
@@ -186,8 +186,8 @@ const About = () => {
             {/* Features Section */}
             <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
               <div className="bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Features</h2>
-                <p className="text-sm text-gray-600 mt-1">Comprehensive developer tools at your fingertips</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Features</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Comprehensive developer tools at your fingertips</p>
               </div>
               <div className="p-4 sm:p-6">
                 <div className="space-y-6">
@@ -197,27 +197,27 @@ const About = () => {
                       <div
                         key={feature.id}
                         className={clsx(
-                          'border border-gray-200 rounded-xl p-4 sm:p-6 hover:shadow-md transition-shadow',
+                          'border border-gray-200 dark:border-gray-700 rounded-xl p-4 sm:p-6 hover:shadow-md transition-shadow bg-white dark:bg-gray-800',
                           index !== FEATURES.length - 1 && 'mb-4'
                         )}
                       >
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="p-2 bg-gray-100 rounded-lg">
-                            <Icon className="h-6 w-6 text-gray-700" />
+                          <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                            <Icon className="h-6 w-6 text-gray-700 dark:text-gray-300" />
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-lg sm:text-xl font-bold text-gray-900">{feature.name}</h3>
-                              <span className="px-2 py-1 text-xs font-semibold text-gray-600 bg-gray-100 rounded">
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{feature.name}</h3>
+                              <span className="px-2 py-1 text-xs font-semibold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded">
                                 {feature.category}
                               </span>
                             </div>
-                            <p className="text-sm sm:text-base text-gray-700 mb-4">{feature.description}</p>
+                            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-4">{feature.description}</p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {feature.features.map((feat, idx) => (
                                 <div key={idx} className="flex items-start gap-2">
-                                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                                  <span className="text-sm text-gray-600">{feat}</span>
+                                  <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                                  <span className="text-sm text-gray-600 dark:text-gray-400">{feat}</span>
                                 </div>
                               ))}
                             </div>
@@ -231,16 +231,16 @@ const About = () => {
             </div>
 
             {/* Built with Love Section */}
-            <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-sky-50 to-blue-50 dark:from-gray-800 dark:to-gray-900 border border-sky-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
               <div className="p-6 sm:p-8 text-center">
                 <div className="flex items-center justify-center gap-2 mb-3">
-                  <Heart className="h-6 w-6 text-red-500 fill-red-500" />
-                  <span className="text-xl sm:text-2xl font-bold text-gray-900">
+                  <Heart className="h-6 w-6 text-red-500 dark:text-red-400 fill-red-500 dark:fill-red-400" />
+                  <span className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                     Built with Love for Developers
                   </span>
-                  <Heart className="h-6 w-6 text-red-500 fill-red-500" />
+                  <Heart className="h-6 w-6 text-red-500 dark:text-red-400 fill-red-500 dark:fill-red-400" />
                 </div>
-                <p className="text-sm sm:text-base text-gray-700 max-w-2xl mx-auto">
+                <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
                   NowAssist is crafted by developers, for developers. We understand the pain points of debugging, 
                   testing, and working with authentication tokens. Every feature is designed to save you time and 
                   make your workflow smoother.
@@ -250,24 +250,24 @@ const About = () => {
 
             {/* Legal Information Section */}
             <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Legal Information</h2>
-              <div className="space-y-4 text-sm text-gray-700">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Legal Information</h2>
+              <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
                 <div>
-                  <p className="font-semibold text-gray-900 mb-2">Copyright</p>
-                  <p>© 2025 NowAssist. All Rights Reserved.</p>
+                  <p className="font-semibold text-gray-900 dark:text-white mb-2">Copyright</p>
+                  <p>© {new Date().getFullYear()} NowAssist. All Rights Reserved.</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900 mb-2">License</p>
+                  <p className="font-semibold text-gray-900 dark:text-white mb-2">License</p>
                   <p>This software is proprietary and protected by copyright. Unauthorized copying, modification, distribution, or use is strictly prohibited.</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900 mb-2">Privacy Policy</p>
+                  <p className="font-semibold text-gray-900 dark:text-white mb-2">Privacy Policy</p>
                   <p>
                     <a 
                       href="https://complanboy2.github.io/nowassist/privacy_policy.html" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-sky-600 hover:text-sky-700 underline"
+                      className="text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 underline"
                     >
                       View Privacy Policy
                     </a>
@@ -287,7 +287,7 @@ const About = () => {
   }
   
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-white dark:bg-gray-900 overflow-hidden">
       <Navigation currentPageId="about" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
       {content}
     </div>
