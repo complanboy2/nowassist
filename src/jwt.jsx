@@ -696,19 +696,19 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
             </div>
           )
         ) : (
-          <div className="flex bg-white" style={{ flex: '1 1 auto', minHeight: '100%' }}>
+          <div className="flex bg-white dark:bg-gray-800" style={{ flex: '1 1 auto', minHeight: '100%' }}>
             {/* Line Numbers Banner - Left Side */}
-            <div className="flex-shrink-0 bg-gray-50 border-r-2 border-gray-200 text-right pr-2 sm:pr-3 lg:pr-4 pl-2 sm:pl-3 lg:pl-4 py-3 sm:py-4 lg:py-5 flex flex-col" style={{ width: '45px', fontFamily: 'monospace', minHeight: '100%' }}>
+            <div className="flex-shrink-0 bg-gray-50 dark:bg-gray-700 border-r-2 border-gray-200 dark:border-gray-600 text-right pr-2 sm:pr-3 lg:pr-4 pl-2 sm:pl-3 lg:pl-4 py-3 sm:py-4 lg:py-5 flex flex-col" style={{ width: '45px', fontFamily: 'monospace', minHeight: '100%' }}>
               {lines.map((line, index) => (
-                <div key={index} className="text-gray-400 text-[10px] sm:text-xs leading-relaxed select-none flex-shrink-0" style={{ minHeight: '18px' }}>
+                <div key={index} className="text-gray-400 dark:text-gray-500 text-[10px] sm:text-xs leading-relaxed select-none flex-shrink-0" style={{ minHeight: '18px' }}>
                   {index + 1}
                 </div>
               ))}
             </div>
             
             {/* Content - Right Side */}
-            <div className="flex-1 py-3 sm:py-4 lg:py-5 pl-3 sm:pl-4 lg:pl-6 pr-3 sm:pr-4 lg:pr-6 text-xs sm:text-sm leading-relaxed overflow-x-auto bg-white">
-              <div className="font-mono text-gray-800">
+            <div className="flex-1 py-3 sm:py-4 lg:py-5 pl-3 sm:pl-4 lg:pl-6 pr-3 sm:pr-4 lg:pr-6 text-xs sm:text-sm leading-relaxed overflow-x-auto bg-white dark:bg-gray-800">
+              <div className="font-mono text-gray-800 dark:text-gray-200">
                 {lines.map((line, index) => {
                   // For Key Claims, check if this line contains a claim key
                   let claimInfo = null;
