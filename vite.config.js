@@ -96,8 +96,8 @@ export default defineConfig({
           }
         });
         
-        // Remove extension-specific JS files
-        const extensionFiles = ['manifest.json', 'background.js', 'content-script.js', 'devtools.js', 'devtools-panel.js'];
+        // Remove extension-specific JS files (but keep manifest.json for PWA)
+        const extensionFiles = ['background.js', 'content-script.js', 'devtools.js', 'devtools-panel.js'];
         extensionFiles.forEach(file => {
           const filePath = resolve(distDir, file);
           if (existsSync(filePath)) {
