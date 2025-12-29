@@ -72,12 +72,19 @@ const SimpleJsonEditor = ({
           overflow-wrap: normal;
           overflow-x: auto;
           white-space: pre;
+          cursor: text !important;
+          caret-color: rgb(31, 41, 55);
+        }
+        .dark .json-editor-textarea {
+          caret-color: rgb(255, 255, 255);
         }
         .json-editor-textarea:focus {
           outline: none;
+          cursor: text !important;
         }
         .json-editor-pre {
           pointer-events: none;
+          cursor: default;
         }
       `}</style>
     </div>
