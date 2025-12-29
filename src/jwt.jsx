@@ -668,8 +668,8 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
               <tbody>
                 {Object.entries(parsedPayload).map(([key, value]) => (
                   <tr key={key} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 font-mono text-gray-700 dark:text-gray-300 text-xs sm:text-sm">{key}</td>
-                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-gray-900 dark:text-gray-200 text-xs sm:text-sm break-words">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</td>
+                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 font-mono text-gray-700 dark:text-white text-xs sm:text-sm">{key}</td>
+                    <td className="px-3 sm:px-4 lg:px-5 py-2 sm:py-3 text-gray-900 dark:text-white text-xs sm:text-sm break-words">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -689,7 +689,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
           ) : (
             <div className="p-3 sm:p-4">
               <pre className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">
-                <code className="font-mono text-gray-800 dark:text-gray-200">
+                <code className="font-mono text-gray-800 dark:text-white">
                   {content || '—'}
                 </code>
               </pre>
@@ -708,7 +708,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
             
             {/* Content - Right Side */}
             <div className="flex-1 py-3 sm:py-4 lg:py-5 pl-3 sm:pl-4 lg:pl-6 pr-3 sm:pr-4 lg:pr-6 text-xs sm:text-sm leading-relaxed overflow-x-auto bg-white dark:bg-gray-800">
-              <div className="font-mono text-gray-800 dark:text-gray-200">
+              <div className="font-mono text-gray-800 dark:text-white">
                 {lines.map((line, index) => {
                   // For Key Claims, check if this line contains a claim key
                   let claimInfo = null;
@@ -731,8 +731,8 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
                       const valuePart = line.substring(colonIndex + 1).trim();
                       return (
                         <div key={index} className="flex items-center gap-2" style={{ minHeight: '22.4px' }}>
-                          <span className="text-slate-900 whitespace-pre">{keyPart}</span>
-                          <span className="text-slate-900 whitespace-pre">{valuePart}</span>
+                          <span className="text-slate-900 dark:text-white whitespace-pre">{keyPart}</span>
+                          <span className="text-slate-900 dark:text-white whitespace-pre">{valuePart}</span>
                           {hasCompanyBadge && (
                             <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-semibold uppercase text-white flex-shrink-0" style={{ backgroundColor: theme.badgeBg }}>
                               {currentCompany === 'servicenow' ? 'SN' : 'SF'}
@@ -747,7 +747,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
                             }
                             position="left"
                           >
-                            <Info className="h-3.5 w-3.5 text-sky-500 cursor-help flex-shrink-0" />
+                            <Info className="h-3.5 w-3.5 text-sky-500 dark:text-sky-400 cursor-help flex-shrink-0" />
                           </Tooltip>
                         </div>
                       );
@@ -1513,7 +1513,7 @@ const JWTDecoder = () => {
                             <span className="hidden sm:inline">Copy</span>
                           </button>
                         </div>
-                        <div className="font-mono text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
+                        <div className="font-mono text-gray-800 dark:text-white whitespace-pre-wrap break-words">
                           {pretty(headerRaw)}
                         </div>
                       </div>
@@ -1557,7 +1557,7 @@ const JWTDecoder = () => {
                                   
                                   return (
                                     <tr key={key} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                                      <td className="px-3 sm:px-4 py-2 font-mono text-gray-700 dark:text-gray-300 text-xs sm:text-sm">
+                                      <td className="px-3 sm:px-4 py-2 font-mono text-gray-700 dark:text-white text-xs sm:text-sm">
                                         <div className="flex items-center gap-1.5">
                                           <span>{key}</span>
                                           {hasCompanyBadge && (
@@ -1586,7 +1586,7 @@ const JWTDecoder = () => {
                                           )}
                                         </div>
                                       </td>
-                                      <td className="px-3 sm:px-4 py-2 text-gray-900 dark:text-gray-200 text-xs sm:text-sm break-words">{displayValue}</td>
+                                      <td className="px-3 sm:px-4 py-2 text-gray-900 dark:text-white text-xs sm:text-sm break-words">{displayValue}</td>
                                     </tr>
                                   );
                                 })}
@@ -1594,7 +1594,7 @@ const JWTDecoder = () => {
                             </table>
                           </div>
                         ) : (
-                          <div className="font-mono text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
+                          <div className="font-mono text-gray-800 dark:text-white whitespace-pre-wrap break-words">
                             {pretty(payloadRaw).split('\n').map((line, index) => {
                               const claimMatch = line.match(/^\s*"([^"]+)":\s*(.+)/);
                               let claimInfo = null;
@@ -1612,8 +1612,8 @@ const JWTDecoder = () => {
                                   const valuePart = line.substring(colonIndex + 1).trim();
                                   return (
                                     <div key={index} className="flex items-center gap-2" style={{ minHeight: '18px' }}>
-                                      <span className="text-gray-900 whitespace-pre">{keyPart}</span>
-                                      <span className="text-gray-900 whitespace-pre">{valuePart}</span>
+                                      <span className="text-gray-900 dark:text-white whitespace-pre">{keyPart}</span>
+                                      <span className="text-gray-900 dark:text-white whitespace-pre">{valuePart}</span>
                                       {hasCompanyBadge && (
                                         <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white flex-shrink-0" style={{ backgroundColor: theme.badgeBg }}>
                                           {currentCompany === 'servicenow' ? 'SN' : 'SF'}
