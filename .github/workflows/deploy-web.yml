@@ -32,11 +32,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm cache clean --force
-          rm -rf node_modules
-          npm install --include=optional
+          npm cache clean --force || true
+          npm install --include=optional --legacy-peer-deps
           echo "Verifying installation..."
-          npm list vite || echo "WARNING: vite not found in node_modules"
+          npm list vite 2>/dev/null | head -2 || echo "WARNING: vite check failed"
           npx vite --version || echo "WARNING: npx vite failed"
 
       - name: Build web app
