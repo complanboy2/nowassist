@@ -18,7 +18,11 @@ const Footer = () => {
               <img 
                 src={getIconURL('icon32.png')} 
                 alt="NowAssist" 
-                className="h-5 w-5"
+                className="h-5 w-5 dark:brightness-0 dark:invert"
+                style={{ 
+                  imageRendering: 'crisp-edges',
+                  backgroundColor: 'transparent'
+                }}
               />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 © {new Date().getFullYear()} NowAssist. All rights reserved.

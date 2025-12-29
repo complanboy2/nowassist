@@ -3,11 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Search, ShieldCheck, Key, Network, FileCode, FileJson, FileText, Sparkles, Code, Info, Home, Moon, Sun } from 'lucide-react';
 import clsx from 'clsx';
 import { getExtensionURL } from '../utils/chrome-polyfill';
-
-const getIconURL = (filename) => {
-  const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
-  return isExtension ? chrome.runtime.getURL(`icons/${filename}`) : `/nowassist/icons/${filename}`;
-};
 import { useTheme } from '../contexts/ThemeContext';
 
 const FEATURES = [
@@ -76,14 +71,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
         {sidebarOpen && (
           <div className="flex flex-col h-full overflow-hidden">
             <div className="p-3 lg:p-4 border-b-2 border-slate-200 dark:border-gray-700 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img 
-                  src={getIconURL('icon32.png')} 
-                  alt="NowAssist" 
-                  className="h-6 w-6"
-                />
-                <h2 className="text-base lg:text-lg font-bold text-slate-900 dark:text-white">NowAssist Tools</h2>
-              </div>
+              <h2 className="text-base lg:text-lg font-bold text-slate-900 dark:text-white">NowAssist Tools</h2>
               <div className="flex items-center gap-2">
                 <button
                   onClick={toggleTheme}
