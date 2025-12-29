@@ -120,12 +120,12 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       currentPageId === 'home' || (!isExtension && location.pathname === '/')
-                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-400'
+                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-300'
                         : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
-                    <Home className={clsx('h-4 w-4 flex-shrink-0', currentPageId === 'home' || (!isExtension && location.pathname === '/') ? 'dark:text-sky-400' : '')} />
-                    <span>Home</span>
+                    <Home className={clsx('h-4 w-4 flex-shrink-0', currentPageId === 'home' || (!isExtension && location.pathname === '/') ? 'dark:text-sky-300' : '')} />
+                    <span className={currentPageId === 'home' || (!isExtension && location.pathname === '/') ? 'text-primary dark:text-sky-300' : ''}>Home</span>
                   </a>
                 ) : (
                   <Link
@@ -138,12 +138,12 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       location.pathname === '/' || location.pathname === ''
-                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-400'
+                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-300'
                         : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
-                    <Home className={clsx('h-4 w-4 flex-shrink-0', (location.pathname === '/' || location.pathname === '') ? 'dark:text-sky-400' : '')} />
-                    <span>Home</span>
+                    <Home className={clsx('h-4 w-4 flex-shrink-0', (location.pathname === '/' || location.pathname === '') ? 'dark:text-sky-300' : '')} />
+                    <span className={location.pathname === '/' || location.pathname === '' ? 'text-primary dark:text-sky-300' : ''}>Home</span>
                   </Link>
                 )}
               </div>
@@ -170,7 +170,7 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                           const linkClasses = clsx(
                             'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                             isActive
-                              ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-400'
+                              ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-300'
                               : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                           );
                           const onClick = () => {
@@ -187,8 +187,8 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                                 onClick={onClick}
                                 className={linkClasses}
                               >
-                                <Icon className={clsx('h-4 w-4 flex-shrink-0', isActive ? 'dark:text-sky-400' : '')} />
-                                <span>{feature.name}</span>
+                                <Icon className={clsx('h-4 w-4 flex-shrink-0', isActive ? 'dark:text-sky-300' : '')} />
+                                <span className={isActive ? 'text-primary dark:text-sky-300' : ''}>{feature.name}</span>
                               </a>
                             );
                           } else {
@@ -199,8 +199,8 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                                 onClick={onClick}
                                 className={linkClasses}
                               >
-                                <Icon className={clsx('h-4 w-4 flex-shrink-0', isActive ? 'dark:text-sky-400' : '')} />
-                                <span>{feature.name}</span>
+                                <Icon className={clsx('h-4 w-4 flex-shrink-0', isActive ? 'dark:text-sky-300' : '')} />
+                                <span className={isActive ? 'text-primary dark:text-sky-300' : ''}>{feature.name}</span>
                               </Link>
                             );
                           }
@@ -225,12 +225,12 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       currentPageId === 'about'
-                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-400'
+                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-300'
                         : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
-                    <Info className={clsx('h-4 w-4 flex-shrink-0', currentPageId === 'about' ? 'dark:text-sky-400' : '')} />
-                    <span>About</span>
+                    <Info className={clsx('h-4 w-4 flex-shrink-0', currentPageId === 'about' ? 'dark:text-sky-300' : '')} />
+                    <span className={currentPageId === 'about' ? 'text-primary dark:text-sky-300' : ''}>About</span>
                   </a>
                 ) : (
                   <Link
@@ -243,12 +243,12 @@ const Navigation = ({ currentPageId = null, sidebarOpen: controlledSidebarOpen =
                     className={clsx(
                       'flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg transition text-sm',
                       location.pathname === '/about'
-                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-400'
+                        ? 'bg-primary/10 dark:bg-sky-500/20 text-primary dark:text-sky-300'
                         : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700'
                     )}
                   >
-                    <Info className={clsx('h-4 w-4 flex-shrink-0', location.pathname === '/about' ? 'dark:text-sky-400' : '')} />
-                    <span>About</span>
+                    <Info className={clsx('h-4 w-4 flex-shrink-0', location.pathname === '/about' ? 'dark:text-sky-300' : '')} />
+                    <span className={location.pathname === '/about' ? 'text-primary dark:text-sky-300' : ''}>About</span>
                   </Link>
                 )}
               </div>
