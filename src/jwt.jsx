@@ -598,7 +598,7 @@ const CodeSection = ({ title, content, description, onCopy, viewMode, onViewMode
         </div>
         <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
           {title?.startsWith('Payload:') && (
-            <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
+            <div className="flex items-center gap-0.5 bg-white dark:bg-gray-700 p-0.5 border border-gray-300 dark:border-gray-600 rounded-md">
               <button
                 onClick={() => onViewModeChange('json')}
                 className={clsx('px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium transition-colors rounded', viewMode === 'json' ? 'bg-sky-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-500')}
@@ -1250,7 +1250,7 @@ const JWTDecoder = () => {
                       <ChevronDown className="h-3 w-3" />
                     </button>
                     {showExampleMenu && (
-                      <div className="absolute right-0 top-full mt-2 w-40 border border-gray-200 rounded-lg bg-white shadow-lg z-50 overflow-y-auto max-h-64">
+                      <div className="absolute right-0 top-full mt-2 w-40 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto max-h-64">
                         {['HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512'].map((alg) => (
                           <button
                             key={alg}
@@ -1356,13 +1356,13 @@ const JWTDecoder = () => {
               )}
             </div>
             {error && (
-              <div className="mt-4 flex items-center gap-3 text-sm text-red-700 bg-red-50 border border-red-200 px-5 py-3 rounded-lg">
+              <div className="mt-4 flex items-center gap-3 text-sm text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 px-5 py-3 rounded-lg">
                 <AlertCircle className="h-5 w-5 flex-shrink-0" />
                 <span className="font-medium">{error}</span>
               </div>
             )}
             {!error && payload && (
-              <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 lg:gap-6 text-xs sm:text-sm flex-wrap bg-green-50 border border-green-200 px-3 sm:px-5 py-2.5 sm:py-3 rounded-lg">
+              <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 lg:gap-6 text-xs sm:text-sm flex-wrap bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 px-3 sm:px-5 py-2.5 sm:py-3 rounded-lg">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
                   <span className="font-medium text-gray-900">Valid JWT</span>
@@ -1397,8 +1397,8 @@ const JWTDecoder = () => {
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
                       <div className="flex items-center gap-2 sm:gap-3">
-                        <ShieldCheck className="h-4 sm:h-5 w-4 sm:w-5 text-slate-600 flex-shrink-0" />
-                        <span className="text-sm sm:text-base font-semibold text-slate-900">Security Analysis</span>
+                        <ShieldCheck className="h-4 sm:h-5 w-4 sm:w-5 text-slate-600 dark:text-slate-400 flex-shrink-0" />
+                        <span className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white">Security Analysis</span>
                         <span className={clsx('px-2 py-0.5 rounded text-xs font-semibold flex-shrink-0', riskLevel?.bg, riskLevel?.color)}>
                           {securityValidation.issues.length} {securityValidation.issues.length === 1 ? 'Issue' : 'Issues'}
                         </span>
@@ -1417,21 +1417,21 @@ const JWTDecoder = () => {
                         e.stopPropagation();
                         setShowSecurityPanel(!showSecurityPanel);
                       }}
-                      className="p-1 text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
+                      className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors focus:outline-none"
                       tabIndex={0}
                     >
                       {showSecurityPanel ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                     </button>
                   </div>
                   {showSecurityPanel && (
-                  <div className="p-6 space-y-4 bg-white">
+                  <div className="p-6 space-y-4 bg-white dark:bg-gray-800">
                     {securityValidation.issues.map((issue, index) => {
                       const severityColors = {
-                        [SECURITY_SEVERITY.CRITICAL]: { text: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200', icon: X },
-                        [SECURITY_SEVERITY.HIGH]: { text: 'text-orange-700', bg: 'bg-orange-50', border: 'border-orange-200', icon: AlertCircle },
-                        [SECURITY_SEVERITY.MEDIUM]: { text: 'text-yellow-700', bg: 'bg-yellow-50', border: 'border-yellow-200', icon: AlertCircle },
-                        [SECURITY_SEVERITY.LOW]: { text: 'text-sky-700', bg: 'bg-sky-50', border: 'border-sky-200', icon: Info },
-                        [SECURITY_SEVERITY.INFO]: { text: 'text-slate-700', bg: 'bg-slate-50', border: 'border-slate-200', icon: Info },
+                        [SECURITY_SEVERITY.CRITICAL]: { text: 'text-red-700 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/30', border: 'border-red-200 dark:border-red-800', icon: X },
+                        [SECURITY_SEVERITY.HIGH]: { text: 'text-orange-700 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/30', border: 'border-orange-200 dark:border-orange-800', icon: AlertCircle },
+                        [SECURITY_SEVERITY.MEDIUM]: { text: 'text-yellow-700 dark:text-yellow-400', bg: 'bg-yellow-50 dark:bg-yellow-900/30', border: 'border-yellow-200 dark:border-yellow-800', icon: AlertCircle },
+                        [SECURITY_SEVERITY.LOW]: { text: 'text-sky-700 dark:text-sky-400', bg: 'bg-sky-50 dark:bg-sky-900/30', border: 'border-sky-200 dark:border-sky-800', icon: Info },
+                        [SECURITY_SEVERITY.INFO]: { text: 'text-slate-700 dark:text-slate-300', bg: 'bg-slate-50 dark:bg-slate-800', border: 'border-slate-200 dark:border-slate-700', icon: Info },
                       };
                       const colors = severityColors[issue.severity] || severityColors[SECURITY_SEVERITY.INFO];
                       const IssueIcon = colors.icon;
@@ -1447,9 +1447,9 @@ const JWTDecoder = () => {
                                   {issue.severity}
                                 </span>
                               </div>
-                              <p className="text-sm text-gray-700 mb-2">{issue.message}</p>
+                              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{issue.message}</p>
                               {issue.recommendation && (
-                                <div className="mt-2 pt-2 border-t border-gray-200">
+                                <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                                   <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Recommendation:</p>
                                   <p className="text-xs text-gray-700 dark:text-gray-300">{issue.recommendation}</p>
                                 </div>
@@ -1766,7 +1766,7 @@ const JWTDecoder = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           {verificationResult && (
-                            <div className={clsx('flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-0.5 rounded text-xs font-medium flex-shrink-0', verificationResult.verified ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700')}>
+                            <div className={clsx('flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-0.5 rounded text-xs font-medium flex-shrink-0', verificationResult.verified ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400')}>
                               {verificationResult.verified ? <CheckCircle2 className="h-3 sm:h-3.5 w-3 sm:w-3.5" /> : <X className="h-3 sm:h-3.5 w-3 sm:w-3.5" />}
                               <span className="hidden sm:inline">{verificationResult.verified ? 'Verified' : 'Failed'}</span>
                             </div>
@@ -1782,8 +1782,8 @@ const JWTDecoder = () => {
                         </div>
                       </div>
                       {verificationResult && !verificationResult.verified && (
-                        <div className="mt-2 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
-                          <div className="flex items-center gap-2 text-xs sm:text-sm text-red-700 font-medium">
+                        <div className="mt-2 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 px-3 py-2 rounded-lg">
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-red-700 dark:text-red-400 font-medium">
                             <X className="h-3.5 w-3.5 flex-shrink-0" />
                             <span>{verificationResult.error || 'Signature verification failed'}</span>
                           </div>
@@ -1810,7 +1810,7 @@ const JWTDecoder = () => {
                         e.stopPropagation();
                         setShowJWKSExpanded(!showJWKSExpanded);
                       }}
-                      className="p-1 text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
+                      className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors focus:outline-none"
                       tabIndex={0}
                     >
                       {showJWKSExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -1850,7 +1850,7 @@ const JWTDecoder = () => {
                       </button>
                     </div>
                     {jwksError && (
-                      <div className="bg-red-50 border border-red-200 px-4 py-3 rounded-lg text-sm text-red-700 font-medium">
+                      <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg text-sm text-red-700 dark:text-red-400 font-medium">
                         {jwksError}
                       </div>
                     )}
@@ -1902,7 +1902,7 @@ const JWTDecoder = () => {
                         e.stopPropagation();
                         setShowTimePanelExpanded(!showTimePanelExpanded);
                       }}
-                        className="p-1 text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
+                        className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors focus:outline-none"
                         tabIndex={0}
                       >
                         {showTimePanelExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -2052,7 +2052,7 @@ const JWTDecoder = () => {
                         e.stopPropagation();
                         setShowComparisonExpanded(!showComparisonExpanded);
                       }}
-                      className="p-1 text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
+                      className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors focus:outline-none"
                       tabIndex={0}
                     >
                       {showComparisonExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
