@@ -181,11 +181,11 @@ const JsonUtility = () => {
           <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10">
             <div className="space-y-4 sm:space-y-6">
           {/* Professional Header with Border */}
-          <header className="bg-white border border-gray-300 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6">
+          <header className="bg-white border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-6 lg:px-8 py-4 sm:py-6 mb-4 sm:mb-6 bg-white dark:bg-gray-800">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="space-y-1 sm:space-y-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">JSON Utility</h1>
-                <p className="text-sm sm:text-base text-gray-600">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">JSON Utility</h1>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                   Format, validate, transform, and analyze JSON data with ease
                 </p>
               </div>
@@ -205,7 +205,7 @@ const JsonUtility = () => {
             <button
               onClick={prettyPrint}
               disabled={!isValidJson}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
               title="Format JSON with indentation"
             >
               <Code className="h-3.5 w-3.5" />
@@ -214,7 +214,7 @@ const JsonUtility = () => {
             <button
               onClick={minify}
               disabled={!isValidJson}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
               title="Minify JSON (remove whitespace)"
             >
               <Code className="h-3.5 w-3.5" />
@@ -223,7 +223,7 @@ const JsonUtility = () => {
             <button
               onClick={showTreeView}
               disabled={!isValidJson}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
               title="Show JSON as tree view"
             >
               <ListTree className="h-3.5 w-3.5" />
@@ -232,7 +232,7 @@ const JsonUtility = () => {
             <button
               onClick={sortKeysAsc}
               disabled={!isValidJson}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
               title="Sort keys alphabetically (A-Z)"
             >
               <Layers className="h-3.5 w-3.5" />
@@ -241,7 +241,7 @@ const JsonUtility = () => {
             <button
               onClick={sortKeysDesc}
               disabled={!isValidJson}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
               title="Sort keys reverse alphabetically (Z-A)"
             >
               <Layers className="h-3.5 w-3.5" />
@@ -250,7 +250,7 @@ const JsonUtility = () => {
             <button
               onClick={flatten}
               disabled={!isValidJson}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
               title="Flatten nested JSON object"
             >
               <Layers className="h-3.5 w-3.5" />
@@ -259,7 +259,7 @@ const JsonUtility = () => {
             <button
               onClick={unflatten}
               disabled={!isValidJson}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
               title="Unflatten JSON object"
             >
               <Layers className="h-3.5 w-3.5" />
@@ -267,7 +267,7 @@ const JsonUtility = () => {
             </button>
             <button
               onClick={clearAll}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:shadow"
               title="Clear all content"
             >
               <Trash2 className="h-3.5 w-3.5" />
@@ -341,14 +341,14 @@ const JsonUtility = () => {
           )}
 
           {/* Tabs */}
-          <div className="flex items-center gap-0.5 bg-white p-0.5 border border-gray-300 rounded-md">
+          <div className="flex items-center gap-0.5 bg-white dark:bg-gray-700 p-0.5 border border-gray-300 dark:border-gray-600 rounded-md">
             <button
               onClick={() => setActiveTab('editor')}
               className={clsx(
                 'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
                 activeTab === 'editor'
                   ? 'bg-sky-500 text-white'
-                  : 'text-gray-700 hover:bg-gray-50'
+                  : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500'
               )}
             >
               Editor
@@ -359,7 +359,7 @@ const JsonUtility = () => {
                 'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded',
                 activeTab === 'diff'
                   ? 'bg-sky-500 text-white'
-                  : 'text-gray-700 hover:bg-gray-50'
+                  : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500'
               )}
             >
               Diff
@@ -371,7 +371,7 @@ const JsonUtility = () => {
                 'px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium transition-colors rounded disabled:opacity-50 disabled:cursor-not-allowed',
                 activeTab === 'convert'
                   ? 'bg-sky-500 text-white'
-                  : 'text-gray-700 hover:bg-gray-50'
+                  : 'text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-500'
               )}
             >
               Convert
@@ -383,11 +383,11 @@ const JsonUtility = () => {
             {activeTab === 'editor' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6" style={{ gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)' }}>
                 {/* Input Panel */}
-                <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col">
-                  <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col">
+                  <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                       <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full bg-gray-400 flex-shrink-0"></div>
-                      <h2 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap">Input JSON</h2>
+                      <h2 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white whitespace-nowrap">Input JSON</h2>
                       {inputJson && (
                         <div className="flex items-center gap-2 ml-2">
                           {jsonError ? (
@@ -406,7 +406,7 @@ const JsonUtility = () => {
                     </div>
                     <button
                       onClick={() => copyToClipboard(inputJson, 'input')}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 hover:shadow"
                       title="Copy input to clipboard"
                     >
                       {copied.input ? (
@@ -435,11 +435,11 @@ const JsonUtility = () => {
                 </div>
 
                 {/* Output Panel */}
-                <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col">
-                  <div className="flex items-center justify-between bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                <div className="border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden flex flex-col">
+                  <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-600">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full bg-gray-400 flex-shrink-0"></div>
-                      <h2 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap">
+                      <h2 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white whitespace-nowrap">
                         {outputViewMode === 'tree' ? 'Tree View' : 'Output JSON'}
                       </h2>
                     </div>
@@ -447,7 +447,7 @@ const JsonUtility = () => {
                       <button
                         onClick={() => copyToClipboard(outputJson, 'output')}
                         disabled={!outputJson}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 hover:border-gray-400 bg-white hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold transition-all focus:outline-none border-[0.5px] border-gray-300 rounded-lg shadow-sm text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-700"
                         title="Copy output to clipboard"
                       >
                         {copied.output ? (
@@ -498,7 +498,7 @@ const JsonUtility = () => {
                         <div className="p-12 text-center">
                           <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-400" />
                           <div className="text-red-600 font-semibold mb-2 text-lg">Invalid JSON</div>
-                          <div className="text-sm text-gray-600">Please fix errors to view tree.</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">Please fix errors to view tree.</div>
                         </div>
                       )
                     ) : (
@@ -546,7 +546,7 @@ const JsonUtility = () => {
   }
   
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-white dark:bg-gray-900 overflow-hidden">
       <Navigation currentPageId="json" sidebarOpen={sidebarOpen} onSidebarToggle={setSidebarOpen} />
       {content}
     </div>
