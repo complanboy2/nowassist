@@ -124,18 +124,18 @@ export default defineConfig({
           start_url: '/',
           icons: [
             {
-              src: '/icons/icon128.png',
+              src: '/icons/icon_128.png',
               sizes: '128x128',
               type: 'image/png',
               purpose: 'any maskable'
             },
             {
-              src: '/icons/icon48.png',
-              sizes: '48x48',
+              src: '/icons/icon_64.png',
+              sizes: '64x64',
               type: 'image/png'
             },
             {
-              src: '/icons/icon16.png',
+              src: '/icons/icon_16.png',
               sizes: '16x16',
               type: 'image/png'
             }

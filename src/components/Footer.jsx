@@ -16,7 +16,7 @@ const Footer = () => {
             {/* Left: Copyright */}
             <div className="flex items-center gap-2">
               <img 
-                src={getIconURL('icon32.png')} 
+                src={getIconURL('icon_32.png')} 
                 alt="NowAssist" 
                 className="h-5 w-5"
                 style={{ 
