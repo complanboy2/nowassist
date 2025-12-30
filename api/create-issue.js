@@ -1,6 +1,37 @@
 // Serverless function to create GitHub issues
 // Deploy this to Vercel, Netlify, or Cloudflare Workers
 // Set GITHUB_TOKEN environment variable with a personal access token
+// Optional: Set ALLOWED_ORIGINS to restrict CORS (comma-separated list of domains)
+
+// Simple rate limiting (in-memory, resets on function restart)
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 5; // 5 requests per minute per IP
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const key = ip;
+  const record = rateLimitMap.get(key);
+
+  if (!record || now - record.firstRequest > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(key, { firstRequest: now, count: 1 });
+    return true;
+  }
+
+  if (record.count >= RATE_LIMIT_MAX) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+function getClientIP(req) {
+  return req.headers['x-forwarded-for']?.split(',')[0] || 
+         req.headers['x-real-ip'] || 
+         req.connection?.remoteAddress || 
+         'unknown';
+}
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -8,8 +39,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS headers - restrict to allowed origins if set
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['*'];
+  const origin = req.headers.origin;
+  const corsOrigin = allowedOrigins.includes('*') || (origin && allowedOrigins.includes(origin))
+    ? origin || '*'
+    : 'null';
+  
+  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -18,13 +55,34 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // Rate limiting
+  const clientIP = getClientIP(req);
+  if (!checkRateLimit(clientIP)) {
+    return res.status(429).json({ 
+      error: 'Too many requests. Please wait a moment before trying again.' 
+    });
+  }
+
   try {
     const { title, body, labels, issueType } = req.body;
-
-    // Validate required fields
-    if (!title || !body) {
-      return res.status(400).json({ error: 'Title and body are required' });
+    
+    // Input validation
+    if (!title || typeof title !== 'string' || title.trim().length === 0) {
+      return res.status(400).json({ error: 'Title is required and must be a non-empty string' });
     }
+    
+    if (title.length > 200) {
+      return res.status(400).json({ error: 'Title must be less than 200 characters' });
+    }
+    
+    if (!body || typeof body !== 'string' || body.trim().length === 0) {
+      return res.status(400).json({ error: 'Body is required and must be a non-empty string' });
+    }
+    
+    if (body.length > 50000) {
+      return res.status(400).json({ error: 'Body must be less than 50,000 characters' });
+    }
+
 
     // Get GitHub token from environment
     const githubToken = process.env.GITHUB_TOKEN;

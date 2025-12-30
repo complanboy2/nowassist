@@ -125,10 +125,25 @@ If the API endpoint is not configured or fails, the form will automatically fall
 
 ## Security Notes
 
-- ✅ GitHub token is stored server-side only (never exposed to frontend)
-- ✅ CORS is configured to allow requests from your domain
-- ✅ Input validation is performed
-- ✅ Error handling prevents token exposure
+- ✅ **GitHub token is stored server-side only** (never exposed to frontend)
+- ✅ **Rate limiting** - 5 requests per minute per IP (prevents abuse)
+- ✅ **Input validation** - Validates title/body length and type
+- ✅ **CORS protection** - Can restrict to specific domains via `ALLOWED_ORIGINS`
+- ✅ **Error handling** - Prevents token exposure in error messages
+- ✅ **Token never leaves server** - Only serverless function calls GitHub API
+
+### Important Security Clarification
+
+**The GitHub token is NEVER exposed to the frontend:**
+- Token is stored in serverless function's environment variables (server-side)
+- Frontend only calls the public endpoint URL
+- Serverless function uses token server-side to call GitHub API
+- Token never appears in browser, network requests from frontend, or client-side code
+
+**The endpoint is public, but protected by:**
+- Rate limiting (prevents spam/abuse)
+- Input validation (prevents malicious data)
+- CORS restrictions (optional, can limit to your domain)
 
 ---
 
