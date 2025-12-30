@@ -64,6 +64,12 @@ import Footer from './components/Footer';
 import { getExtensionURL } from './utils/chrome-polyfill';
 import './styles.css';
 
+// Helper function to get icon URL (works in both extension and web)
+const getIconURL = (filename) => {
+  const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
+  return isExtension ? chrome.runtime.getURL(`icons/${filename}`) : `/icons/${filename}`;
+};
+
 // Home/Landing page
 const Home = () => {
   const tools = [
@@ -82,7 +88,19 @@ const Home = () => {
         <div className="mx-auto max-w-[1600px] w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
           <div className="space-y-6">
             <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-6 py-8">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">NowAssist</h1>
+              <div className="flex items-center gap-3 mb-3">
+                <img 
+                  src={getIconURL('icon32.png')} 
+                  alt="NowAssist" 
+                  className="h-8 w-8"
+                  style={{ 
+                    display: 'block',
+                    imageRendering: 'crisp-edges',
+                    backgroundColor: 'transparent'
+                  }}
+                />
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">NowAssist</h1>
+              </div>
               <p className="text-base text-gray-600 dark:text-gray-300">
                 Professional developer toolkit for ServiceNow engineers and developers. 
                 Everything runs locally in your browser - your data never leaves your device.
