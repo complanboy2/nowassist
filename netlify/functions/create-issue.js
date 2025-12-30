@@ -148,6 +148,23 @@ exports.handler = async (event, context) => {
       };
     }
     
+    // Check for suspicious patterns (potential spam/abuse)
+    const suspiciousPatterns = [
+      /(.)\1{10,}/, // Repeated characters (e.g., "aaaaaaaaaaa")
+      /.{500,}/, // Very long single words
+    ];
+    
+    if (suspiciousPatterns.some(pattern => pattern.test(title))) {
+      console.warn(`Suspicious title pattern detected from IP: ${clientIP}`);
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': corsOrigin
+        },
+        body: JSON.stringify({ error: 'Invalid title format' })
+      };
+    }
+    
     if (!body || typeof body !== 'string' || body.trim().length === 0) {
       return {
         statusCode: 400,
