@@ -1,26 +1,48 @@
 // Netlify serverless function to create GitHub issues
-// Set GITHUB_TOKEN in Netlify environment variables
-// Optional: Set ALLOWED_ORIGINS to restrict CORS (comma-separated list of domains)
+// REQUIRED: Set GITHUB_TOKEN in Netlify environment variables
+// REQUIRED: Set ALLOWED_ORIGINS to restrict CORS (comma-separated list of domains)
+//   Example: ALLOWED_ORIGINS=https://nowassist.app,https://complanboy2.github.io
 
-// Simple rate limiting (in-memory, resets on function restart)
+// Rate limiting (in-memory, resets on function restart)
+// More aggressive limits to prevent abuse
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 5; // 5 requests per minute per IP
+const RATE_LIMIT_MAX = 3; // 3 requests per minute per IP (reduced from 5)
+const RATE_LIMIT_DAILY_WINDOW = 24 * 60 * 60 * 1000; // 24 hours
+const RATE_LIMIT_DAILY_MAX = 20; // 20 requests per day per IP
 
 function checkRateLimit(ip) {
   const now = Date.now();
   const record = rateLimitMap.get(ip);
 
-  if (!record || now - record.firstRequest > RATE_LIMIT_WINDOW) {
-    rateLimitMap.set(ip, { firstRequest: now, count: 1 });
+  if (!record) {
+    rateLimitMap.set(ip, { 
+      firstRequest: now, 
+      count: 1,
+      dailyFirstRequest: now,
+      dailyCount: 1
+    });
     return true;
   }
 
-  if (record.count >= RATE_LIMIT_MAX) {
-    return false;
+  // Check daily limit
+  if (now - record.dailyFirstRequest > RATE_LIMIT_DAILY_WINDOW) {
+    record.dailyFirstRequest = now;
+    record.dailyCount = 1;
+  } else if (record.dailyCount >= RATE_LIMIT_DAILY_MAX) {
+    return false; // Daily limit exceeded
+  }
+
+  // Check per-minute limit
+  if (now - record.firstRequest > RATE_LIMIT_WINDOW) {
+    record.firstRequest = now;
+    record.count = 1;
+  } else if (record.count >= RATE_LIMIT_MAX) {
+    return false; // Per-minute limit exceeded
   }
 
   record.count++;
+  record.dailyCount++;
   return true;
 }
 
@@ -32,12 +54,35 @@ function getClientIP(event) {
 }
 
 exports.handler = async (event, context) => {
-  // Handle CORS preflight
-  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['*'];
+  // CORS headers - STRICTLY restrict to allowed origins
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(o => o.trim()) || [];
+  
+  if (allowedOrigins.length === 0) {
+    console.error('ALLOWED_ORIGINS not configured - rejecting request for security');
+    return {
+      statusCode: 403,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({ error: 'Server configuration error' })
+    };
+  }
+
   const origin = event.headers.origin;
-  const corsOrigin = allowedOrigins.includes('*') || (origin && allowedOrigins.includes(origin))
-    ? origin || '*'
-    : 'null';
+  const isAllowed = origin && allowedOrigins.includes(origin);
+  
+  if (!isAllowed && event.httpMethod !== 'OPTIONS') {
+    console.warn(`Blocked request from unauthorized origin: ${origin}`);
+    return {
+      statusCode: 403,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({ error: 'Origin not allowed' })
+    };
+  }
+
+  const corsOrigin = isAllowed ? origin : allowedOrigins[0];
   
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -45,7 +90,8 @@ exports.handler = async (event, context) => {
       headers: {
         'Access-Control-Allow-Origin': corsOrigin,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Credentials': 'false'
       },
       body: ''
     };
@@ -56,7 +102,8 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 405,
       headers: {
-        'Access-Control-Allow-Origin': corsOrigin
+        'Access-Control-Allow-Origin': corsOrigin,
+        'Access-Control-Allow-Credentials': 'false'
       },
       body: JSON.stringify({ error: 'Method not allowed' })
     };
@@ -68,7 +115,8 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 429,
       headers: {
-        'Access-Control-Allow-Origin': corsOrigin
+        'Access-Control-Allow-Origin': corsOrigin,
+        'Access-Control-Allow-Credentials': 'false'
       },
       body: JSON.stringify({ 
         error: 'Too many requests. Please wait a moment before trying again.' 
@@ -154,15 +202,28 @@ exports.handler = async (event, context) => {
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('GitHub API error:', errorData);
+      console.error(`GitHub API error (${response.status}):`, errorData.substring(0, 200));
+      
+      // Don't expose GitHub API errors to client (security)
+      if (response.status === 403 || response.status === 401) {
+        return {
+          statusCode: 500,
+          headers: {
+            'Access-Control-Allow-Origin': corsOrigin
+          },
+          body: JSON.stringify({ 
+            error: 'Authentication error. Please contact support.' 
+          })
+        };
+      }
+      
       return {
-        statusCode: response.status,
+        statusCode: 500,
         headers: {
           'Access-Control-Allow-Origin': corsOrigin
         },
         body: JSON.stringify({ 
-          error: 'Failed to create issue',
-          details: errorData
+          error: 'Failed to create issue. Please try again later.' 
         })
       };
     }

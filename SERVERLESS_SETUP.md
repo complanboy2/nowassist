@@ -23,10 +23,12 @@ GitHub's Issues API requires authentication. A serverless function allows us to:
    vercel
    ```
 
-3. **Set Environment Variable**:
+3. **Set Environment Variables** (REQUIRED):
    - Go to Vercel Dashboard → Your Project → Settings → Environment Variables
    - Add: `GITHUB_TOKEN` with your GitHub Personal Access Token
-   - Redeploy after adding the variable
+   - Add: `ALLOWED_ORIGINS` with your domain(s), e.g.: `https://nowassist.app,https://complanboy2.github.io`
+   - **IMPORTANT:** Do NOT use `*` for ALLOWED_ORIGINS - this is a security risk!
+   - Redeploy after adding the variables
 
 ### Step 2: Get Your Function URL
 
@@ -63,10 +65,12 @@ const API_ENDPOINT = 'https://your-project.vercel.app/api/create-issue';
    netlify deploy --prod
    ```
 
-3. **Set Environment Variable**:
+3. **Set Environment Variables** (REQUIRED):
    - Go to Netlify Dashboard → Site Settings → Environment Variables
    - Add: `GITHUB_TOKEN` with your GitHub Personal Access Token
-   - Redeploy after adding the variable
+   - Add: `ALLOWED_ORIGINS` with your domain(s), e.g.: `https://nowassist.app,https://complanboy2.github.io`
+   - **IMPORTANT:** Do NOT use `*` for ALLOWED_ORIGINS - this is a security risk!
+   - Redeploy after adding the variables
 
 ### Step 2: Get Your Function URL
 
@@ -123,27 +127,45 @@ If the API endpoint is not configured or fails, the form will automatically fall
 
 ---
 
-## Security Notes
+## Security Features
 
-- ✅ **GitHub token is stored server-side only** (never exposed to frontend)
-- ✅ **Rate limiting** - 5 requests per minute per IP (prevents abuse)
-- ✅ **Input validation** - Validates title/body length and type
-- ✅ **CORS protection** - Can restrict to specific domains via `ALLOWED_ORIGINS`
-- ✅ **Error handling** - Prevents token exposure in error messages
-- ✅ **Token never leaves server** - Only serverless function calls GitHub API
-
-### Important Security Clarification
-
-**The GitHub token is NEVER exposed to the frontend:**
-- Token is stored in serverless function's environment variables (server-side)
+### ✅ Token Security
+- **GitHub token is stored server-side only** (never exposed to frontend)
+- Token is in serverless function's environment variables (server-side)
 - Frontend only calls the public endpoint URL
 - Serverless function uses token server-side to call GitHub API
 - Token never appears in browser, network requests from frontend, or client-side code
 
-**The endpoint is public, but protected by:**
-- Rate limiting (prevents spam/abuse)
-- Input validation (prevents malicious data)
-- CORS restrictions (optional, can limit to your domain)
+### ✅ Abuse Prevention (Protects Your GitHub Account)
+- **Strict CORS** - REQUIRED: `ALLOWED_ORIGINS` must be set (rejects requests from unauthorized domains)
+- **Rate limiting** - 3 requests per minute per IP + 20 requests per day per IP
+- **Input validation** - Validates title/body length, type, and format
+- **Spam detection** - Blocks suspicious patterns (repeated characters, etc.)
+- **Request logging** - Logs requests for monitoring (without sensitive data)
+- **Error handling** - Prevents token/GitHub API details exposure
+
+### ✅ Protection Against GitHub Account Blocking
+- **Daily limits** prevent mass issue creation
+- **Per-minute limits** prevent rapid-fire spam
+- **Input size limits** prevent huge payloads
+- **Spam pattern detection** blocks obvious abuse
+- **Origin validation** ensures only your site can create issues
+
+### ⚠️ Required Configuration
+
+**You MUST set `ALLOWED_ORIGINS` environment variable:**
+```
+ALLOWED_ORIGINS=https://nowassist.app,https://complanboy2.github.io
+```
+
+**Do NOT use `*`** - This would allow anyone to create issues from any domain!
+
+### 📊 Rate Limits
+- **Per IP per minute:** 3 requests
+- **Per IP per day:** 20 requests
+- **Body size limit:** 10,000 characters (reduced from 50k)
+- **Title size limit:** 200 characters
+- **Minimum body length:** 10 characters
 
 ---
 
