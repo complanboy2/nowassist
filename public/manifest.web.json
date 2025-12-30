@@ -10,19 +10,19 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/icons/icon_16.png",
+      "src": "/icons/icon16.png",
       "sizes": "16x16",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon_64.png",
+      "src": "/icons/icon64.png",
       "sizes": "64x64",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon_128.png",
+      "src": "/icons/icon128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any maskable"
@@ -36,14 +36,14 @@
       "short_name": "JWT",
       "description": "Decode and verify JWT tokens",
       "url": "/jwt",
-      "icons": [{ "src": "/icons/icon_64.png", "sizes": "64x64" }]
+      "icons": [{ "src": "/icons/icon64.png", "sizes": "64x64" }]
     },
     {
       "name": "REST API Tester",
       "short_name": "REST",
       "description": "Test REST APIs",
       "url": "/rest",
-      "icons": [{ "src": "/icons/icon_64.png", "sizes": "64x64" }]
+      "icons": [{ "src": "/icons/icon64.png", "sizes": "64x64" }]
     }
   ]
 }

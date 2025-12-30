@@ -1,7 +1,7 @@
 // DevTools panel creation script (runs in DevTools context)
 chrome.devtools.panels.create(
   'NowAssist Logs',
-  'icons/icon_64.png',
+  'icons/icon64.png',
   'devtools-panel.html',
   (panel) => {
     // Panel created successfully

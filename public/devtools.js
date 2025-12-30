@@ -5,7 +5,7 @@ let isInjected = false;
 // Create DevTools panel
 chrome.devtools.panels.create(
   'NowAssist Logs',
-  'icons/icon_64.png',
+  'icons/icon64.png',
   'devtools.html',
   (panel) => {
     // Panel created
