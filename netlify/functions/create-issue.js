@@ -62,7 +62,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 403,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'null'
       },
       body: JSON.stringify({ error: 'Server configuration error' })
     };
@@ -76,7 +76,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 403,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'null'
       },
       body: JSON.stringify({ error: 'Origin not allowed' })
     };
@@ -158,13 +158,35 @@ exports.handler = async (event, context) => {
       };
     }
     
-    if (body.length > 50000) {
+    if (body.length > 10000) { // Reduced from 50k to prevent abuse
       return {
         statusCode: 400,
         headers: {
           'Access-Control-Allow-Origin': corsOrigin
         },
-        body: JSON.stringify({ error: 'Body must be less than 50,000 characters' })
+        body: JSON.stringify({ error: 'Body must be less than 10,000 characters' })
+      };
+    }
+    
+    if (body.length < 10) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': corsOrigin
+        },
+        body: JSON.stringify({ error: 'Body must be at least 10 characters' })
+      };
+    }
+    
+    // Additional spam detection
+    const bodyLines = body.split('\n').length;
+    if (bodyLines > 500) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': corsOrigin
+        },
+        body: JSON.stringify({ error: 'Body contains too many lines' })
       };
     }
 
