@@ -22,6 +22,12 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import './styles.css';
 
+// Helper function to get icon URL (works in both extension and web)
+const getIconURL = (filename) => {
+  const isExtension = typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id;
+  return isExtension ? chrome.runtime.getURL(`icons/${filename}`) : `/icons/${filename}`;
+};
+
 const FEATURES = [
   {
     id: 'jwt',
@@ -142,7 +148,19 @@ const About = () => {
             <div className="space-y-3 sm:space-y-4">
             {/* Header */}
             <header className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm px-4 sm:px-5 py-3 mb-3">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">About NowAssist</h1>
+              <div className="flex items-center gap-3">
+                <img 
+                  src={getIconURL('icon32.png')} 
+                  alt="NowAssist" 
+                  className="h-6 w-6 sm:h-8 sm:w-8"
+                  style={{ 
+                    display: 'block',
+                    imageRendering: 'crisp-edges',
+                    backgroundColor: 'transparent'
+                  }}
+                />
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">About NowAssist</h1>
+              </div>
             </header>
 
             {/* Main Motto Section */}
@@ -264,7 +282,7 @@ const About = () => {
                   <p className="font-semibold text-gray-900 dark:text-white mb-2">Privacy Policy</p>
                   <p>
                     <a 
-                      href="https://complanboy2.github.io/nowassist/privacy_policy.html" 
+                      href="/docs/privacy-policy.html" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 underline"

@@ -80,6 +80,36 @@ export default defineConfig({
           console.warn('No favicon files found or failed to copy:', err.message);
         }
         
+        // Copy docs directory (for privacy policy and other documentation)
+        try {
+          const docsSource = resolve(__dirname, 'docs');
+          const docsDest = resolve(distDir, 'docs');
+          if (existsSync(docsSource)) {
+            if (!existsSync(docsDest)) {
+              mkdirSync(docsDest, { recursive: true });
+            }
+            const files = readdirSync(docsSource);
+            let copiedCount = 0;
+            files.forEach(file => {
+              const sourcePath = resolve(docsSource, file);
+              const destPath = resolve(docsDest, file);
+              try {
+                if (statSync(sourcePath).isFile()) {
+                  copyFileSync(sourcePath, destPath);
+                  copiedCount++;
+                }
+              } catch (fileErr) {
+                console.warn(`Failed to copy doc file ${file}:`, fileErr.message);
+              }
+            });
+            if (copiedCount > 0) {
+              console.log(`✓ Copied ${copiedCount} doc file(s)`);
+            }
+          }
+        } catch (err) {
+          console.error('Failed to copy docs:', err);
+        }
+        
         // CRITICAL: Remove ALL extension HTML files that conflict with SPA routing
         // These should NEVER be in dist/ for web builds
         const extensionHtmlFiles = [
