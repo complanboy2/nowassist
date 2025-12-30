@@ -24,6 +24,20 @@ Proprietary License - All Rights Reserved.
 
 ## Privacy Policy
 
-See [Privacy Policy](https://complanboy2.github.io/nowassist/privacy_policy.html)
+See [Privacy Policy](https://nowassist.app/docs/privacy-policy.html)
+
+## Website
+
+🌐 **Live at**: [https://nowassist.app](https://nowassist.app)
+
+## Milestone 1
+
+✅ **Status**: Production Ready
+- All core features implemented and tested
+- Web deployment configured with GitHub Actions
+- Custom domain (nowassist.app) configured
+- Dark theme as default
+- Help & Support system integrated
+- Privacy-first architecture (100% local processing)
 
 
