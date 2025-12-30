@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { HelpCircle, Mail, User, FileText, Image, Send, AlertCircle, CheckCircle2, X } from 'lucide-react';
+import { HelpCircle, Mail, User, FileText, Send, AlertCircle, CheckCircle2, X } from 'lucide-react';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import './styles.css';
@@ -17,7 +17,6 @@ const HelpSupport = () => {
     actualBehavior: '',
     browser: '',
     os: '',
-    screenshot: null,
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -34,26 +33,6 @@ const HelpSupport = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     setError('');
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        setError('Screenshot size must be less than 5MB');
-        return;
-      }
-      if (!file.type.startsWith('image/')) {
-        setError('Please upload an image file');
-        return;
-      }
-      setFormData(prev => ({ ...prev, screenshot: file }));
-      setError('');
-    }
-  };
-
-  const removeScreenshot = () => {
-    setFormData(prev => ({ ...prev, screenshot: null }));
   };
 
   const formatIssueBody = () => {
@@ -109,11 +88,6 @@ const HelpSupport = () => {
     try {
       // Format the issue body
       let issueBody = formatIssueBody();
-      
-      // Add screenshot note if screenshot was provided
-      if (formData.screenshot) {
-        issueBody += `\n\n---\n\n**Note:** A screenshot was provided. Please attach it manually using the GitHub issue interface (drag and drop or click to upload).\n`;
-      }
 
       // Create GitHub issue URL
       // Note: We limit the body length to avoid URL length issues
@@ -167,7 +141,6 @@ const HelpSupport = () => {
           actualBehavior: '',
           browser: '',
           os: '',
-          screenshot: null,
         });
         setSubmitted(false);
       }, 3000);
@@ -423,47 +396,6 @@ const HelpSupport = () => {
                 </div>
               </div>
 
-              {/* Screenshot Upload */}
-              <div className="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                  <Image className="h-5 w-5" />
-                  Screenshot <span className="text-gray-400 text-sm font-normal">(optional)</span>
-                </h3>
-                {formData.screenshot ? (
-                  <div className="relative">
-                    <img
-                      src={URL.createObjectURL(formData.screenshot)}
-                      alt="Screenshot preview"
-                      className="max-w-full h-auto rounded-lg border border-gray-300 dark:border-gray-600"
-                    />
-                    <button
-                      type="button"
-                      onClick={removeScreenshot}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 hover:bg-red-600 transition"
-                      aria-label="Remove screenshot"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ) : (
-                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-gray-400 dark:hover:border-gray-500 transition bg-gray-50 dark:bg-gray-700/50">
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <Image className="h-8 w-8 text-gray-400 dark:text-gray-500 mb-2" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span> or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                  </label>
-                )}
-              </div>
-
               {/* Submit Button */}
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button
@@ -502,7 +434,7 @@ const HelpSupport = () => {
                     You can review and edit it before clicking "Submit new issue" on GitHub. This helps us track and respond to your requests efficiently.
                   </p>
                   <p className="text-sm text-blue-700 dark:text-blue-400">
-                    <strong>Note:</strong> If you uploaded a screenshot, please attach it manually in the GitHub issue interface by dragging and dropping it into the comment box.
+                    <strong>Tip:</strong> You can attach screenshots, files, or other attachments directly in the GitHub issue interface by dragging and dropping them into the comment box after the issue is created.
                   </p>
                 </div>
               </div>
