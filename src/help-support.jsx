@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { HelpCircle, Mail, User, FileText, Send, AlertCircle, CheckCircle2, X } from 'lucide-react';
+import { HelpCircle, Mail, User, FileText, Send, AlertCircle, CheckCircle2, X, Image, AlertTriangle } from 'lucide-react';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import './styles.css';
@@ -17,6 +17,7 @@ const HelpSupport = () => {
     actualBehavior: '',
     browser: '',
     os: '',
+    screenshot: null,
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -34,6 +35,26 @@ const HelpSupport = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     setError('');
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        setError('Screenshot size must be less than 10MB');
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        setError('Please upload an image file');
+        return;
+      }
+      setFormData(prev => ({ ...prev, screenshot: file }));
+      setError('');
+    }
+  };
+
+  const removeScreenshot = () => {
+    setFormData(prev => ({ ...prev, screenshot: null }));
   };
 
   const formatIssueBody = () => {
@@ -136,6 +157,7 @@ const HelpSupport = () => {
                 actualBehavior: '',
                 browser: '',
                 os: '',
+                screenshot: null,
               });
               setSubmitted(false);
               setCreatedIssue(null);
@@ -155,31 +177,63 @@ const HelpSupport = () => {
       const repo = 'complanboy2/nowassist';
       const title = encodeURIComponent(formData.subject);
       
-      // Truncate body if too long (keep it under 1500 chars after encoding to be safe)
+      // Calculate URL length - GitHub has practical limit of ~8000 chars for URL
+      // We'll use up to 6000 chars for body to be safe (leaves room for title, labels, base URL)
       let body = issueBody;
-      const maxBodyLength = 1500;
-      if (body.length > maxBodyLength) {
-        body = body.substring(0, maxBodyLength) + '\n\n... (content truncated due to length - please add remaining details manually)';
+      const maxBodyLength = 6000; // Increased from 1500 to handle longer content
+      const bodyLength = body.length;
+      let isTruncated = false;
+      
+      if (bodyLength > maxBodyLength) {
+        // Truncate but keep important parts
+        const truncatedBody = body.substring(0, maxBodyLength);
+        const truncationNote = `\n\n---\n\n**⚠️ Content Truncated:** Your submission was ${bodyLength} characters. The first ${maxBodyLength} characters are pre-filled below. Please add the remaining content manually in the GitHub issue editor.\n\n**Remaining content to add:**\n\`\`\`\n${body.substring(maxBodyLength)}\n\`\`\``;
+        body = truncatedBody + truncationNote;
+        isTruncated = true;
+      }
+      
+      // Add screenshot note if provided
+      if (formData.screenshot) {
+        body += `\n\n---\n\n**📷 Screenshot:** A screenshot was prepared. Please attach it manually in the GitHub issue editor by dragging and dropping the image file into the comment box.`;
       }
       
       const encodedBody = encodeURIComponent(body);
       const labels = encodeURIComponent(formData.issueType === 'bug' ? 'bug' : formData.issueType === 'feature' ? 'enhancement' : 'question');
       
-      // Open GitHub issue creation page
+      // Check total URL length
       const githubUrl = `https://github.com/${repo}/issues/new?title=${title}&body=${encodedBody}&labels=${labels}`;
       
+      // Re-encode to check final URL length
+      const testUrl = `https://github.com/${repo}/issues/new?title=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}&labels=${labels}`;
+      
+      if (testUrl.length > 8000) {
+        // If still too long, truncate more aggressively
+        const safeBodyLength = 4000;
+        body = issueBody.substring(0, safeBodyLength) + `\n\n---\n\n**⚠️ Large Content Detected:** Your submission is very long (${bodyLength} characters). Only the first ${safeBodyLength} characters are pre-filled. Please copy the remaining content from your form and paste it into the GitHub issue editor.`;
+        isTruncated = true;
+      }
+      
+      // Final URL
+      const finalUrl = `https://github.com/${repo}/issues/new?title=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}&labels=${labels}`;
+      
+      // Show warning if content was truncated
+      if (isTruncated) {
+        setError(`Your content is very long (${bodyLength} characters). The GitHub issue will open with the first portion pre-filled. Please add the remaining content manually in the GitHub issue editor.`);
+        // Still proceed, but user knows to add more
+      }
+      
       // Try to open the URL
-      const newWindow = window.open(githubUrl, '_blank');
+      const newWindow = window.open(finalUrl, '_blank');
       
       // Check if popup was blocked or failed
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
         // Fallback: copy URL to clipboard and show instructions
         try {
-          await navigator.clipboard.writeText(githubUrl);
+          await navigator.clipboard.writeText(finalUrl);
           setError('Popup was blocked. The issue URL has been copied to your clipboard. Please paste it in a new browser tab.');
         } catch (clipboardErr) {
           // If clipboard fails, show the URL directly
-          setError(`Popup was blocked. Please copy this URL and open it manually:\n\n${githubUrl}`);
+          setError(`Popup was blocked. Please copy this URL and open it manually:\n\n${finalUrl}`);
         }
         setSubmitting(false);
         return;
@@ -188,7 +242,7 @@ const HelpSupport = () => {
       setSubmitted(true);
       setSubmitting(false);
       
-      // Reset form after 3 seconds
+      // Reset form after 5 seconds (give time to see message)
       setTimeout(() => {
         setFormData({
           name: '',
@@ -201,9 +255,11 @@ const HelpSupport = () => {
           actualBehavior: '',
           browser: '',
           os: '',
+          screenshot: null,
         });
         setSubmitted(false);
-      }, 3000);
+        setError('');
+      }, 5000);
 
     } catch (err) {
       setError('Failed to submit issue. Please try again.');
@@ -475,6 +531,72 @@ const HelpSupport = () => {
                       className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:border-sky-400 dark:focus:border-sky-500"
                       placeholder="e.g., Windows 11, macOS 14, Linux"
                     />
+                  </div>
+                </div>
+              </div>
+
+              {/* Screenshot Upload */}
+              <div className="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                <div>
+                  <label htmlFor="screenshot" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <Image className="inline h-4 w-4 mr-1" />
+                    Screenshot <span className="text-gray-400 text-sm font-normal">(optional)</span>
+                  </label>
+                  <div className="space-y-2">
+                    {formData.screenshot ? (
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <Image className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                            {formData.screenshot.name}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {(formData.screenshot.size / 1024).toFixed(1)} KB
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={removeScreenshot}
+                          className="p-1 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition"
+                          aria-label="Remove screenshot"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <label
+                        htmlFor="screenshot"
+                        className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-sky-400 dark:hover:border-sky-500 transition bg-gray-50 dark:bg-gray-700/30"
+                      >
+                        <Image className="h-8 w-8 text-gray-400 dark:text-gray-500 mb-2" />
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <span className="font-medium text-sky-600 dark:text-sky-400">Click to upload</span> or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
+                      </label>
+                    )}
+                    <input
+                      type="file"
+                      id="screenshot"
+                      name="screenshot"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </div>
+                  <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <div className="flex gap-2">
+                      <AlertTriangle className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                      <div className="text-xs text-blue-800 dark:text-blue-300">
+                        <p className="font-medium mb-1">📎 How to attach your screenshot:</p>
+                        <ol className="list-decimal list-inside space-y-0.5 ml-1">
+                          <li>Fill out the form and click "Create GitHub Issue"</li>
+                          <li>When the GitHub issue page opens, you'll see your issue details pre-filled</li>
+                          <li>In the GitHub issue editor, drag and drop your screenshot file into the comment box, or click the attachment icon</li>
+                          <li>Your screenshot will be uploaded and attached to the issue</li>
+                        </ol>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
