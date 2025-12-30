@@ -87,11 +87,67 @@ const HelpSupport = () => {
 
     try {
       // Format the issue body
-      let issueBody = formatIssueBody();
+      const issueBody = formatIssueBody();
 
-      // Create GitHub issue URL
-      // Note: We limit the body length to avoid URL length issues
-      // GitHub has a practical limit of ~2000 characters in URL parameters
+      // API endpoint for creating issues (serverless function)
+      // Set this to your deployed serverless function URL, or leave empty to use URL method
+      const API_ENDPOINT = import.meta.env.VITE_GITHUB_ISSUE_API || 'https://your-serverless-function.vercel.app/api/create-issue';
+      
+      // Try to use API endpoint if configured (not the default placeholder)
+      if (API_ENDPOINT && !API_ENDPOINT.includes('your-serverless-function')) {
+        try {
+          const response = await fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              title: formData.subject,
+              body: issueBody,
+              issueType: formData.issueType,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            // Success! Issue created
+            setSubmitted(true);
+            setSubmitting(false);
+            
+            // Show success with link to issue
+            setTimeout(() => {
+              window.open(result.issue.url, '_blank');
+            }, 500);
+            
+            // Reset form after 3 seconds
+            setTimeout(() => {
+              setFormData({
+                name: '',
+                email: '',
+                issueType: 'bug',
+                subject: '',
+                description: '',
+                stepsToReproduce: '',
+                expectedBehavior: '',
+                actualBehavior: '',
+                browser: '',
+                os: '',
+              });
+              setSubmitted(false);
+            }, 3000);
+            return;
+          } else {
+            // API error, fall through to URL method
+            console.warn('API error, falling back to URL method:', result.error);
+          }
+        } catch (apiError) {
+          // API failed, fall through to URL method
+          console.warn('API request failed, falling back to URL method:', apiError);
+        }
+      }
+
+      // Fallback: Use URL method (opens GitHub issue creation page)
       const repo = 'complanboy2/nowassist';
       const title = encodeURIComponent(formData.subject);
       
@@ -146,7 +202,7 @@ const HelpSupport = () => {
       }, 3000);
 
     } catch (err) {
-      setError('Failed to prepare issue. Please try again.');
+      setError('Failed to submit issue. Please try again.');
       setSubmitting(false);
       console.error('Error submitting issue:', err);
     }
@@ -175,9 +231,9 @@ const HelpSupport = () => {
               <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 mb-1">Issue Prepared Successfully!</h3>
+                  <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 mb-1">Issue Created Successfully!</h3>
                   <p className="text-sm text-green-700 dark:text-green-400">
-                    A new tab has opened with your issue ready to submit. Please review and click "Submit new issue" on GitHub.
+                    Your issue has been created on GitHub. A new tab will open shortly to view it.
                   </p>
                 </div>
               </div>
