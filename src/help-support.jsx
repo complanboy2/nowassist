@@ -107,34 +107,49 @@ const HelpSupport = () => {
     setSubmitting(true);
 
     try {
-      // Handle screenshot upload to GitHub
-      let screenshotUrl = '';
-      if (formData.screenshot) {
-        // Convert image to base64 for GitHub issue
-        const reader = new FileReader();
-        screenshotUrl = await new Promise((resolve, reject) => {
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(formData.screenshot);
-        });
-      }
-
       // Format the issue body
       let issueBody = formatIssueBody();
       
-      if (screenshotUrl) {
-        issueBody += `\n\n**Screenshot:**\n![Screenshot](${screenshotUrl})\n`;
+      // Add screenshot note if screenshot was provided
+      if (formData.screenshot) {
+        issueBody += `\n\n---\n\n**Note:** A screenshot was provided. Please attach it manually using the GitHub issue interface (drag and drop or click to upload).\n`;
       }
 
       // Create GitHub issue URL
+      // Note: We limit the body length to avoid URL length issues
+      // GitHub has a practical limit of ~2000 characters in URL parameters
       const repo = 'complanboy2/nowassist';
       const title = encodeURIComponent(formData.subject);
-      const body = encodeURIComponent(issueBody);
+      
+      // Truncate body if too long (keep it under 1500 chars after encoding to be safe)
+      let body = issueBody;
+      const maxBodyLength = 1500;
+      if (body.length > maxBodyLength) {
+        body = body.substring(0, maxBodyLength) + '\n\n... (content truncated due to length - please add remaining details manually)';
+      }
+      
+      const encodedBody = encodeURIComponent(body);
       const labels = encodeURIComponent(formData.issueType === 'bug' ? 'bug' : formData.issueType === 'feature' ? 'enhancement' : 'question');
       
       // Open GitHub issue creation page
-      const githubUrl = `https://github.com/${repo}/issues/new?title=${title}&body=${body}&labels=${labels}`;
-      window.open(githubUrl, '_blank');
+      const githubUrl = `https://github.com/${repo}/issues/new?title=${title}&body=${encodedBody}&labels=${labels}`;
+      
+      // Try to open the URL
+      const newWindow = window.open(githubUrl, '_blank');
+      
+      // Check if popup was blocked or failed
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // Fallback: copy URL to clipboard and show instructions
+        try {
+          await navigator.clipboard.writeText(githubUrl);
+          setError('Popup was blocked. The issue URL has been copied to your clipboard. Please paste it in a new browser tab.');
+        } catch (clipboardErr) {
+          // If clipboard fails, show the URL directly
+          setError(`Popup was blocked. Please copy this URL and open it manually:\n\n${githubUrl}`);
+        }
+        setSubmitting(false);
+        return;
+      }
 
       setSubmitted(true);
       setSubmitting(false);
@@ -482,9 +497,12 @@ const HelpSupport = () => {
                 <HelpCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-300 mb-1">How it works</h3>
-                  <p className="text-sm text-blue-700 dark:text-blue-400">
+                  <p className="text-sm text-blue-700 dark:text-blue-400 mb-2">
                     When you submit this form, a new GitHub issue will be opened in a new tab with all your information pre-filled. 
                     You can review and edit it before clicking "Submit new issue" on GitHub. This helps us track and respond to your requests efficiently.
+                  </p>
+                  <p className="text-sm text-blue-700 dark:text-blue-400">
+                    <strong>Note:</strong> If you uploaded a screenshot, please attach it manually in the GitHub issue interface by dragging and dropping it into the comment box.
                   </p>
                 </div>
               </div>
