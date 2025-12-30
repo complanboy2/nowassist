@@ -175,11 +175,14 @@ exports.handler = async (event, context) => {
       return {
         statusCode: 500,
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': corsOrigin
         },
         body: JSON.stringify({ error: 'Server configuration error' })
       };
     }
+    
+    // Log request for monitoring (without sensitive data)
+    console.log(`Creating issue: "${title.substring(0, 50)}..." from IP: ${clientIP}`);
 
     // Determine label
     const label = issueType === 'bug' ? 'bug' : issueType === 'feature' ? 'enhancement' : 'question';
