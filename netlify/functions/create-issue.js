@@ -258,7 +258,8 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': corsOrigin,
+        'Access-Control-Allow-Credentials': 'false'
       },
       body: JSON.stringify({
         success: true,
