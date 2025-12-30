@@ -65,16 +65,16 @@ export default defineConfig({
           console.error('Failed to copy icons:', err.message);
         }
         
-        // Create favicon.ico from icon32.png if it doesn't exist
+        // Create favicon.ico from icon128.png if it doesn't exist (larger size for better visibility)
         try {
           const faviconSource = resolve(publicDir, 'favicon.ico');
           const faviconDest = resolve(distDir, 'favicon.ico');
-          const icon32Source = resolve(publicDir, 'icons', 'icon32.png');
+          const icon128Source = resolve(publicDir, 'icons', 'icon128.png');
           
-          if (!existsSync(faviconSource) && existsSync(icon32Source)) {
-            // Copy icon32.png as favicon.ico (browsers will accept PNG as ICO)
-            copyFileSync(icon32Source, faviconDest);
-            console.log('✓ Created favicon.ico from icon32.png');
+          if (!existsSync(faviconSource) && existsSync(icon128Source)) {
+            // Copy icon128.png as favicon.ico (browsers will accept PNG as ICO, larger size for better visibility)
+            copyFileSync(icon128Source, faviconDest);
+            console.log('✓ Created favicon.ico from icon128.png');
           } else if (existsSync(faviconSource)) {
             copyFileSync(faviconSource, faviconDest);
             console.log('✓ Copied favicon.ico');
