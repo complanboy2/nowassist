@@ -65,9 +65,27 @@ export default defineConfig({
           console.error('Failed to copy icons:', err.message);
         }
         
-        // Copy favicon files (if they exist)
+        // Create favicon.ico from icon32.png if it doesn't exist
         try {
-          const faviconFiles = ['favicon.ico', 'favicon.svg', 'apple-touch-icon.png'];
+          const faviconSource = resolve(publicDir, 'favicon.ico');
+          const faviconDest = resolve(distDir, 'favicon.ico');
+          const icon32Source = resolve(publicDir, 'icons', 'icon32.png');
+          
+          if (!existsSync(faviconSource) && existsSync(icon32Source)) {
+            // Copy icon32.png as favicon.ico (browsers will accept PNG as ICO)
+            copyFileSync(icon32Source, faviconDest);
+            console.log('✓ Created favicon.ico from icon32.png');
+          } else if (existsSync(faviconSource)) {
+            copyFileSync(faviconSource, faviconDest);
+            console.log('✓ Copied favicon.ico');
+          }
+        } catch (err) {
+          console.warn('Failed to create/copy favicon.ico:', err.message);
+        }
+        
+        // Copy other favicon files (if they exist)
+        try {
+          const faviconFiles = ['favicon.svg', 'apple-touch-icon.png'];
           faviconFiles.forEach(file => {
             const sourcePath = resolve(publicDir, file);
             const destPath = resolve(distDir, file);
@@ -77,7 +95,7 @@ export default defineConfig({
             }
           });
         } catch (err) {
-          console.warn('No favicon files found or failed to copy:', err.message);
+          console.warn('No additional favicon files found or failed to copy:', err.message);
         }
         
         // Copy docs directory (for privacy policy and other documentation)
