@@ -17,7 +17,6 @@ const HelpSupport = () => {
     actualBehavior: '',
     browser: '',
     os: '',
-    screenshot: null,
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -37,25 +36,6 @@ const HelpSupport = () => {
     setError('');
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) { // 10MB limit
-        setError('Screenshot size must be less than 10MB');
-        return;
-      }
-      if (!file.type.startsWith('image/')) {
-        setError('Please upload an image file');
-        return;
-      }
-      setFormData(prev => ({ ...prev, screenshot: file }));
-      setError('');
-    }
-  };
-
-  const removeScreenshot = () => {
-    setFormData(prev => ({ ...prev, screenshot: null }));
-  };
 
   const formatIssueBody = () => {
     let body = `## Issue Details\n\n`;
@@ -157,7 +137,6 @@ const HelpSupport = () => {
                 actualBehavior: '',
                 browser: '',
                 os: '',
-                screenshot: null,
               });
               setSubmitted(false);
               setCreatedIssue(null);
@@ -190,11 +169,6 @@ const HelpSupport = () => {
         const truncationNote = `\n\n---\n\n**⚠️ Content Truncated:** Your submission was ${bodyLength} characters. The first ${maxBodyLength} characters are pre-filled below. Please add the remaining content manually in the GitHub issue editor.\n\n**Remaining content to add:**\n\`\`\`\n${body.substring(maxBodyLength)}\n\`\`\``;
         body = truncatedBody + truncationNote;
         isTruncated = true;
-      }
-      
-      // Add screenshot note if provided
-      if (formData.screenshot) {
-        body += `\n\n---\n\n**📷 Screenshot:** A screenshot was prepared. Please attach it manually in the GitHub issue editor by dragging and dropping the image file into the comment box.`;
       }
       
       const encodedBody = encodeURIComponent(body);
@@ -535,66 +509,27 @@ const HelpSupport = () => {
                 </div>
               </div>
 
-              {/* Screenshot Upload */}
+              {/* Screenshot Instructions */}
               <div className="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
                 <div>
-                  <label htmlFor="screenshot" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <Image className="inline h-4 w-4 mr-1" />
                     Screenshot <span className="text-gray-400 text-sm font-normal">(optional)</span>
                   </label>
-                  <div className="space-y-2">
-                    {formData.screenshot ? (
-                      <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
-                        <Image className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                            {formData.screenshot.name}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {(formData.screenshot.size / 1024).toFixed(1)} KB
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={removeScreenshot}
-                          className="p-1 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition"
-                          aria-label="Remove screenshot"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                    ) : (
-                      <label
-                        htmlFor="screenshot"
-                        className="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-sky-400 dark:hover:border-sky-500 transition bg-gray-50 dark:bg-gray-700/30"
-                      >
-                        <Image className="h-8 w-8 text-gray-400 dark:text-gray-500 mb-2" />
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          <span className="font-medium text-sky-600 dark:text-sky-400">Click to upload</span> or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
-                      </label>
-                    )}
-                    <input
-                      type="file"
-                      id="screenshot"
-                      name="screenshot"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                  </div>
-                  <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                    <div className="flex gap-2">
-                      <AlertTriangle className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-                      <div className="text-xs text-blue-800 dark:text-blue-300">
-                        <p className="font-medium mb-1">📎 How to attach your screenshot:</p>
-                        <ol className="list-decimal list-inside space-y-0.5 ml-1">
-                          <li>Fill out the form and click "Create GitHub Issue"</li>
-                          <li>When the GitHub issue page opens, you'll see your issue details pre-filled</li>
-                          <li>In the GitHub issue editor, drag and drop your screenshot file into the comment box, or click the attachment icon</li>
-                          <li>Your screenshot will be uploaded and attached to the issue</li>
+                  <div className="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                    <div className="flex gap-3">
+                      <AlertTriangle className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                      <div className="text-sm text-blue-800 dark:text-blue-300">
+                        <p className="font-semibold mb-2 text-base">📎 How to attach your screenshot:</p>
+                        <ol className="list-decimal list-inside space-y-1.5 ml-1">
+                          <li>Fill out the form above and click "Create GitHub Issue"</li>
+                          <li>When the GitHub issue page opens in a new tab, you'll see your issue details pre-filled</li>
+                          <li>In the GitHub issue editor, <strong>drag and drop your screenshot file</strong> into the comment box, or <strong>click the attachment icon</strong> (📎) to browse and select your image</li>
+                          <li>Your screenshot will be uploaded and attached to the issue automatically</li>
                         </ol>
+                        <p className="mt-3 text-xs text-blue-700 dark:text-blue-400 italic">
+                          💡 Tip: You can attach multiple screenshots if needed. Supported formats: PNG, JPG, GIF
+                        </p>
                       </div>
                     </div>
                   </div>
