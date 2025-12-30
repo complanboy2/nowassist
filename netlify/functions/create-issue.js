@@ -158,7 +158,7 @@ exports.handler = async (event, context) => {
       return {
         statusCode: response.status,
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': corsOrigin
         },
         body: JSON.stringify({ 
           error: 'Failed to create issue',
