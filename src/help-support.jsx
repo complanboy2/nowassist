@@ -21,6 +21,7 @@ const HelpSupport = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [createdIssue, setCreatedIssue] = useState(null);
 
   const issueTypes = [
     { value: 'bug', label: 'Bug Report', description: 'Something is not working as expected' },
@@ -112,15 +113,16 @@ const HelpSupport = () => {
 
           if (response.ok && result.success) {
             // Success! Issue created
+            setCreatedIssue(result.issue);
             setSubmitted(true);
             setSubmitting(false);
             
-            // Show success with link to issue
+            // Automatically open the issue in a new tab after a brief delay
             setTimeout(() => {
               window.open(result.issue.url, '_blank');
             }, 500);
             
-            // Reset form after 3 seconds
+            // Reset form after 5 seconds (give user time to see success message)
             setTimeout(() => {
               setFormData({
                 name: '',
@@ -135,7 +137,8 @@ const HelpSupport = () => {
                 os: '',
               });
               setSubmitted(false);
-            }, 3000);
+              setCreatedIssue(null);
+            }, 5000);
             return;
           } else {
             // API error, fall through to URL method
@@ -228,13 +231,36 @@ const HelpSupport = () => {
 
             {/* Success Message */}
             {submitted && (
-              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 mb-1">Issue Created Successfully!</h3>
-                  <p className="text-sm text-green-700 dark:text-green-400">
-                    Your issue has been created on GitHub. A new tab will open shortly to view it.
-                  </p>
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold text-green-800 dark:text-green-300 mb-1">
+                      {createdIssue ? 'Issue Created Successfully!' : 'Issue Prepared Successfully!'}
+                    </h3>
+                    {createdIssue ? (
+                      <div className="space-y-2">
+                        <p className="text-sm text-green-700 dark:text-green-400">
+                          Your issue #{createdIssue.number} has been created on GitHub. A new tab has opened to view it.
+                        </p>
+                        <a
+                          href={createdIssue.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-300 hover:text-green-900 dark:hover:text-green-100 underline"
+                        >
+                          View Issue #{createdIssue.number} on GitHub
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-green-700 dark:text-green-400">
+                        A new tab has opened with your issue ready to submit. Please review and click "Submit new issue" on GitHub.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
