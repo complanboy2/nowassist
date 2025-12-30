@@ -290,10 +290,13 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error('Error creating issue:', error);
+    // Get corsOrigin from scope or use first allowed origin as fallback
+    const errorCorsOrigin = corsOrigin || (process.env.ALLOWED_ORIGINS?.split(',')[0]?.trim() || 'null');
     return {
       statusCode: 500,
       headers: {
-        'Access-Control-Allow-Origin': corsOrigin
+        'Access-Control-Allow-Origin': errorCorsOrigin,
+        'Access-Control-Allow-Credentials': 'false'
       },
       body: JSON.stringify({ 
         error: 'Internal server error',
