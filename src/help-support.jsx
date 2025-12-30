@@ -91,11 +91,12 @@ const HelpSupport = () => {
       const issueBody = formatIssueBody();
 
       // API endpoint for creating issues (serverless function)
-      // Set this to your deployed serverless function URL, or leave empty to use URL method
-      const API_ENDPOINT = import.meta.env.VITE_GITHUB_ISSUE_API || 'https://your-serverless-function.vercel.app/api/create-issue';
+      // To enable direct POST: Deploy the serverless function and set VITE_GITHUB_ISSUE_API env var
+      // See SERVERLESS_SETUP.md for instructions
+      const API_ENDPOINT = import.meta.env.VITE_GITHUB_ISSUE_API;
       
-      // Try to use API endpoint if configured (not the default placeholder)
-      if (API_ENDPOINT && !API_ENDPOINT.includes('your-serverless-function')) {
+      // Try to use API endpoint if configured
+      if (API_ENDPOINT && API_ENDPOINT.trim() !== '') {
         try {
           const response = await fetch(API_ENDPOINT, {
             method: 'POST',
