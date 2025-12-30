@@ -18,13 +18,14 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  // Check localStorage for saved theme preference, default to 'light'
+  // Check localStorage for saved theme preference, default to 'dark'
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('nowassist-theme');
-      return saved === 'dark' ? 'dark' : 'light';
+      // If user has a saved preference, use it; otherwise default to 'dark'
+      return saved || 'dark';
     }
-    return 'light';
+    return 'dark';
   });
 
   useEffect(() => {
